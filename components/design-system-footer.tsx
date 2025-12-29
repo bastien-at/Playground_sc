@@ -18,10 +18,6 @@ export function DesignSystemFooter() {
             <AlltricksLogo />
           </div>
         </div>
-
-        <p className="font-display text-xl text-[#687787]">
-          www.alltricks.com
-        </p>
       </div>
     </footer>
   );
