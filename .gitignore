@@ -5,3 +5,11 @@ out
 .env.*.local
 .vercel
 *.log
+
+ .env
+ .env.*
+
+ .codeium/
+ .windsurf/
+ .vscode/
+ .idea/

@@ -10,14 +10,11 @@ export function Dashboard() {
   return (
     <WorkflowProvider>
       <main className="mx-auto w-full max-w-7xl px-4 py-6">
-        <header className="mb-6 flex flex-col gap-1">
-          <h1 className="text-2xl font-semibold tracking-tight">
-            n8n Workflow Playground
-          </h1>
+        <div className="mb-6">
           <p className="text-sm text-muted-foreground">
-            Exécute un workflow n8n via ton dashboard, sans passer par l’UI n8n.
+            Générateur de mail en se basant sur la documentation Alltricks
           </p>
-        </header>
+        </div>
 
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
           <section className="min-w-0 lg:col-span-1">

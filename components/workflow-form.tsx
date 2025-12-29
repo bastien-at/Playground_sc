@@ -4,7 +4,7 @@ import * as React from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Loader2, Play } from "lucide-react";
+import { Loader2, Mail, Play } from "lucide-react";
 
 import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
@@ -37,6 +37,10 @@ type FormValues = z.infer<typeof schema>;
 export function WorkflowForm() {
   const { toast } = useToast();
   const { setLastResponse, history, setHistory, setSelected } = useWorkflow();
+
+  const firstnameHintId = React.useId();
+  const lastnameHintId = React.useId();
+  const messageHintId = React.useId();
 
   const form = useForm<FormValues>({
     resolver: zodResolver(schema),
@@ -114,10 +118,7 @@ export function WorkflowForm() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Exécuter le workflow</CardTitle>
-        <CardDescription>
-          Test unitaire: envoie 1 message client au workflow n8n.
-        </CardDescription>
+        <CardTitle>Mailbot Générateur</CardTitle>
       </CardHeader>
       <CardContent>
         <form
@@ -126,13 +127,20 @@ export function WorkflowForm() {
         >
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div className="space-y-2">
-              <Label htmlFor="firstname">firstname</Label>
-              <Input
-                id="firstname"
-                placeholder="Ex: Marie"
-                {...form.register("firstname")}
-              />
-              <p className="text-sm text-muted-foreground">Prénom du client.</p>
+              <Label htmlFor="firstname">Prénom</Label>
+              <div className="relative">
+                <Mail className="pointer-events-none absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
+                <Input
+                  id="firstname"
+                  placeholder="Ex: Marie"
+                  className="pl-10 pr-10"
+                  aria-describedby={firstnameHintId}
+                  {...form.register("firstname")}
+                />
+              </div>
+              <p id={firstnameHintId} className="text-sm text-muted-foreground">
+                Prénom du client.
+              </p>
               {form.formState.errors.firstname ? (
                 <p className="text-sm text-destructive">
                   {form.formState.errors.firstname.message}
@@ -141,13 +149,20 @@ export function WorkflowForm() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="lastname">lastname</Label>
-              <Input
-                id="lastname"
-                placeholder="Ex: Dupont"
-                {...form.register("lastname")}
-              />
-              <p className="text-sm text-muted-foreground">Nom du client.</p>
+              <Label htmlFor="lastname">Nom</Label>
+              <div className="relative">
+                <Mail className="pointer-events-none absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
+                <Input
+                  id="lastname"
+                  placeholder="Ex: Dupont"
+                  className="pl-10 pr-10"
+                  aria-describedby={lastnameHintId}
+                  {...form.register("lastname")}
+                />
+              </div>
+              <p id={lastnameHintId} className="text-sm text-muted-foreground">
+                Nom du client.
+              </p>
               {form.formState.errors.lastname ? (
                 <p className="text-sm text-destructive">
                   {form.formState.errors.lastname.message}
@@ -157,16 +172,15 @@ export function WorkflowForm() {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="message">message</Label>
+            <Label htmlFor="message">Message</Label>
             <Textarea
               id="message"
               rows={6}
               placeholder="Écris le message du client…"
+              aria-describedby={messageHintId}
               {...form.register("message")}
             />
-            <p className="text-sm text-muted-foreground">
-              Un message clair aide le workflow à produire une réponse cohérente.
-            </p>
+           
             {form.formState.errors.message ? (
               <p className="text-sm text-destructive">
                 {form.formState.errors.message.message}
@@ -176,15 +190,17 @@ export function WorkflowForm() {
 
           <Button
             type="submit"
-            className="w-full"
+            variant="cta"
+            size="cta"
+            className="w-full text-md"
             disabled={form.formState.isSubmitting}
           >
             {form.formState.isSubmitting ? (
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              <Loader2 className="h-6 w-6 animate-spin" />
             ) : (
-              <Play className="mr-2 h-4 w-4" />
+              <Play className="h-6 w-6" />
             )}
-            Exécuter
+            Lancer le workflow 
           </Button>
         </form>
       </CardContent>

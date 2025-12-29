@@ -10,6 +10,7 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default: "bg-primary text-primary-foreground hover:opacity-90",
+        cta: "bg-[#005162] text-white hover:opacity-90",
         secondary: "bg-secondary text-secondary-foreground hover:opacity-90",
         outline:
           "border border-input bg-transparent hover:bg-accent hover:text-accent-foreground",
@@ -21,6 +22,7 @@ const buttonVariants = cva(
         sm: "h-8 rounded-md px-3",
         lg: "h-10 rounded-md px-6",
         icon: "h-9 w-9",
+        cta: "h-16 gap-3 rounded-full py-5 pl-8 pr-10 text-[20px] font-bold leading-none",
       },
     },
     defaultVariants: {

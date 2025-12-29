@@ -16,6 +16,18 @@ import {
 } from "@/components/ui/table";
 import { useWorkflow } from "@/components/workflow-provider";
 
+function formatDateTime(iso: string) {
+  try {
+    return new Intl.DateTimeFormat("fr-FR", {
+      dateStyle: "short",
+      timeStyle: "medium",
+      timeZone: "Europe/Paris",
+    }).format(new Date(iso));
+  } catch {
+    return iso;
+  }
+}
+
 function getRowLabel(params: Record<string, unknown>) {
   const input = (params as any)?.input;
   if (input && typeof input === "object") {
@@ -82,7 +94,7 @@ export function ExecutionHistory() {
             ) : (
               history.map((h) => (
                 <TableRow key={h.executionId}>
-                  <TableCell>{new Date(h.executedAt).toLocaleString()}</TableCell>
+                  <TableCell>{formatDateTime(h.executedAt)}</TableCell>
                   <TableCell>
                     <Badge variant={h.success ? "success" : "destructive"}>
                       {h.success ? "success" : "error"}

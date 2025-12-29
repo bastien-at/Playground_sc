@@ -79,6 +79,95 @@ function checkRateLimit(ip: string) {
   return { ok: true, remaining: RATE_LIMIT_MAX - current.count };
 }
 
+function asRecord(v: unknown): Record<string, unknown> | null {
+  if (!v || typeof v !== "object" || Array.isArray(v)) return null;
+  return v as Record<string, unknown>;
+}
+
+function getString(v: unknown): string | null {
+  return typeof v === "string" ? v : null;
+}
+
+function stripMarkdownCodeFences(raw: string): string {
+  let s = raw.trim();
+
+  // Handle fenced blocks like ```json ... ``` (or ``` ... ```)
+  if (s.startsWith("```")) {
+    s = s.replace(/^```[a-zA-Z]*\s*/m, "");
+    s = s.replace(/```\s*$/m, "");
+    return s.trim();
+  }
+
+  // Handle malformed fences like ``json ... ``
+  if (s.startsWith("``")) {
+    s = s.replace(/^``[a-zA-Z]*\s*/m, "");
+    s = s.replace(/``\s*$/m, "");
+    return s.trim();
+  }
+
+  return s;
+}
+
+function parseJudge(judge: unknown):
+  | { decision?: string; note?: number; feedback?: string[] }
+  | null {
+  if (!judge) return null;
+
+  if (typeof judge === "string") {
+    const trimmed = stripMarkdownCodeFences(judge);
+    if (!trimmed) return null;
+    try {
+      const parsed = JSON.parse(trimmed);
+      return asRecord(parsed) as any;
+    } catch {
+      return { feedback: [trimmed] };
+    }
+  }
+
+  if (typeof judge === "object") return asRecord(judge) as any;
+  return null;
+}
+
+function normalizeN8nResponseData(data: unknown): unknown {
+  const item = Array.isArray(data) ? data[0] : data;
+  const root = asRecord(item);
+  if (!root) return data;
+
+  const motif = getString(root.motif);
+  const reponse = getString(root.reponse);
+  const judge = parseJudge(root.judge);
+  const client = asRecord(root.client);
+
+  if (!motif && !reponse && !judge && !client) return data;
+
+  const decisionRaw = judge ? getString((judge as any).decision) : null;
+  const feedback = judge && Array.isArray((judge as any).feedback)
+    ? ((judge as any).feedback as unknown[])
+        .map(getString)
+        .filter((v): v is string => Boolean(v))
+    : [];
+
+  const status =
+    decisionRaw === "ACCEPT" || decisionRaw === "GO" ? "GO" : decisionRaw ? "KO" : null;
+
+  return {
+    motif_ia: motif,
+    client: {
+      firstname: client ? getString(client.firstname) : null,
+      lastname: client ? getString(client.lastname) : null,
+      message: client ? getString(client.message) : null,
+    },
+    response: {
+      gemini: {
+        status,
+        response: reponse,
+        ko_reason: feedback.length ? feedback.join("\n") : null,
+        judge: judge ?? null,
+      },
+    },
+  };
+}
+
 export async function POST(req: Request) {
   const startedAtMs = Date.now();
   const executionId = crypto.randomUUID();
@@ -175,7 +264,10 @@ export async function POST(req: Request) {
   });
 
   const result = await executeN8nWorkflow(payload);
-  const response = toApiResponse(executionId, startedAtMs, result);
+  const normalizedResult = result.ok
+    ? { ok: true as const, data: normalizeN8nResponseData(result.data) }
+    : result;
+  const response = toApiResponse(executionId, startedAtMs, normalizedResult);
 
   const status = response.success ? 200 : response.error.status ?? 500;
 

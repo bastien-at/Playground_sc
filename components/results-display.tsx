@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Copy } from "lucide-react";
+import { Copy, Star } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -16,13 +16,29 @@ function asRecord(v: unknown): Record<string, unknown> | null {
   return v as Record<string, unknown>;
 }
 
+function formatDateTime(iso: string) {
+  try {
+    return new Intl.DateTimeFormat("fr-FR", {
+      dateStyle: "short",
+      timeStyle: "medium",
+      timeZone: "Europe/Paris",
+    }).format(new Date(iso));
+  } catch {
+    return iso;
+  }
+}
+
 function getString(v: unknown): string | null {
   return typeof v === "string" ? v : null;
 }
 
+function getNumber(v: unknown): number | null {
+  return typeof v === "number" && Number.isFinite(v) ? v : null;
+}
+
 export function ResultsDisplay() {
   const { toast } = useToast();
-  const { selected, lastResponse, showDebug, setShowDebug } = useWorkflow();
+  const { selected, lastResponse } = useWorkflow();
 
   const [reportOpen, setReportOpen] = React.useState(false);
   const [reportComment, setReportComment] = React.useState("");
@@ -102,6 +118,12 @@ export function ResultsDisplay() {
     const client = asRecord(data.client);
     const response = asRecord(data.response);
     const gemini = response ? asRecord(response.gemini) : null;
+    const judge = gemini ? asRecord((gemini as any).judge) : null;
+    const judgeFeedback = judge && Array.isArray((judge as any).feedback)
+      ? ((judge as any).feedback as unknown[])
+          .map(getString)
+          .filter((v): v is string => Boolean(v))
+      : null;
 
     return {
       motifIa: getString(data.motif_ia),
@@ -111,6 +133,9 @@ export function ResultsDisplay() {
       geminiStatus: gemini ? getString(gemini.status) : null,
       geminiResponse: gemini ? getString(gemini.response) : null,
       geminiKoReason: gemini ? getString(gemini.ko_reason) : null,
+      judgeDecision: judge ? getString((judge as any).decision) : null,
+      judgeNote: judge ? getNumber((judge as any).note) : null,
+      judgeFeedback,
     };
   }, [shown]);
 
@@ -119,6 +144,37 @@ export function ResultsDisplay() {
     : extracted?.geminiStatus
       ? "destructive"
       : "default";
+
+  const judgeNoteLabel = extracted?.judgeNote !== null && extracted?.judgeNote !== undefined
+    ? `${extracted.judgeNote}/5`
+    : null;
+
+  const judgeDecisionUpper = extracted?.judgeDecision?.toUpperCase?.()
+    ? extracted.judgeDecision.toUpperCase()
+    : null;
+  const hasJudge = Boolean(judgeDecisionUpper) || judgeNoteLabel !== null;
+
+  const inferredDecisionFromNote =
+    judgeDecisionUpper
+      ? null
+      : extracted?.judgeNote !== null && extracted?.judgeNote !== undefined
+        ? extracted.judgeNote >= 4
+          ? "SEND"
+          : extracted.judgeNote === 3
+            ? "REVIEW"
+            : "REJECT"
+        : null;
+
+  const judgeDecisionForColor = judgeDecisionUpper ?? inferredDecisionFromNote;
+  const judgeVariant =
+    judgeDecisionForColor === "SEND" || judgeDecisionForColor === "ACCEPT" || judgeDecisionForColor === "GO"
+      ? ("tagBlue" as const)
+      : judgeDecisionForColor === "REVIEW"
+        ? ("tagOrange" as const)
+        : judgeDecisionForColor === "REJECT" || judgeDecisionForColor === "KO"
+          ? ("tagRed" as const)
+          : ("tag" as const);
+  const judgeHeaderLabel = judgeNoteLabel ?? judgeDecisionUpper;
 
   const copyGeminiResponse = React.useCallback(async () => {
     const text = extracted?.geminiResponse;
@@ -150,27 +206,31 @@ export function ResultsDisplay() {
 
           <div className="flex items-center gap-2">
             {shown ? (
-              <Badge variant={shown.success ? "success" : "destructive"}>
-                {shown.success ? "success" : "error"}
-              </Badge>
+              shown.success && extracted && hasJudge && judgeHeaderLabel ? (
+                <Badge variant={judgeVariant} className="gap-1">
+                  <Star className="h-3 w-3" />
+                  {judgeHeaderLabel}
+                </Badge>
+              ) : (
+                <Badge variant={shown.success ? "success" : "destructive"}>
+                  {shown.success ? "success" : "error"}
+                </Badge>
+              )
             ) : null}
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              onClick={() => setShowDebug(!showDebug)}
-              disabled={!shown}
-            >
-              {showDebug ? "Masquer debug" : "Voir debug"}
-            </Button>
           </div>
         </div>
       </CardHeader>
 
       <CardContent className="space-y-3">
+        {!shown ? (
+          <div className="rounded-lg border border-border bg-muted/30 p-4 text-sm text-muted-foreground">
+            Lance une exécution via le formulaire à gauche pour afficher les résultats ici.
+          </div>
+        ) : null}
+
         {shown ? (
           <div className="text-sm text-muted-foreground">
-            <p>Exécuté: {new Date(shown.executedAt).toLocaleString()}</p>
+            <p>Exécuté: {formatDateTime(shown.executedAt)}</p>
             <p>Durée: {shown.durationMs}ms</p>
             {!shown.success && shown.error ? (
               <p className="text-destructive">{shown.error.message}</p>
@@ -223,7 +283,7 @@ export function ResultsDisplay() {
                 </div>
               </div>
 
-              {extracted.geminiKoReason ? (
+              {extracted.geminiKoReason && !(extracted.judgeFeedback?.length) ? (
                 <p className="mt-2 text-sm text-destructive">
                   {extracted.geminiKoReason}
                 </p>
@@ -233,6 +293,25 @@ export function ResultsDisplay() {
                 {extracted.geminiResponse || "—"}
               </p>
             </div>
+
+            {extracted.judgeDecision || extracted.judgeNote !== null || extracted.judgeFeedback ? (
+              <div className="rounded-md border border-border p-3">
+                <p className="text-sm font-medium">Judge</p>
+                <div className="mt-2 text-sm text-muted-foreground">
+                  {extracted.judgeDecision ? (
+                    <p>Decision: {extracted.judgeDecision}</p>
+                  ) : null}
+                  {extracted.judgeNote !== null ? (
+                    <p>Note: {extracted.judgeNote}</p>
+                  ) : null}
+                  {extracted.judgeFeedback && extracted.judgeFeedback.length ? (
+                    <p className="mt-2 whitespace-pre-wrap rounded-md border border-border bg-muted/30 p-2 text-foreground">
+                      {extracted.judgeFeedback.join("\n")}
+                    </p>
+                  ) : null}
+                </div>
+              </div>
+            ) : null}
           </div>
         ) : null}
 
