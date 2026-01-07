@@ -24,7 +24,7 @@ export function AlltricksLogo({
 
   return (
     <img
-      src={src}
+      src="https://assets-cdn-frz.alltricks.com/images/2022_ALLTRICKS_QUADRI_ORIGINAL_BLANC.svg?1767081755"
       alt={alt}
       className={className}
       style={{ width, height, objectFit: "contain" }}

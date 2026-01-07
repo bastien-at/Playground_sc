@@ -112,38 +112,68 @@ export function ResultsDisplay() {
 
   const extracted = React.useMemo(() => {
     if (!shown?.success) return null;
-    const data = asRecord((shown as any)?.data);
+    const data = (shown as any)?.data;
     if (!data) return null;
 
-    const client = asRecord(data.client);
-    const response = asRecord(data.response);
-    const gemini = response ? asRecord(response.gemini) : null;
-    const judge = gemini ? asRecord((gemini as any).judge) : null;
-    const judgeFeedback = judge && Array.isArray((judge as any).feedback)
-      ? ((judge as any).feedback as unknown[])
-          .map(getString)
-          .filter((v): v is string => Boolean(v))
+    // Handle array format (new payload) or single object format (old payload)
+    const item = Array.isArray(data) ? asRecord(data[0]) : asRecord(data);
+    if (!item) return null;
+
+    // --- Format mapping ---
+    // New payload: contact { nom, prenom, mail, message }
+    // Old payload: client { firstname, lastname, mail, message }
+    const contact = asRecord(item.contact) || asRecord(item.client);
+    
+    // New payload: motif { categorie, sous_categorie, priorite, action_recommandee }
+    // Old payload: motif_ia (string) + motif_details { sous_categorie, priorite, action_recommandee }
+    const motif = asRecord(item.motif);
+    const motifDetails = asRecord(item.motif_details);
+
+    // New payload: reponse { agent, status, message, raw_response, ko_details, judge }
+    // Old payload: response { gemini { agent, status, response, ko_reason, judge } }
+    const reponse = asRecord(item.reponse);
+    const responseLegacy = asRecord(item.response);
+    const geminiLegacy = responseLegacy ? asRecord(responseLegacy.gemini) : null;
+
+    // Judge info
+    const judge = asRecord(reponse?.judge) || (geminiLegacy ? asRecord(geminiLegacy.judge) : null);
+    const judgeFeedback = judge 
+      ? (Array.isArray(judge.feedback) 
+          ? judge.feedback.map(getString).filter((v): v is string => Boolean(v))
+          : (getString(judge.commentaire) ? [getString(judge.commentaire)!] : null))
       : null;
 
     return {
-      motifIa: getString(data.motif_ia),
-      clientFirstname: client ? getString(client.firstname) : null,
-      clientLastname: client ? getString(client.lastname) : null,
-      clientMessage: client ? getString(client.message) : null,
-      geminiStatus: gemini ? getString(gemini.status) : null,
-      geminiResponse: gemini ? getString(gemini.response) : null,
-      geminiKoReason: gemini ? getString(gemini.ko_reason) : null,
-      judgeDecision: judge ? getString((judge as any).decision) : null,
-      judgeNote: judge ? getNumber((judge as any).note) : null,
+      motifIa: motif ? getString(motif.categorie) : getString(item.motif_ia),
+      motifSousCategorie: motif ? getString(motif.sous_categorie) : (motifDetails ? getString(motifDetails.sous_categorie) : null),
+      motifPriorite: motif ? getString(motif.priorite) : (motifDetails ? getString(motifDetails.priorite) : null),
+      motifAction: motif ? getString(motif.action_recommandee) : (motifDetails ? getString(motifDetails.action_recommandee) : null),
+      clientFirstname: contact ? (getString(contact.prenom) || getString(contact.firstname)) : null,
+      clientLastname: contact ? (getString(contact.nom) || getString(contact.lastname)) : null,
+      clientMessage: contact ? getString(contact.message) : null,
+      clientMail: contact ? getString(contact.mail) : null,
+      geminiStatus: reponse ? getString(reponse.status) : (geminiLegacy ? getString(geminiLegacy.status) : null),
+      geminiResponse: reponse ? getString(reponse.message) : (geminiLegacy ? getString(geminiLegacy.response) : null),
+      geminiKoReason: reponse ? getString((asRecord(reponse.ko_details))?.reason) : (geminiLegacy ? getString(geminiLegacy.ko_reason) : null),
+      geminiAgent: reponse ? getString(reponse.agent) : (geminiLegacy ? getString(geminiLegacy.agent) : null),
+      geminiDebug: reponse && Array.isArray(reponse.debug) 
+        ? reponse.debug.map(getString).filter((v): v is string => Boolean(v))
+        : (geminiLegacy && Array.isArray(geminiLegacy.debug) 
+            ? geminiLegacy.debug.map(getString).filter((v): v is string => Boolean(v))
+            : null),
+      judgeDecision: judge ? getString(judge.decision) : null,
+      judgeNote: judge ? getNumber(judge.note) : null,
       judgeFeedback,
     };
   }, [shown]);
 
   const statusBadgeVariant = extracted?.geminiStatus === "GO"
     ? "success"
-    : extracted?.geminiStatus
-      ? "destructive"
-      : "default";
+    : extracted?.geminiStatus === "REVIEW"
+      ? "tagOrange"
+      : extracted?.geminiStatus
+        ? "destructive"
+        : "default";
 
   const judgeNoteLabel = extracted?.judgeNote !== null && extracted?.judgeNote !== undefined
     ? `${extracted.judgeNote}/5`
@@ -246,6 +276,7 @@ export function ResultsDisplay() {
                 <p>
                   {(extracted.clientFirstname || "—")}{" "}
                   {(extracted.clientLastname || "")}
+                  {extracted.clientMail ? ` (${extracted.clientMail})` : ""}
                 </p>
                 <p className="mt-2 whitespace-pre-wrap rounded-md border border-border bg-muted/30 p-2 text-foreground">
                   {extracted.clientMessage || "—"}
@@ -254,15 +285,32 @@ export function ResultsDisplay() {
             </div>
 
             <div className="rounded-md border border-border p-3">
-              <p className="text-sm font-medium">Motif IA</p>
-              <p className="mt-2 whitespace-pre-wrap text-sm text-muted-foreground">
-                {extracted.motifIa || "—"}
-              </p>
+              <p className="text-sm font-medium">Analyse Motif</p>
+              <div className="mt-2 space-y-1 text-sm text-muted-foreground">
+                <p><span className="font-medium">Catégorie :</span> {extracted.motifIa || "—"}</p>
+                {extracted.motifSousCategorie ? (
+                  <p><span className="font-medium">Sous-catégorie :</span> {extracted.motifSousCategorie}</p>
+                ) : null}
+                {extracted.motifPriorite ? (
+                  <p><span className="font-medium">Priorité :</span> {extracted.motifPriorite}</p>
+                ) : null}
+                {extracted.motifAction ? (
+                  <div className="mt-2 rounded-md bg-tagBlue/10 p-2 text-foreground">
+                    <p className="font-medium text-tagBlue">Action recommandée :</p>
+                    <p className="mt-1">{extracted.motifAction}</p>
+                  </div>
+                ) : null}
+              </div>
             </div>
 
             <div className="rounded-md border border-border p-3">
               <div className="flex items-start justify-between gap-4">
-                <p className="text-sm font-medium">Réponse (Gemini)</p>
+                <div className="space-y-1">
+                  <p className="text-sm font-medium">Réponse</p>
+                  {extracted.geminiAgent ? (
+                    <p className="text-xs text-muted-foreground">{extracted.geminiAgent}</p>
+                  ) : null}
+                </div>
                 <div className="flex items-center gap-2">
                   {extracted.geminiStatus ? (
                     <Badge variant={statusBadgeVariant as any}>
@@ -290,8 +338,21 @@ export function ResultsDisplay() {
               ) : null}
 
               <p className="mt-2 whitespace-pre-wrap rounded-md border border-border bg-muted/30 p-2 text-sm text-foreground">
-                {extracted.geminiResponse || "—"}
+                {extracted.geminiResponse || (extracted.geminiAgent ? extracted.geminiAgent : "—")}
               </p>
+
+              {extracted.geminiDebug && extracted.geminiDebug.length > 0 ? (
+                <div className="mt-3 space-y-2">
+                  <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Debug Info</p>
+                  <div className="rounded-md border border-dashed border-border bg-muted/20 p-2">
+                    <ul className="list-inside list-disc space-y-1 text-xs text-muted-foreground">
+                      {extracted.geminiDebug.map((item, i) => (
+                        <li key={i}>{item}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              ) : null}
             </div>
 
             {extracted.judgeDecision || extracted.judgeNote !== null || extracted.judgeFeedback ? (

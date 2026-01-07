@@ -1,8 +1,8 @@
-import { NextResponse } from "next/server";
-import { z } from "zod";
+import { NextResponse } from 'next/server';
+import { z } from 'zod';
 
-import { executeN8nWorkflow, toApiResponse } from "@/lib/n8n-client";
-import { sanitizeString } from "@/lib/utils";
+import { executeN8nWorkflow, toApiResponse } from '@/lib/n8n-client';
+import { sanitizeString } from '@/lib/utils';
 
 const schema = z
   .object({
@@ -30,7 +30,7 @@ const schema = z
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message:
-          "Body invalide: fournir input ou (firstname + lastname + message) ou (param1 + param2)",
+          'Body invalide: fournir input ou (firstname + lastname + message) ou (param1 + param2)',
       });
     }
 
@@ -38,7 +38,7 @@ const schema = z
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message:
-          "Body invalide: ne pas mélanger input.* avec des champs à plat (firstname/lastname/message)",
+          'Body invalide: ne pas mélanger input.* avec des champs à plat (firstname/lastname/message)',
       });
     }
   });
@@ -56,9 +56,9 @@ const rateLimitStore: Map<string, RateLimitEntry> = (globalThis as any)
 (globalThis as any).__n8n_workflow_rate_limit_store__ = rateLimitStore;
 
 function getClientIp(req: Request) {
-  const xff = req.headers.get("x-forwarded-for");
-  if (xff) return xff.split(",")[0]?.trim() || "unknown";
-  return req.headers.get("x-real-ip") ?? "unknown";
+  const xff = req.headers.get('x-forwarded-for');
+  if (xff) return xff.split(',')[0]?.trim() || 'unknown';
+  return req.headers.get('x-real-ip') ?? 'unknown';
 }
 
 function checkRateLimit(ip: string) {
@@ -80,40 +80,40 @@ function checkRateLimit(ip: string) {
 }
 
 function asRecord(v: unknown): Record<string, unknown> | null {
-  if (!v || typeof v !== "object" || Array.isArray(v)) return null;
+  if (!v || typeof v !== 'object' || Array.isArray(v)) return null;
   return v as Record<string, unknown>;
 }
 
 function getString(v: unknown): string | null {
-  return typeof v === "string" ? v : null;
+  return typeof v === 'string' ? v : null;
 }
 
 function stripMarkdownCodeFences(raw: string): string {
   let s = raw.trim();
 
   // Handle fenced blocks like ```json ... ``` (or ``` ... ```)
-  if (s.startsWith("```")) {
-    s = s.replace(/^```[a-zA-Z]*\s*/m, "");
-    s = s.replace(/```\s*$/m, "");
+  if (s.startsWith('```')) {
+    s = s.replace(/^```[a-zA-Z]*\s*/m, '');
+    s = s.replace(/```\s*$/m, '');
     return s.trim();
   }
 
   // Handle malformed fences like ``json ... ``
-  if (s.startsWith("``")) {
-    s = s.replace(/^``[a-zA-Z]*\s*/m, "");
-    s = s.replace(/``\s*$/m, "");
+  if (s.startsWith('``')) {
+    s = s.replace(/^``[a-zA-Z]*\s*/m, '');
+    s = s.replace(/``\s*$/m, '');
     return s.trim();
   }
 
   return s;
 }
 
-function parseJudge(judge: unknown):
-  | { decision?: string; note?: number; feedback?: string[] }
-  | null {
+function parseJudge(
+  judge: unknown,
+): { decision?: string; note?: number; feedback?: string[] } | null {
   if (!judge) return null;
 
-  if (typeof judge === "string") {
+  if (typeof judge === 'string') {
     const trimmed = stripMarkdownCodeFences(judge);
     if (!trimmed) return null;
     try {
@@ -124,7 +124,7 @@ function parseJudge(judge: unknown):
     }
   }
 
-  if (typeof judge === "object") return asRecord(judge) as any;
+  if (typeof judge === 'object') return asRecord(judge) as any;
   return null;
 }
 
@@ -133,36 +133,70 @@ function normalizeN8nResponseData(data: unknown): unknown {
   const root = asRecord(item);
   if (!root) return data;
 
-  const motif = getString(root.motif);
-  const reponse = getString(root.reponse);
-  const judge = parseJudge(root.judge);
-  const client = asRecord(root.client);
+  // New format handling
+  const contact = asRecord(root.contact);
+  const motifObj = asRecord(root.motif);
+  const reponseObj = asRecord(root.reponse);
+
+  // Fallback to old format if new format fields are missing
+  const motif = motifObj
+    ? getString(motifObj.categorie)
+    : getString(root.motif);
+  const reponse = reponseObj
+    ? getString(reponseObj.message)
+    : getString(root.reponse);
+  const judge = reponseObj
+    ? parseJudge(reponseObj.judge)
+    : parseJudge(root.judge);
+  const client = contact || asRecord(root.client);
 
   if (!motif && !reponse && !judge && !client) return data;
 
   const decisionRaw = judge ? getString((judge as any).decision) : null;
-  const feedback = judge && Array.isArray((judge as any).feedback)
-    ? ((judge as any).feedback as unknown[])
-        .map(getString)
-        .filter((v): v is string => Boolean(v))
-    : [];
+  const feedback =
+    judge && Array.isArray((judge as any).feedback)
+      ? ((judge as any).feedback as unknown[])
+          .map(getString)
+          .filter((v): v is string => Boolean(v))
+      : judge && (judge as any).commentaire
+      ? [getString((judge as any).commentaire)].filter((v): v is string =>
+          Boolean(v),
+        )
+      : [];
 
   const status =
-    decisionRaw === "ACCEPT" || decisionRaw === "GO" ? "GO" : decisionRaw ? "KO" : null;
+    decisionRaw === 'ACCEPT' || decisionRaw === 'GO' || decisionRaw === 'SEND'
+      ? 'GO'
+      : decisionRaw === 'REVIEW'
+      ? 'REVIEW'
+      : decisionRaw
+      ? 'KO'
+      : null;
 
   return {
     motif_ia: motif,
+    motif_details: motifObj,
     client: {
-      firstname: client ? getString(client.firstname) : null,
-      lastname: client ? getString(client.lastname) : null,
+      firstname: client
+        ? getString(client.prenom) || getString(client.firstname)
+        : null,
+      lastname: client
+        ? getString(client.nom) || getString(client.lastname)
+        : null,
       message: client ? getString(client.message) : null,
+      mail: client ? getString(client.mail) : null,
     },
     response: {
       gemini: {
         status,
         response: reponse,
-        ko_reason: feedback.length ? feedback.join("\n") : null,
+        ko_reason: feedback.length ? feedback.join('\n') : null,
         judge: judge ?? null,
+        agent: reponseObj ? getString(reponseObj.agent) : null,
+        debug:
+          reponseObj && Array.isArray(reponseObj.debug)
+            ? reponseObj.debug
+            : null,
       },
     },
   };
@@ -179,7 +213,7 @@ export async function POST(req: Request) {
     return NextResponse.json(
       {
         success: false,
-        error: { message: "Rate limit: 10 requêtes/minute" },
+        error: { message: 'Rate limit: 10 requêtes/minute' },
         executedAt: new Date().toISOString(),
         executionId,
         durationMs: Date.now() - startedAtMs,
@@ -187,8 +221,8 @@ export async function POST(req: Request) {
       {
         status: 429,
         headers: {
-          "x-ratelimit-limit": String(RATE_LIMIT_MAX),
-          "x-ratelimit-remaining": "0",
+          'x-ratelimit-limit': String(RATE_LIMIT_MAX),
+          'x-ratelimit-remaining': '0',
         },
       },
     );
@@ -201,7 +235,7 @@ export async function POST(req: Request) {
     return NextResponse.json(
       {
         success: false,
-        error: { message: "Body JSON invalide" },
+        error: { message: 'Body JSON invalide' },
         executedAt: new Date().toISOString(),
         executionId,
         durationMs: Date.now() - startedAtMs,
@@ -215,7 +249,7 @@ export async function POST(req: Request) {
     return NextResponse.json(
       {
         success: false,
-        error: { message: "Validation échouée" },
+        error: { message: 'Validation échouée' },
         executedAt: new Date().toISOString(),
         executionId,
         durationMs: Date.now() - startedAtMs,
@@ -231,12 +265,12 @@ export async function POST(req: Request) {
         message: parsed.data.input.message,
       }
     : parsed.data.firstname && parsed.data.lastname && parsed.data.message
-      ? {
-          firstname: parsed.data.firstname,
-          lastname: parsed.data.lastname,
-          message: parsed.data.message,
-        }
-      : undefined;
+    ? {
+        firstname: parsed.data.firstname,
+        lastname: parsed.data.lastname,
+        message: parsed.data.message,
+      }
+    : undefined;
 
   const payload = {
     input: normalizedInput
@@ -252,7 +286,7 @@ export async function POST(req: Request) {
     param2: parsed.data.param2 ? sanitizeString(parsed.data.param2) : undefined,
   };
 
-  console.log("[execute-workflow]", {
+  console.log('[execute-workflow]', {
     executionId,
     executedAt: new Date().toISOString(),
     ip,
@@ -274,8 +308,8 @@ export async function POST(req: Request) {
   return NextResponse.json(response, {
     status,
     headers: {
-      "x-ratelimit-limit": String(RATE_LIMIT_MAX),
-      "x-ratelimit-remaining": String(rl.remaining),
+      'x-ratelimit-limit': String(RATE_LIMIT_MAX),
+      'x-ratelimit-remaining': String(rl.remaining),
     },
   });
 }
