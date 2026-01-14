@@ -1,7 +1,10 @@
 "use client";
 
+import { Changelog } from "@/components/changelog";
 import { DebugPanel } from "@/components/debug-panel";
 import { ExecutionHistory } from "@/components/execution-history";
+import { ManualPlaybooks } from "@/components/manual-playbooks";
+import { PlaybookDocumentation } from "@/components/playbook-documentation";
 import { ResultsDisplay } from "@/components/results-display";
 import { WorkflowForm } from "@/components/workflow-form";
 import { WorkflowProvider } from "@/components/workflow-provider";
@@ -17,8 +20,9 @@ export function Dashboard() {
         </div>
 
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-          <section className="min-w-0 lg:col-span-1">
+          <section className="min-w-0 space-y-6 lg:col-span-1">
             <WorkflowForm />
+            <Changelog />
           </section>
 
           <section className="min-w-0 space-y-6 lg:col-span-2">
