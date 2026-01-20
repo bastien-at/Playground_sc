@@ -293,3 +293,4 @@ L'équipe Alltricks
 - 1 seul code promo par commande
 - Avoirs et chèques-cadeaux cumulables
 - Avoir ≠ code promo
+- Codes anniversaire Alltricks+ : voir PLB-008 (08-ALLTRICKS+.md)
