@@ -123,6 +123,22 @@ Le cashback Alltricks+ est une cagnotte virtuelle :
 - Perdu 60 jours après expiration de l’abonnement si non utilisé
 ```
 
+#### 4.3. Template – Code anniversaire (date personnelle)
+
+```markdown
+Bonjour [Prénom],
+
+Merci pour votre message.
+
+Depuis juin 2024, le **code anniversaire Alltricks+ n’est plus lié à la date de naissance**. Il est désormais envoyé une fois par an, lors de l’anniversaire Alltricks (au mois de mai), à tous les membres Alltricks+ actifs.
+
+Vous ne recevrez donc pas de code lié à votre date d’anniversaire.
+
+Si vous souhaitez, je peux vous rappeler les dates exactes de l’opération Alltricks+ dès qu’elles seront communiquées.
+
+L’équipe Alltricks
+```
+
 ### 5. Variantes / paramètres
 
 - `[Prénom]` : utiliser si disponible, sinon commencer directement par la première phrase.
