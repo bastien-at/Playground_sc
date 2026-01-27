@@ -97,7 +97,7 @@ Si la demande ne rentre pas dans cette liste, retourne un **KO** avec `domain` =
 
 - **GO (par défaut)** : si des éléments de réponse applicables existent dans les playbooks (procédure, étapes, règles, délais), tu réponds en **GO**.
 - **KO** uniquement si :
-  - La demande est réellement **hors périmètre** (négociation commerciale, sponsoring/presse/partenariats, juridique/RGPD, conseil produit)
+  - La demande est réellement **hors périmètre** (négociation commerciale, juridique/RGPD, conseil produit)
   - OU une **information indispensable** manque pour éviter une instruction fausse/inapplicable (ex : `numero_de_commande`, `reference_transaction`, `reference_cheque_cadeau`, `numéro d'avoir`)
 
 ### Détail par catégorie / sous-catégorie

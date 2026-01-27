@@ -56,7 +56,7 @@
    - Retour = **avoir**, pas remboursement
 
 4. **Code anniversaire Alltricks -10%**
-   - Événement unique en **mai** (anniversaire Alltricks)
+   - Événement unique en **mai** (anniversaire du site Alltricks)
    - 1 utilisation, exclusions Marketplace/soldes/cartes cadeaux
 
 5. **Partenariat Strava**
@@ -146,7 +146,7 @@ Bonjour [Prénom],
 
 Merci pour votre message.
 
-Depuis juin 2024, le **code anniversaire Alltricks+ n’est plus lié à la date de naissance**. Il est désormais envoyé une fois par an, lors de l’anniversaire Alltricks (au mois de mai), à tous les membres Alltricks+ actifs.
+Le **code anniversaire Alltricks+ n’est plus lié à la date de naissance**. Il est désormais envoyé une fois par an, lors de l’anniversaire Alltricks (au mois de mai), à tous les membres Alltricks+ actifs.
 
 Vous ne recevrez donc pas de code lié à votre date d’anniversaire.
 
