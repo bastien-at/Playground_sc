@@ -1,11 +1,11 @@
 # 👤 PLAYBOOKS COMPTE CLIENT - Format IA-Ready
 
 > **Thématique** : Gestion du Compte  
-> **Playbooks** : PLB-029 à PLB-032
+> **Playbooks** : PLB-CPT-029 à PLB-CPT-032
 
 ---
 
-# PLB-029 - Problème de connexion
+# PLB-CPT-029 - Problème de connexion
 
 ## 1. 🎯 Objectif
 
@@ -17,7 +17,7 @@ Aider le client qui n'arrive pas à se connecter à son compte.
 
 | Propriété          | Valeur                                                             |
 | ------------------ | ------------------------------------------------------------------ |
-| **Identifiant**    | PLB-029                                                            |
+| **Identifiant**    | PLB-CPT-029                                                        |
 | **Catégorie**      | 6. COMPTE CLIENT                                                   |
 | **Sous-catégorie** | 6.1 Fonctionnement du compte client                                |
 | **Tags Clés**      | `connexion`, `connecter`, `mot de passe`, `identifiants`, `bloqué` |
@@ -34,6 +34,17 @@ L'agent doit s'activer si le client a des difficultés de connexion.
 - "Je n'arrive pas à me connecter"
 - "Mon mot de passe ne fonctionne pas"
 - "Compte bloqué"
+
+---
+
+## 4. ✅ Décision (OK/KO)
+
+| Situation constatée                                                                           | Décision | Suite à donner                                                        |
+| --------------------------------------------------------------------------------------------- | -------- | --------------------------------------------------------------------- |
+| Problème de connexion / mot de passe / compte bloqué                                          | **OK**   | Appliquer le gabarit ci-dessous                                       |
+| Suspicion de compte compromis / piratage (activité anormale, e-mail modifié, etc.)            | **KO**   | **Handoff vers un conseiller** (vérification identité / sécurisation) |
+| Client demande une modification d'email / informations personnelles liée à l'accès            | **KO**   | **Handoff vers un conseiller** (contrôles nécessaires)                |
+| Problème persistant après toutes les vérifications (cache/cookies, autre navigateur/appareil) | **KO**   | **Handoff vers un conseiller** (diagnostic technique / accès interne) |
 
 ---
 
@@ -90,7 +101,7 @@ L'équipe Alltricks
 
 ---
 
-# PLB-030 - Mot de passe oublié
+# PLB-CPT-030 - Mot de passe oublié
 
 ## 1. 🎯 Objectif
 
@@ -102,11 +113,34 @@ Guider le client pour réinitialiser son mot de passe.
 
 | Propriété          | Valeur                                                                   |
 | ------------------ | ------------------------------------------------------------------------ |
-| **Identifiant**    | PLB-030                                                                  |
+| **Identifiant**    | PLB-CPT-030                                                              |
 | **Catégorie**      | 6. COMPTE CLIENT                                                         |
 | **Sous-catégorie** | 6.1 Fonctionnement du compte client                                      |
 | **Tags Clés**      | `mot de passe oublié`, `réinitialiser`, `nouveau mot de passe`, `oublié` |
 | **Priorité**       | P3                                                                       |
+
+---
+
+## 3. 🔎 Conditions de Déclenchement
+
+L'agent doit s'activer si le client demande une réinitialisation de mot de passe ou indique ne plus pouvoir accéder à son compte.
+
+**Exemples de formulations clients :**
+
+- "J'ai oublié mon mot de passe"
+- "Je ne peux plus me connecter"
+- "Je n'ai pas reçu l'email de réinitialisation"
+
+---
+
+## 4. ✅ Décision (OK/KO)
+
+| Situation constatée                                                                                    | Décision | Suite à donner                                                             |
+| ------------------------------------------------------------------------------------------------------ | -------- | -------------------------------------------------------------------------- |
+| Demande de réinitialisation de mot de passe                                                            | **OK**   | Appliquer le gabarit ci-dessous                                            |
+| Client n'a plus accès à l'adresse email du compte                                                      | **KO**   | **Handoff vers un conseiller** (vérification identité / mise à jour email) |
+| Email de réinitialisation non reçu malgré spam/indésirables + délai raisonnable + nouvelles tentatives | **KO**   | **Handoff vers un conseiller** (vérification délivrabilité / compte)       |
+| Suspension / blocage suspect (tentatives multiples, message d'erreur inhabituel)                       | **KO**   | **Handoff vers un conseiller** (contrôles anti-fraude / déblocage)         |
 
 ---
 
@@ -142,13 +176,21 @@ L'équipe Alltricks
 
 ---
 
+## 7. 🔗 Ressources et Liens
+
+| Ressource      | URL                                 |
+| -------------- | ----------------------------------- |
+| Page connexion | https://www.alltricks.fr/mon-compte |
+
 ---
 
-# PLB-031 - Suppression de compte
+---
+
+# PLB-CPT-031 - Suppression de compte
 
 ## 1. 🎯 Objectif
 
-Informer le client sur la procédure de suppression de compte.
+Qualifier une demande RGPD / suppression de données personnelles et l'escalader vers un conseiller.
 
 ---
 
@@ -156,7 +198,7 @@ Informer le client sur la procédure de suppression de compte.
 
 | Propriété          | Valeur                                                                         |
 | ------------------ | ------------------------------------------------------------------------------ |
-| **Identifiant**    | PLB-031                                                                        |
+| **Identifiant**    | PLB-CPT-031                                                                    |
 | **Catégorie**      | 6. COMPTE CLIENT                                                               |
 | **Sous-catégorie** | 6.1 Fonctionnement du compte client                                            |
 | **Tags Clés**      | `supprimer compte`, `fermer compte`, `RGPD`, `données personnelles`, `effacer` |
@@ -164,27 +206,36 @@ Informer le client sur la procédure de suppression de compte.
 
 ---
 
+## 3. 🔎 Conditions de Déclenchement
+
+L'agent doit s'activer si le client demande la suppression de son compte, l'effacement de ses données, ou toute demande explicitement liée au RGPD.
+
+**Exemples de formulations clients :**
+
+- "Supprimez mon compte"
+- "Je veux effacer mes données"
+- "Je fais une demande RGPD"
+
+---
+
+## 4. ✅ Décision (OK/KO)
+
+| Situation constatée                                                             | Décision | Suite à donner                                  |
+| ------------------------------------------------------------------------------- | -------- | ----------------------------------------------- |
+| Demande de suppression de compte / effacement de données / demande liée au RGPD | **KO**   | **Handoff vers un conseiller** (procédure RGPD) |
+
+---
+
 ## 5. 💬 Gabarits de Réponse
 
-### 5.1. Réponse Standard
+### 5.1. Réponse - KO
 
 ```
 Bonjour [Prénom],
 
-Vos informations sont strictement confidentielles et ne sont ni revendues ni échangées.
+Votre demande concerne le RGPD / la suppression de données personnelles.
 
-**🗑️ Pour supprimer votre compte :**
-Contactez notre Service Client via le formulaire : https://www.alltricks.fr/contact/form
-
-Nous traiterons votre demande dans les meilleurs délais.
-
-**⚠️ Conséquences de la suppression :**
-- Perte de l'historique de commandes
-- Perte des factures
-- Perte des messages
-- Suppression des avoirs et chèques-cadeaux
-
-Confirmez-vous cette demande ?
+Je transmets votre demande à un conseiller afin qu’elle soit traitée selon la procédure dédiée.
 
 L'équipe Alltricks
 ```
@@ -195,9 +246,8 @@ L'équipe Alltricks
 
 **Points clés FAQ :**
 
-- Données confidentielles non revendues
-- Suppression via formulaire de contact
-- Perte de l'historique et des avoirs
+- Toute demande RGPD / données personnelles est **KO**
+- Ne pas détailler de procédure ni confirmer une suppression
 
 ---
 
@@ -211,11 +261,11 @@ L'équipe Alltricks
 
 ---
 
-# PLB-032 - Newsletter
+# PLB-CPT-032 - Newsletter
 
 ## 1. 🎯 Objectif
 
-Expliquer comment gérer l'abonnement à la newsletter.
+Qualifier une demande de gestion newsletter et l'escalader vers un conseiller.
 
 ---
 
@@ -223,7 +273,7 @@ Expliquer comment gérer l'abonnement à la newsletter.
 
 | Propriété          | Valeur                                                        |
 | ------------------ | ------------------------------------------------------------- |
-| **Identifiant**    | PLB-032                                                       |
+| **Identifiant**    | PLB-CPT-032                                                   |
 | **Catégorie**      | 6. COMPTE CLIENT                                              |
 | **Sous-catégorie** | 6.3 Désinscription des newsletters                            |
 | **Tags Clés**      | `newsletter`, `désabonner`, `emails`, `trop d'emails`, `spam` |
@@ -231,41 +281,36 @@ Expliquer comment gérer l'abonnement à la newsletter.
 
 ---
 
+## 3. 🔎 Conditions de Déclenchement
+
+L'agent doit s'activer si le client demande un désabonnement newsletter, une modification de préférences ou signale trop d'emails.
+
+**Exemples de formulations clients :**
+
+- "Je veux me désabonner"
+- "Je reçois trop d'emails"
+- "Je veux régler mes préférences newsletter"
+
+---
+
+## 4. ✅ Décision (OK/KO)
+
+| Situation constatée                                              | Décision | Suite à donner                 |
+| ---------------------------------------------------------------- | -------- | ------------------------------ |
+| Demande de désabonnement / gestion / personnalisation newsletter | **KO**   | **Handoff vers un conseiller** |
+
+---
+
 ## 5. 💬 Gabarits de Réponse
 
-### 5.1. Réponse - Désabonnement
+### 5.1. Réponse - KO
 
 ```
 Bonjour [Prénom],
 
-Pour vous désabonner de la newsletter :
+Votre demande concerne la gestion des newsletters (désabonnement / paramètres).
 
-**Option 1 - Via l'email :**
-Cliquez sur le lien **"Me désabonner"** en bas de n'importe quelle newsletter.
-
-**Option 2 - Via votre compte :**
-1. Connectez-vous à votre espace client
-2. Accédez à la rubrique **"Ma newsletter"**
-3. Cliquez sur **"Se désabonner de la newsletter"**
-
-C'est fait !
-
-L'équipe Alltricks
-```
-
-### 5.2. Réponse - Personnalisation
-
-```
-Bonjour [Prénom],
-
-Pour personnaliser votre newsletter :
-
-1. Connectez-vous à votre espace client
-2. Accédez à la rubrique **"Ma newsletter"**
-3. Sélectionnez vos **pratiques** (VTT, Route, Running, Outdoor…)
-4. Choisissez la **fréquence** souhaitée
-
-Vous recevrez ainsi uniquement les offres qui vous intéressent !
+Je transmets votre demande à un conseiller afin qu’elle soit traitée.
 
 L'équipe Alltricks
 ```
@@ -276,5 +321,15 @@ L'équipe Alltricks
 
 **Points clés FAQ :**
 
-- Désabonnement via lien email ou compte client
-- Personnalisation par pratique sportive et fréquence
+- Toute demande newsletter est **KO**
+- Ne pas donner de procédure de désinscription ni de manipulation de préférences
+
+---
+
+## 7. 🔗 Ressources et Liens
+
+| Ressource          | URL                                   |
+| ------------------ | ------------------------------------- |
+| Formulaire contact | https://www.alltricks.fr/contact/form |
+
+---

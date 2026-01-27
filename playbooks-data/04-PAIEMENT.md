@@ -1,11 +1,11 @@
 # 💳 PLAYBOOKS PAIEMENT - Format IA-Ready
 
 > **Thématique** : Paiement et Incidents  
-> **Playbooks** : PLB-019 à PLB-024
+> **Playbooks** : PLB-PAY-019 à PLB-PAY-024
 
 ---
 
-# PLB-019 - Paiement refusé
+# PLB-PAY-019 - Paiement refusé
 
 ## 1. 🎯 Objectif
 
@@ -17,7 +17,7 @@ Aider le client dont le paiement a été refusé à identifier la cause et à tr
 
 | Propriété          | Valeur                                                                                     |
 | ------------------ | ------------------------------------------------------------------------------------------ |
-| **Identifiant**    | PLB-019                                                                                    |
+| **Identifiant**    | PLB-PAY-019                                                                                |
 | **Catégorie**      | 3. PAIEMENT ET REMBOURSEMENT                                                               |
 | **Sous-catégorie** | 3.1 Question à propos des paiements                                                        |
 | **Tags Clés**      | `paiement refusé`, `carte refusée`, `erreur paiement`, `CB bloquée`, `transaction échouée` |
@@ -34,6 +34,16 @@ L'agent doit s'activer si le client ne peut pas finaliser son paiement.
 - "Mon paiement est refusé"
 - "Ma carte ne passe pas"
 - "Je n'arrive pas à payer"
+
+---
+
+## 4. ✅ Décision (GO/KO)
+
+| Situation constatée                                                           | Décision | Suite à donner                                                               |
+| ----------------------------------------------------------------------------- | -------- | ---------------------------------------------------------------------------- |
+| Paiement refusé ponctuel / client peut refaire un essai après vérifications   | **GO**   | Guider sur les vérifications (plafonds, infos carte, 3D Secure) + retenter   |
+| Paiement refusé à répétition après vérifications (plafond/3DS/infos carte OK) | **KO**   | Orienter vers la banque (autorisation / 3D Secure) + proposer un autre moyen |
+| Client indique un débit / suspicion de paiement passé sans commande confirmée | **KO**   | Basculer vers PLB-PAY-022 (vérification interne indispensable) / handoff     |
 
 ---
 
@@ -91,7 +101,7 @@ L'équipe Alltricks
 
 ---
 
-# PLB-020 - Paiement en plusieurs fois Oney
+# PLB-PAY-020 - Paiement en plusieurs fois Oney
 
 ## 1. 🎯 Objectif
 
@@ -103,7 +113,7 @@ Expliquer le fonctionnement du paiement en plusieurs fois avec Oney.
 
 | Propriété          | Valeur                                                                   |
 | ------------------ | ------------------------------------------------------------------------ |
-| **Identifiant**    | PLB-020                                                                  |
+| **Identifiant**    | PLB-PAY-020                                                              |
 | **Catégorie**      | 3. PAIEMENT ET REMBOURSEMENT                                             |
 | **Sous-catégorie** | 3.1 Question à propos des paiements                                      |
 | **Tags Clés**      | `oney`, `plusieurs fois`, `3x`, `4x`, `10x`, `mensualité`, `financement` |
@@ -120,6 +130,16 @@ L'agent doit s'activer si le client pose des questions sur Oney.
 - "Comment payer en plusieurs fois ?"
 - "C'est quoi Oney ?"
 - "Y a-t-il des frais pour le 4x ?"
+
+---
+
+## 4. ✅ Décision (GO/KO)
+
+| Situation constatée                                               | Décision | Suite à donner                                                       |
+| ----------------------------------------------------------------- | -------- | -------------------------------------------------------------------- |
+| Demande d'information (conditions, frais, délai, documents)       | **GO**   | Expliquer les options (3x/4x/10x), les délais et les documents       |
+| Refus Oney / dossier rejeté / scoring Oney défavorable            | **KO**   | Orienter vers Oney (3670) et proposer un autre moyen de paiement     |
+| Problème technique bloquant au checkout (impossible de finaliser) | **KO**   | Handoff vers un conseiller pour investigation + proposer alternative |
 
 ---
 
@@ -177,7 +197,7 @@ L'équipe Alltricks
 
 ---
 
-# PLB-021 - Commande en attente de paiement
+# PLB-PAY-021 - Commande en attente de paiement
 
 ## 1. 🎯 Objectif
 
@@ -189,7 +209,7 @@ Expliquer pourquoi une commande est en attente et comment finaliser.
 
 | Propriété          | Valeur                                                |
 | ------------------ | ----------------------------------------------------- |
-| **Identifiant**    | PLB-021                                               |
+| **Identifiant**    | PLB-PAY-021                                           |
 | **Catégorie**      | 3. PAIEMENT ET REMBOURSEMENT                          |
 | **Sous-catégorie** | 3.1 Question à propos des paiements                   |
 | **Tags Clés**      | `attente paiement`, `virement`, `chèque`, `finaliser` |
@@ -200,6 +220,17 @@ Expliquer pourquoi une commande est en attente et comment finaliser.
 ## 3. 🔎 Conditions de Déclenchement
 
 L'agent doit s'activer si le client a une commande en attente de paiement.
+
+---
+
+## 4. ✅ Décision (GO/KO)
+
+| Situation constatée                                                             | Décision | Suite à donner                                                             |
+| ------------------------------------------------------------------------------- | -------- | -------------------------------------------------------------------------- |
+| Paiement par virement/chèque en cours, délais standards non dépassés            | **GO**   | Expliquer délais + où trouver le RIB / l'adresse chèque + rappeler 7 jours |
+| Client souhaite finaliser/changer de mode de paiement depuis "Mes Commandes"    | **GO**   | Indiquer le chemin "Finaliser ma commande"                                 |
+| Paiement envoyé mais commande toujours "en attente" au-delà des délais annoncés | **KO**   | Handoff vers un conseiller (vérification réception paiement)               |
+| Plus de 7 jours / commande expirée / indisponibilité annoncée                   | **KO**   | Informer qu'il faut repasser commande (selon disponibilité)                |
 
 ---
 
@@ -247,7 +278,7 @@ L'équipe Alltricks
 
 ---
 
-# PLB-022 - Débité mais commande annulée
+# PLB-PAY-022 - Débité mais commande annulée
 
 ## 1. 🎯 Objectif
 
@@ -259,7 +290,7 @@ Rassurer et orienter le client débité sans commande validée.
 
 | Propriété          | Valeur                                        |
 | ------------------ | --------------------------------------------- |
-| **Identifiant**    | PLB-022                                       |
+| **Identifiant**    | PLB-PAY-022                                   |
 | **Catégorie**      | 3. PAIEMENT ET REMBOURSEMENT                  |
 | **Sous-catégorie** | 3.2 Anomalie au sujet d'un paiement           |
 | **Tags Clés**      | `débité`, `annulé`, `prélevé`, `double débit` |
@@ -273,7 +304,7 @@ L'agent doit s'activer si le client signale un débit sans commande.
 
 ---
 
-## 4. ✅ Décision (OK/KO)
+## 4. ✅ Décision (GO/KO)
 
 | Situation constatée                                                          | Décision | Suite à donner                                                                          |
 | ---------------------------------------------------------------------------- | -------- | --------------------------------------------------------------------------------------- |
@@ -332,7 +363,7 @@ L'équipe Alltricks
 
 ---
 
-# PLB-023 - Déconnexion pendant le paiement
+# PLB-PAY-023 - Déconnexion pendant le paiement
 
 ## 1. 🎯 Objectif
 
@@ -344,11 +375,20 @@ Rassurer le client déconnecté pendant le paiement.
 
 | Propriété          | Valeur                                         |
 | ------------------ | ---------------------------------------------- |
-| **Identifiant**    | PLB-023                                        |
+| **Identifiant**    | PLB-PAY-023                                    |
 | **Catégorie**      | 3. PAIEMENT ET REMBOURSEMENT                   |
 | **Sous-catégorie** | 3.1 Question à propos des paiements            |
 | **Tags Clés**      | `déconnecté`, `coupure`, `paiement interrompu` |
 | **Priorité**       | P3                                             |
+
+---
+
+## 4. ✅ Décision (GO/KO)
+
+| Situation constatée                                                      | Décision | Suite à donner                                                          |
+| ------------------------------------------------------------------------ | -------- | ----------------------------------------------------------------------- |
+| Déconnexion pendant paiement + aucun email de confirmation + aucun débit | **GO**   | Rassurer + inviter à reprendre/relancer la commande via "Mes Commandes" |
+| Déconnexion pendant paiement + débit constaté (même sans confirmation)   | **KO**   | Handoff vers un conseiller (vérification interne commande + paiement)   |
 
 ---
 
@@ -387,7 +427,7 @@ L'équipe Alltricks
 
 ---
 
-# PLB-024 - Modes de paiement disponibles
+# PLB-PAY-024 - Modes de paiement disponibles
 
 ## 1. 🎯 Objectif
 
@@ -399,11 +439,20 @@ Informer sur tous les modes de paiement acceptés.
 
 | Propriété          | Valeur                                                       |
 | ------------------ | ------------------------------------------------------------ |
-| **Identifiant**    | PLB-024                                                      |
+| **Identifiant**    | PLB-PAY-024                                                  |
 | **Catégorie**      | 3. PAIEMENT ET REMBOURSEMENT                                 |
 | **Sous-catégorie** | 3.1 Question à propos des paiements                          |
 | **Tags Clés**      | `mode paiement`, `comment payer`, `CB`, `paypal`, `virement` |
 | **Priorité**       | P3                                                           |
+
+---
+
+## 4. ✅ Décision (GO/KO)
+
+| Situation constatée                                          | Décision | Suite à donner                                                       |
+| ------------------------------------------------------------ | -------- | -------------------------------------------------------------------- |
+| Demande d'information sur les moyens de paiement acceptés    | **GO**   | Lister les moyens disponibles + contraintes (3D Secure, partenaires) |
+| Client veut payer avec un moyen non proposé / non disponible | **KO**   | Indiquer que ce n'est pas possible + proposer les alternatives       |
 
 ---
 

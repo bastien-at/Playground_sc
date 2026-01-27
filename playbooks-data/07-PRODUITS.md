@@ -1,11 +1,11 @@
 # 🚴 PLAYBOOKS PRODUITS ET CONSEILS - Format IA-Ready
 
 > **Thématique** : Produits, Conseils, Garantie  
-> **Playbooks** : PLB-033 à PLB-036
+> **Playbooks** : PLB-PRD-033 à PLB-PRD-036
 
 ---
 
-# PLB-033 - Conseil taille
+# PLB-PRD-033 - Conseil taille
 
 ## 1. 🎯 Objectif
 
@@ -17,7 +17,7 @@ Aider le client à choisir la bonne taille pour son produit.
 
 | Propriété          | Valeur                                                                                |
 | ------------------ | ------------------------------------------------------------------------------------- |
-| **Identifiant**    | PLB-033                                                                               |
+| **Identifiant**    | PLB-PRD-033                                                                           |
 | **Catégorie**      | 1. INFORMATIONS SUR NOS PRODUITS                                                      |
 | **Sous-catégorie** | 1.1 Catégorie vélo (BMX/Route/Ville/VTT/Autres)                                       |
 | **Tags Clés**      | `taille`, `guide des tailles`, `quelle taille`, `trop grand`, `trop petit`, `mesures` |
@@ -83,7 +83,7 @@ L'équipe Alltricks
 
 ---
 
-# PLB-034 - Compatibilité pièces vélo
+# PLB-PRD-034 - Compatibilité pièces vélo
 
 ## 1. 🎯 Objectif
 
@@ -95,7 +95,7 @@ Orienter le client vers les ressources pour vérifier la compatibilité des piè
 
 | Propriété          | Valeur                                                                         |
 | ------------------ | ------------------------------------------------------------------------------ |
-| **Identifiant**    | PLB-034                                                                        |
+| **Identifiant**    | PLB-PRD-034                                                                    |
 | **Catégorie**      | 1. INFORMATIONS SUR NOS PRODUITS                                               |
 | **Sous-catégorie** | 1.1 Catégorie vélo (BMX/Route/Ville/VTT/Autres)                                |
 | **Tags Clés**      | `compatibilité`, `compatible`, `pièces vélo`, `mon vélo`, `va avec`, `montage` |
@@ -161,7 +161,7 @@ L'équipe Alltricks
 
 ---
 
-# PLB-035 - Disponibilité produit
+# PLB-PRD-035 - Disponibilité produit
 
 ## 1. 🎯 Objectif
 
@@ -173,7 +173,7 @@ Informer le client sur la disponibilité des produits et les alertes de réappro
 
 | Propriété          | Valeur                                                                     |
 | ------------------ | -------------------------------------------------------------------------- |
-| **Identifiant**    | PLB-035                                                                    |
+| **Identifiant**    | PLB-PRD-035                                                                |
 | **Catégorie**      | 1. INFORMATIONS SUR NOS PRODUITS                                           |
 | **Sous-catégorie** | 1.4 Disponibilité produits                                                 |
 | **Tags Clés**      | `disponible`, `stock`, `rupture`, `réassort`, `quand disponible`, `alerte` |
@@ -235,7 +235,7 @@ L'équipe Alltricks
 
 ---
 
-# PLB-036 - Garantie et SAV
+# PLB-PRD-036 - Garantie et SAV
 
 ## 1. 🎯 Objectif
 
@@ -247,7 +247,7 @@ Informer le client sur la garantie et la procédure de réclamation SAV.
 
 | Propriété          | Valeur                                                                  |
 | ------------------ | ----------------------------------------------------------------------- |
-| **Identifiant**    | PLB-036                                                                 |
+| **Identifiant**    | PLB-PRD-036                                                             |
 | **Catégorie**      | 4. GARANTIE / RÉPARATION                                                |
 | **Sous-catégorie** | 4.1 Nouvelle demande de garantie/réparation                             |
 | **Tags Clés**      | `garantie`, `SAV`, `défectueux`, `cassé`, `panne`, `produit défaillant` |

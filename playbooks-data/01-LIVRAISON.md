@@ -1,11 +1,11 @@
 # 📦 PLAYBOOKS LIVRAISON - Format IA-Ready
 
 > **Thématique** : Suivi et Gestion de la Livraison  
-> **Playbooks** : PLB-001 à PLB-006
+> **Playbooks** : PLB-LIV-001 à PLB-LIV-006
 
 ---
 
-## PLB-001 - Suivi de commande
+## PLB-LIV-001 - Suivi de commande
 
 **Catégorie** : 2. MES COMMANDES ET RETOURS  
 **Sous-catégorie** : 2.1 Suivi livraison  
@@ -105,7 +105,7 @@ L'équipe Alltricks
 
 ---
 
-## PLB-002 - Colis indiqué livré mais non reçu
+## PLB-LIV-002 - Colis indiqué livré mais non reçu
 
 **Catégorie** : 2. MES COMMANDES ET RETOURS  
 **Sous-catégorie** : 2.1 Suivi livraison  
@@ -203,7 +203,7 @@ L'équipe Alltricks
 
 ---
 
-## PLB-003 - Retard de livraison
+## PLB-LIV-003 - Retard de livraison
 
 **Catégorie** : 2. MES COMMANDES ET RETOURS  
 **Sous-catégorie** : 2.2 Retard livraison  
@@ -301,7 +301,7 @@ L'équipe Alltricks
 
 ---
 
-## PLB-004 - Modes et délais de livraison
+## PLB-LIV-004 - Modes et délais de livraison
 
 **Catégorie** : 2. MES COMMANDES ET RETOURS  
 **Sous-catégorie** : 2.1 Suivi livraison  
@@ -502,7 +502,7 @@ L'équipe Alltricks
 
 ---
 
-## PLB-006 - Indisponibilité pour réceptionner
+## PLB-LIV-006 - Indisponibilité pour réceptionner
 
 ## 1. 🎯 Objectif
 
@@ -514,7 +514,7 @@ Informer le client des options disponibles s'il ne peut pas être présent pour 
 
 | Propriété          | Valeur                                                                                                                    |
 | ------------------ | ------------------------------------------------------------------------------------------------------------------------- |
-| **Identifiant**    | PLB-006                                                                                                                   |
+| **Identifiant**    | PLB-LIV-006                                                                                                               |
 | **Catégorie**      | 2. MES COMMANDES ET RETOURS                                                                                               |
 | **Sous-catégorie** | 2.1 Suivi livraison                                                                                                       |
 | **Tags Clés**      | `absent`, `pas disponible`, `vacances`, `quelqu'un d'autre`, `procuration`, `tiers`, `indisponible`, `retirer à ma place` |

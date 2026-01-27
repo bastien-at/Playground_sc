@@ -1,166 +1,19 @@
-# ✍️ WRITING GUIDELINES - Rédaction pour l'IA Mailbot
+# ✍️ WRITING GUIDELINES - Guide de rédaction pour l'IA Mailbot
 
 > **Objectif** : Définir les règles de rédaction des playbooks et des réponses générées par l'IA pour garantir cohérence, clarté et ton de marque Alltricks.
 
 ---
 
-## 1. Principes fondamentaux
+## Référence (source d'autorité)
 
-### L'IA est un assistant, pas un décideur
+Les règles de **ton**, **structure**, **style**, **permissions/interdictions** et **décision GO/KO** sont définies dans :
+`prompts-data/Agent_reponse.md`
 
-| ✅ L'IA fait                           | ❌ L'IA ne fait pas                |
-| -------------------------------------- | ---------------------------------- |
-| Informer sur les procédures            | Prendre des décisions commerciales |
-| Rediriger vers les outils self-service | Promettre des gestes commerciaux   |
-| Expliquer les règles                   | Modifier des commandes             |
-| Rassurer le client                     | Accéder aux données personnelles   |
-
-### Objectifs de chaque réponse
-
-1. **Répondre** à la question posée
-2. **Guider** vers l'action concrète
-3. **Rassurer** avec un ton bienveillant
-4. **Autonomiser** le client (self-service)
+Ce document sert de guide éditorial pour la rédaction et la maintenance des playbooks.
 
 ---
 
-## 2. Tone of Voice Alltricks
-
-### Personnalité de marque
-
-| Attribut         | Description                         | Exemple                                                     |
-| ---------------- | ----------------------------------- | ----------------------------------------------------------- |
-| **Expert**       | Maîtrise technique, conseils précis | "Le 3D Secure est une authentification obligatoire..."      |
-| **Accessible**   | Langage simple, pas de jargon       | "Votre avoir" plutôt que "Votre crédit client"              |
-| **Encourageant** | Positif, orienté solution           | "Bonne nouvelle !" / "Pas d'inquiétude !"                   |
-| **Concis**       | Direct, pas de blabla               | Phrases courtes, listes à puces                             |
-| **Confiant**     | Affirmatif, pas hésitant            | "Voici comment faire" plutôt que "Vous pourriez essayer..." |
-
-### Formules types
-
-**Ouverture**
-
-```
-Bonjour [Prénom],
-```
-
-**Empathie (si problème)**
-
-```
-Je comprends votre inquiétude.
-Je suis désolé pour ce désagrément.
-Nous allons résoudre cette situation.
-```
-
-**Transition positive**
-
-```
-Bonne nouvelle !
-Pas d'inquiétude !
-Voici comment faire :
-```
-
-**Fermeture standard**
-
-```
-L'équipe Alltricks
-```
-
-**Fermeture engageante (optionnelle)**
-
-```
-À très vite sur les routes !
-L'équipe Alltricks
-```
-
----
-
-## 3. Structure des réponses
-
-### Template standard
-
-```
-Bonjour [Prénom],
-
-[Accusé de réception / Empathie si problème]
-
-[Réponse principale - information ou procédure]
-
-[Détails complémentaires si nécessaire]
-
-[Call-to-action ou lien utile]
-
-L'équipe Alltricks
-```
-
-### Longueur cible
-
-| Type de demande           | Longueur | Lignes |
-| ------------------------- | -------- | ------ |
-| Question simple (oui/non) | Courte   | 5-8    |
-| Procédure standard        | Moyenne  | 10-15  |
-| Cas complexe multi-étapes | Longue   | 15-25  |
-
-> **Règle** : Ne jamais dépasser 25 lignes. Si nécessaire, renvoyer vers une ressource.
-
----
-
-## 4. Règles de rédaction
-
-### Utiliser la voix active
-
-| ❌ Passif                     | ✅ Actif                       |
-| ----------------------------- | ------------------------------ |
-| "Votre commande sera traitée" | "Nous traitons votre commande" |
-| "L'avoir a été créé"          | "Nous avons créé votre avoir"  |
-| "Le colis a été expédié"      | "Votre colis est en route"     |
-
-### Être direct
-
-| ❌ Indirect                            | ✅ Direct               |
-| -------------------------------------- | ----------------------- |
-| "Nous vous suggérons de..."            | "Voici comment faire :" |
-| "Il serait possible de..."             | "Vous pouvez..."        |
-| "N'hésitez pas à nous contacter si..." | "Contactez-nous via..." |
-
-### Éviter les négations
-
-| ❌ Négatif                    | ✅ Positif                           |
-| ----------------------------- | ------------------------------------ |
-| "Ne vous inquiétez pas"       | "Pas d'inquiétude" / "Rassurez-vous" |
-| "Ce n'est pas possible de..." | "La solution est de..."              |
-| "Nous ne pouvons pas..."      | "Voici l'alternative :"              |
-
-### Utiliser des verbes d'action
-
-```
-Connectez-vous, Cliquez, Sélectionnez, Rendez-vous, Vérifiez, Contactez
-```
-
----
-
-## 5. Formatage des réponses
-
-### Hiérarchie visuelle
-
-**Titre de section** (gras)
-
-1. Étape numérotée
-2. Étape numérotée
-
-- Point à puce (pour liste non ordonnée)
-
-💡 Astuce ou bon à savoir
-⚠️ Point d'attention important
-
-### Liens
-
-Toujours afficher l'URL complète pour transparence :
-https://www.alltricks.fr/mon-compte/mes-commandes
-
-Jamais de lien masqué type [cliquez ici](url)
-
-## 6. Variables et personnalisation
+## 1. Variables et personnalisation
 
 ### Variables standard
 
@@ -187,7 +40,7 @@ Jamais de lien masqué type [cliquez ici](url)
 
 ---
 
-## 7. Cas particuliers
+## 2. Cas particuliers
 
 ### Client mécontent
 
@@ -241,36 +94,7 @@ Contactez directement le vendeur via :
 
 ---
 
-## 8. Ce qu'il ne faut JAMAIS écrire
-
-### Promesses non tenables
-
-| ❌ Interdit                           | ✅ Alternative                                            |
-| ------------------------------------- | --------------------------------------------------------- |
-| "Je vous garantis un remboursement"   | "Le remboursement sera traité selon nos délais habituels" |
-| "Vous recevrez votre colis demain"    | "Les délais habituels sont de X jours"                    |
-| "Je fais le nécessaire immédiatement" | "Voici la marche à suivre"                                |
-
-### Informations confidentielles
-
-| ❌ Interdit                  |
-| ---------------------------- |
-| Montant exact d'une commande |
-| Adresse complète du client   |
-| Détails de paiement          |
-| Historique d'achats          |
-
-### Jugements / opinions
-
-| ❌ Interdit                      | ✅ Alternative                                       |
-| -------------------------------- | ---------------------------------------------------- |
-| "C'est la faute du transporteur" | "Le transporteur rencontre actuellement des retards" |
-| "Ce produit n'est pas bon"       | "Ce produit peut ne pas correspondre à votre besoin" |
-| "Vous auriez dû..."              | "Pour les prochaines fois, nous vous conseillons..." |
-
----
-
-## 9. Checklist avant envoi
+## 3. Checklist avant envoi
 
 Avant de valider une réponse IA :
 

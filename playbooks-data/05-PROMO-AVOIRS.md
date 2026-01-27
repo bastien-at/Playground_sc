@@ -1,11 +1,11 @@
 # 🎁 PLAYBOOKS CODES PROMO, AVOIRS, CHÈQUES CADEAUX - Format IA-Ready
 
 > **Thématique** : Promotions et Avoirs  
-> **Playbooks** : PLB-025 à PLB-028
+> **Playbooks** : PLB-PRO-025 à PLB-PRO-028
 
 ---
 
-# PLB-025 - Code promo ne fonctionne pas
+# PLB-PRO-025 - Code promo ne fonctionne pas
 
 ## 1. 🎯 Objectif
 
@@ -17,7 +17,7 @@ Aider le client à comprendre pourquoi son code promo ne fonctionne pas et lui p
 
 | Propriété          | Valeur                                                                       |
 | ------------------ | ---------------------------------------------------------------------------- |
-| **Identifiant**    | PLB-025                                                                      |
+| **Identifiant**    | PLB-PRO-025                                                                  |
 | **Catégorie**      | 7. AUTRES QUESTIONS                                                          |
 | **Sous-catégorie** | 7.5 Toutes autres demandes                                                   |
 | **Tags Clés**      | `code promo`, `réduction`, `ne fonctionne pas`, `code invalide`, `promotion` |
@@ -88,7 +88,7 @@ L'équipe Alltricks
 
 ---
 
-# PLB-026 - Utilisation des avoirs
+# PLB-PRO-026 - Utilisation des avoirs
 
 ## 1. 🎯 Objectif
 
@@ -100,7 +100,7 @@ Expliquer comment utiliser et gérer les avoirs.
 
 | Propriété          | Valeur                                                     |
 | ------------------ | ---------------------------------------------------------- |
-| **Identifiant**    | PLB-026                                                    |
+| **Identifiant**    | PLB-PRO-026                                                |
 | **Catégorie**      | 3. PAIEMENT ET REMBOURSEMENT                               |
 | **Sous-catégorie** | 3.3 Question à propos d'un remboursement                   |
 | **Tags Clés**      | `avoir`, `utiliser avoir`, `remboursement avoir`, `crédit` |
@@ -167,7 +167,7 @@ L'équipe Alltricks
 
 ---
 
-# PLB-027 - Chèques cadeaux
+# PLB-PRO-027 - Chèques cadeaux
 
 ## 1. 🎯 Objectif
 
@@ -179,7 +179,7 @@ Informer sur l'utilisation des chèques-cadeaux.
 
 | Propriété          | Valeur                                                 |
 | ------------------ | ------------------------------------------------------ |
-| **Identifiant**    | PLB-027                                                |
+| **Identifiant**    | PLB-PRO-027                                            |
 | **Catégorie**      | 7. AUTRES QUESTIONS                                    |
 | **Sous-catégorie** | 7.5 Toutes autres demandes                             |
 | **Tags Clés**      | `chèque cadeau`, `gift card`, `carte cadeau`, `offrir` |
@@ -238,7 +238,7 @@ L'équipe Alltricks
 
 ---
 
-# PLB-028 - Cumul des remises
+# PLB-PRO-028 - Cumul des remises
 
 ## 1. 🎯 Objectif
 
@@ -250,7 +250,7 @@ Clarifier les règles de cumul des différentes remises.
 
 | Propriété          | Valeur                                                       |
 | ------------------ | ------------------------------------------------------------ |
-| **Identifiant**    | PLB-028                                                      |
+| **Identifiant**    | PLB-PRO-028                                                  |
 | **Catégorie**      | 7. AUTRES QUESTIONS                                          |
 | **Sous-catégorie** | 7.5 Toutes autres demandes                                   |
 | **Tags Clés**      | `cumuler`, `cumul`, `plusieurs codes`, `remise`, `réduction` |

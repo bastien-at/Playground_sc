@@ -1,7 +1,7 @@
 # 🛒 PLAYBOOKS COMMANDES - Format IA-Ready
 
 > **Thématique** : Gestion des Commandes  
-> **Playbooks** : PLB-014 à PLB-018
+> **Playbooks** : PLB-CMD-014 à PLB-CMD-018
 
 ---
 
@@ -15,7 +15,7 @@ Expliquer au client les conditions et la procédure pour annuler sa commande sel
 
 | Propriété          | Valeur                                                                         |
 | ------------------ | ------------------------------------------------------------------------------ |
-| **Identifiant**    | PLB-014                                                                        |
+| **Identifiant**    | PLB-CMD-014                                                                    |
 | **Catégorie**      | 2. MES COMMANDES ET RETOURS                                                    |
 | **Sous-catégorie** | 2.3 Annulation de commande                                                     |
 | **Tags Clés**      | `annuler`, `annulation`, `supprimer commande`, `ne veux plus`, `annuler achat` |
@@ -118,7 +118,7 @@ L'équipe Alltricks
 
 ---
 
-# PLB-015 - Commande incomplète
+# PLB-CMD-015 - Commande incomplète
 
 ## 1. 🎯 Objectif
 
@@ -130,7 +130,7 @@ Guider le client qui n'a pas reçu tous les articles de sa commande vers la proc
 
 | Propriété          | Valeur                                                                        |
 | ------------------ | ----------------------------------------------------------------------------- |
-| **Identifiant**    | PLB-015                                                                       |
+| **Identifiant**    | PLB-CMD-015                                                                   |
 | **Catégorie**      | 5. PRODUIT REÇU ABÎMÉ OU NON CONFORME OU MANQUANT                             |
 | **Sous-catégorie** | 5.2 Concerne un autre produit                                                 |
 | **Tags Clés**      | `incomplet`, `manque`, `article manquant`, `pas tout reçu`, `colis incomplet` |
@@ -220,7 +220,7 @@ L'équipe Alltricks
 
 ---
 
-# PLB-016 - Modification de commande
+# PLB-CMD-016 - Modification de commande
 
 ## 1. 🎯 Objectif
 
@@ -232,7 +232,7 @@ Expliquer au client qu'il n'est pas possible de modifier une commande validée e
 
 | Propriété          | Valeur                                                               |
 | ------------------ | -------------------------------------------------------------------- |
-| **Identifiant**    | PLB-016                                                              |
+| **Identifiant**    | PLB-CMD-016                                                          |
 | **Catégorie**      | 2. MES COMMANDES ET RETOURS                                          |
 | **Sous-catégorie** | 2.4 Modification de commande                                         |
 | **Tags Clés**      | `modifier commande`, `ajouter article`, `changer`, `enlever produit` |
@@ -266,7 +266,7 @@ Notre processus logistique démarre immédiatement après validation pour vous g
 **🛒 Si vous souhaitez commander un article supplémentaire :**
 Vous devrez passer une nouvelle commande.
 
-💡 **Bon à savoir :** La livraison est gratuite à partir de 120€ avec Mondial Relay !
+💡 **Bon à savoir :** La livraison est gratuite à partir de 100€ !
 
 **❌ Si vous souhaitez annuler un article de votre commande :**
 - Si la commande n'est pas en livraison : vous pouvez l'annuler entièrement depuis "Mes Commandes & Retours"
@@ -301,7 +301,7 @@ L'équipe Alltricks
 
 ---
 
-# PLB-017 - Facture
+# PLB-CMD-017 - Facture
 
 ## 1. 🎯 Objectif
 
@@ -313,7 +313,7 @@ Indiquer au client où et comment télécharger sa facture.
 
 | Propriété          | Valeur                                                                              |
 | ------------------ | ----------------------------------------------------------------------------------- |
-| **Identifiant**    | PLB-017                                                                             |
+| **Identifiant**    | PLB-CMD-017                                                                         |
 | **Catégorie**      | 2. MES COMMANDES ET RETOURS                                                         |
 | **Sous-catégorie** | 2.1 Suivi livraison                                                                 |
 | **Tags Clés**      | `facture`, `télécharger facture`, `obtenir facture`, `comptabilité`, `justificatif` |
@@ -418,7 +418,7 @@ L'équipe Alltricks
 
 ---
 
-# PLB-018 - Commande PayPal non visible
+# PLB-CMD-018 - Commande PayPal non visible
 
 ## 1. 🎯 Objectif
 
@@ -430,7 +430,7 @@ Expliquer au client pourquoi sa commande PayPal n'apparaît pas dans son compte 
 
 | Propriété          | Valeur                                                                               |
 | ------------------ | ------------------------------------------------------------------------------------ |
-| **Identifiant**    | PLB-018                                                                              |
+| **Identifiant**    | PLB-CMD-018                                                                          |
 | **Catégorie**      | 3. PAIEMENT ET REMBOURSEMENT                                                         |
 | **Sous-catégorie** | 3.2 Anomalie au sujet d'un paiement                                                  |
 | **Tags Clés**      | `paypal`, `commande invisible`, `pas de commande`, `paypal express`, `compte paypal` |

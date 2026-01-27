@@ -1,11 +1,11 @@
 # 🔄 PLAYBOOKS RETOURS ET REMBOURSEMENTS - Format IA-Ready
 
 > **Thématique** : Retours et Remboursements  
-> **Playbooks** : PLB-007 à PLB-013
+> **Playbooks** : PLB-RET-007 à PLB-RET-013
 
 ---
 
-## PLB-007 - Demande de retour standard
+## PLB-RET-007 - Demande de retour standard
 
 **Catégorie** : 2. MES COMMANDES ET RETOURS  
 **Sous-catégorie** : 2.5 Demande de retour  
@@ -137,7 +137,7 @@ L'équipe Alltricks
 ### 5. Variantes / paramètres
 
 - Si le client mentionne être **Alltricks+**, rappeler explicitement le délai de 100 jours.
-- Si le client parle d'**échange**, orienter vers PLB-010 (pas d'échange direct, retour + nouvelle commande).
+- Si le client parle d'**échange**, orienter vers PLB-RET-010 (pas d'échange direct, retour + nouvelle commande).
 - Si le client indique que le produit est "monté" ou "utilisé", avertir que le retour peut être refusé ou faire l'objet d'une décote.
 
 ### 6. Historique
@@ -148,7 +148,7 @@ L'équipe Alltricks
 
 ---
 
-## PLB-008 - Retour vélo / article volumineux
+## PLB-RET-008 - Retour vélo / article volumineux
 
 ## 1. 🎯 Objectif
 
@@ -160,7 +160,7 @@ Expliquer la procédure spécifique pour retourner un vélo ou un article volumi
 
 | Propriété          | Valeur                                                                                          |
 | ------------------ | ----------------------------------------------------------------------------------------------- |
-| **Identifiant**    | PLB-008                                                                                         |
+| **Identifiant**    | PLB-RET-008                                                                                     |
 | **Catégorie**      | 2. MES COMMANDES ET RETOURS                                                                     |
 | **Sous-catégorie** | 2.5 Demande de retour                                                                           |
 | **Tags Clés**      | `retour vélo`, `vélo`, `volumineux`, `hors gabarit`, `porte-vélo`, `home trainer`, `gros colis` |
@@ -247,7 +247,7 @@ L'équipe Alltricks
 
 ---
 
-# PLB-009 - Suivi retour et avoir remboursable
+# PLB-RET-009 - Suivi retour et avoir remboursable
 
 ## 1. 🎯 Objectif
 
@@ -259,7 +259,7 @@ Informer le client sur les délais de traitement de son retour et la procédure 
 
 | Propriété          | Valeur                                                                                          |
 | ------------------ | ----------------------------------------------------------------------------------------------- |
-| **Identifiant**    | PLB-009                                                                                         |
+| **Identifiant**    | PLB-RET-009                                                                                     |
 | **Catégorie**      | 2. MES COMMANDES ET RETOURS                                                                     |
 | **Sous-catégorie** | 2.6 Suivre mon retour                                                                           |
 | **Tags Clés**      | `suivi retour`, `retour reçu`, `remboursement`, `avoir`, `quand remboursé`, `traitement retour` |
@@ -352,7 +352,7 @@ L'équipe Alltricks
 
 ---
 
-# PLB-010 - Échange de produit
+# PLB-RET-010 - Échange de produit
 
 ## 1. 🎯 Objectif
 
@@ -364,7 +364,7 @@ Expliquer au client qu'il n'y a pas d'échange direct chez Alltricks et lui pré
 
 | Propriété          | Valeur                                                                         |
 | ------------------ | ------------------------------------------------------------------------------ |
-| **Identifiant**    | PLB-010                                                                        |
+| **Identifiant**    | PLB-RET-010                                                                    |
 | **Catégorie**      | 2. MES COMMANDES ET RETOURS                                                    |
 | **Sous-catégorie** | 2.5 Demande de retour                                                          |
 | **Tags Clés**      | `échange`, `échanger`, `autre taille`, `autre couleur`, `remplacer`, `changer` |
@@ -468,7 +468,7 @@ L'équipe Alltricks
 
 ---
 
-# PLB-011 - Délais de remboursement d'un avoir
+# PLB-RET-011 - Délais de remboursement d'un avoir
 
 ## 1. 🎯 Objectif
 
@@ -480,7 +480,7 @@ Informer le client sur les délais de remboursement d'un avoir selon le mode de 
 
 | Propriété          | Valeur                                                                                                 |
 | ------------------ | ------------------------------------------------------------------------------------------------------ |
-| **Identifiant**    | PLB-011                                                                                                |
+| **Identifiant**    | PLB-RET-011                                                                                            |
 | **Catégorie**      | 3. PAIEMENT ET REMBOURSEMENT                                                                           |
 | **Sous-catégorie** | 3.3 Question à propos d'un remboursement                                                               |
 | **Tags Clés**      | `délai remboursement`, `quand remboursé`, `pas reçu remboursement`, `CB`, `virement`, `carte bancaire` |
@@ -566,7 +566,7 @@ L'équipe Alltricks
 
 ---
 
-# PLB-012 - Remboursement Oney
+# PLB-RET-012 - Remboursement Oney
 
 ## 1. 🎯 Objectif
 
@@ -578,7 +578,7 @@ Expliquer au client comment fonctionne le remboursement lorsqu'il a payé avec O
 
 | Propriété          | Valeur                                                                       |
 | ------------------ | ---------------------------------------------------------------------------- |
-| **Identifiant**    | PLB-012                                                                      |
+| **Identifiant**    | PLB-RET-012                                                                  |
 | **Catégorie**      | 3. PAIEMENT ET REMBOURSEMENT                                                 |
 | **Sous-catégorie** | 3.3 Question à propos d'un remboursement                                     |
 | **Tags Clés**      | `oney`, `remboursement oney`, `mensualité`, `3x`, `4x`, `10x`, `financement` |
@@ -664,7 +664,7 @@ L'équipe Alltricks
 
 ---
 
-# PLB-013 - Frais de retour
+# PLB-RET-013 - Frais de retour
 
 ## 1. 🎯 Objectif
 
@@ -676,7 +676,7 @@ Informer le client sur les frais de retour et les options pour les éviter.
 
 | Propriété          | Valeur                                                                               |
 | ------------------ | ------------------------------------------------------------------------------------ |
-| **Identifiant**    | PLB-013                                                                              |
+| **Identifiant**    | PLB-RET-013                                                                          |
 | **Catégorie**      | 2. MES COMMANDES ET RETOURS                                                          |
 | **Sous-catégorie** | 2.5 Demande de retour                                                                |
 | **Tags Clés**      | `frais de retour`, `retour gratuit`, `coût retour`, `payant`, `frais de port retour` |

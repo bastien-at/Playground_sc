@@ -36,81 +36,97 @@ L'agent ne peut PAS :
 | `05-PROMO-AVOIRS.md` | Codes Promo, Avoirs, Chèques Cadeaux | 4            |
 | `06-COMPTE.md`       | Compte Client                        | 4            |
 | `07-PRODUITS.md`     | Produits, Conseils, Garantie         | 4            |
+| `08-ALLTRICKS+.md`   | Programme Alltricks+                 | 1            |
+| `09-PROS-CLUBS.md`   | Pros & Clubs                         | 3            |
 
 ---
 
 ## 📋 Liste complète
 
-### 1. LIVRAISON
+### 1. LIVRAISON (LIV)
 
-| ID      | Titre                        | Priorité |
-| ------- | ---------------------------- | -------- |
-| PLB-001 | Suivi de commande            | P1       |
-| PLB-002 | Colis indiqué livré non reçu | P1       |
-| PLB-003 | Retard de livraison          | P2       |
-| PLB-004 | Modes et délais de livraison | P3       |
-| PLB-005 | Modification adresse         | P2       |
-| PLB-006 | Indisponibilité réception    | P3       |
+| ID          | Titre                        | Priorité |
+| ----------- | ---------------------------- | -------- |
+| PLB-LIV-001 | Suivi de commande            | P1       |
+| PLB-LIV-002 | Colis indiqué livré non reçu | P1       |
+| PLB-LIV-003 | Retard de livraison          | P2       |
+| PLB-LIV-004 | Modes et délais de livraison | P3       |
+| PLB-LIV-005 | Modification adresse         | P2       |
+| PLB-LIV-006 | Indisponibilité réception    | P3       |
 
-### 2. RETOURS ET REMBOURSEMENTS
+### 2. RETOURS ET REMBOURSEMENTS (RET)
 
-| ID      | Titre                              | Priorité |
-| ------- | ---------------------------------- | -------- |
-| PLB-007 | Demande de retour standard         | P1       |
-| PLB-008 | Retour vélo / volumineux           | P2       |
-| PLB-009 | Suivi retour et avoir remboursable | P2       |
-| PLB-010 | Échange de produit                 | P2       |
-| PLB-011 | Délais de remboursement d'un avoir | P2       |
-| PLB-012 | Remboursement Oney                 | P3       |
-| PLB-013 | Frais de retour                    | P3       |
+| ID          | Titre                              | Priorité |
+| ----------- | ---------------------------------- | -------- |
+| PLB-RET-007 | Demande de retour standard         | P1       |
+| PLB-RET-008 | Retour vélo / volumineux           | P2       |
+| PLB-RET-009 | Suivi retour et avoir remboursable | P2       |
+| PLB-RET-010 | Échange de produit                 | P2       |
+| PLB-RET-011 | Délais de remboursement d'un avoir | P2       |
+| PLB-RET-012 | Remboursement Oney                 | P3       |
+| PLB-RET-013 | Frais de retour                    | P3       |
 
-### 3. COMMANDES
+### 3. COMMANDES (CMD)
 
-| ID      | Titre                       | Priorité |
-| ------- | --------------------------- | -------- |
-| PLB-014 | Annulation de commande      | P1       |
-| PLB-015 | Commande incomplète         | P1       |
-| PLB-016 | Modification de commande    | P2       |
-| PLB-017 | Facture                     | P3       |
-| PLB-018 | Commande PayPal non visible | P3       |
+| ID          | Titre                       | Priorité |
+| ----------- | --------------------------- | -------- |
+| PLB-CMD-014 | Annulation de commande      | P1       |
+| PLB-CMD-015 | Commande incomplète         | P1       |
+| PLB-CMD-016 | Modification de commande    | P2       |
+| PLB-CMD-017 | Facture                     | P3       |
+| PLB-CMD-018 | Commande PayPal non visible | P3       |
 
-### 4. PAIEMENT
+### 4. PAIEMENT (PAY)
 
-| ID      | Titre                           | Priorité |
-| ------- | ------------------------------- | -------- |
-| PLB-019 | Paiement refusé                 | P1       |
-| PLB-020 | Paiement en plusieurs fois Oney | P2       |
-| PLB-021 | Commande en attente de paiement | P2       |
-| PLB-022 | Débité mais commande annulée    | P1       |
-| PLB-023 | Déconnexion pendant paiement    | P3       |
-| PLB-024 | Modes de paiement disponibles   | P3       |
+| ID          | Titre                           | Priorité |
+| ----------- | ------------------------------- | -------- |
+| PLB-PAY-019 | Paiement refusé                 | P1       |
+| PLB-PAY-020 | Paiement en plusieurs fois Oney | P2       |
+| PLB-PAY-021 | Commande en attente de paiement | P2       |
+| PLB-PAY-022 | Débité mais commande annulée    | P1       |
+| PLB-PAY-023 | Déconnexion pendant paiement    | P3       |
+| PLB-PAY-024 | Modes de paiement disponibles   | P3       |
 
-### 5. CODES PROMO, AVOIRS, CHÈQUES CADEAUX
+### 5. CODES PROMO, AVOIRS, CHÈQUES CADEAUX (PRO)
 
-| ID      | Titre                        | Priorité |
-| ------- | ---------------------------- | -------- |
-| PLB-025 | Code promo ne fonctionne pas | P2       |
-| PLB-026 | Utilisation des avoirs       | P3       |
-| PLB-027 | Chèques cadeaux              | P3       |
-| PLB-028 | Cumul remises                | P3       |
+| ID          | Titre                        | Priorité |
+| ----------- | ---------------------------- | -------- |
+| PLB-PRO-025 | Code promo ne fonctionne pas | P2       |
+| PLB-PRO-026 | Utilisation des avoirs       | P3       |
+| PLB-PRO-027 | Chèques cadeaux              | P3       |
+| PLB-PRO-028 | Cumul remises                | P3       |
 
-### 6. COMPTE CLIENT
+### 6. COMPTE CLIENT (CPT)
 
-| ID      | Titre                 | Priorité |
-| ------- | --------------------- | -------- |
-| PLB-029 | Problème de connexion | P2       |
-| PLB-030 | Mot de passe oublié   | P3       |
-| PLB-031 | Suppression de compte | P3       |
-| PLB-032 | Newsletter            | P4       |
+| ID          | Titre                 | Priorité |
+| ----------- | --------------------- | -------- |
+| PLB-CPT-029 | Problème de connexion | P2       |
+| PLB-CPT-030 | Mot de passe oublié   | P3       |
+| PLB-CPT-031 | Suppression de compte | P3       |
+| PLB-CPT-032 | Newsletter            | P4       |
 
-### 7. PRODUITS ET CONSEILS
+### 7. PRODUITS ET CONSEILS (PRD)
 
-| ID      | Titre                 | Priorité |
-| ------- | --------------------- | -------- |
-| PLB-033 | Conseil taille        | P2       |
-| PLB-034 | Compatibilité pièces  | P2       |
-| PLB-035 | Disponibilité produit | P3       |
-| PLB-036 | Garantie SAV          | P2       |
+| ID          | Titre                 | Priorité |
+| ----------- | --------------------- | -------- |
+| PLB-PRD-033 | Conseil taille        | P2       |
+| PLB-PRD-034 | Compatibilité pièces  | P2       |
+| PLB-PRD-035 | Disponibilité produit | P3       |
+| PLB-PRD-036 | Garantie SAV          | P2       |
+
+### 8. ALLTRICKS+ (ATP)
+
+| ID          | Titre                                | Priorité |
+| ----------- | ------------------------------------ | -------- |
+| PLB-ATP-001 | Informations & conditions Alltricks+ | P1       |
+
+### 9. PROS & CLUBS (PRC)
+
+| ID          | Titre                                               | Priorité |
+| ----------- | --------------------------------------------------- | -------- |
+| PLB-PRC-037 | Demande Pros & Clubs (tarifs / devis / partenariat) | P2       |
+| PLB-CLB-001 | Informations & inscription programme club           | P2       |
+| PLB-B2B-038 | CGV & Conditions Générales Professionnels           | P2       |
 
 ---
 
@@ -128,7 +144,7 @@ L'agent ne peut PAS :
 ## 🔧 Structure type d'un Playbook
 
 ```markdown
-# PLB-XXX - Titre
+# PLB-[TRIGRAMME]-XXX - Titre
 
 ## 1. 🎯 Objectif
 
