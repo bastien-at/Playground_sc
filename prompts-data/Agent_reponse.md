@@ -100,12 +100,14 @@ Si la demande ne rentre pas dans cette liste, retourne un **KO** avec `domain` =
   - La demande est réellement **hors périmètre** (négociation commerciale, juridique/RGPD, conseil produit)
   - OU une **information indispensable** manque pour éviter une instruction fausse/inapplicable (ex : `numero_de_commande`, `reference_transaction`, `reference_cheque_cadeau`, `numéro d'avoir`)
 
+Pour les demandes **Club / sponsoring / partenariat**, ne pas répondre avec une formulation type "hors périmètre du Service Client".
+
 ### Détail par catégorie / sous-catégorie
 
 | Catégorie / Sous-catégorie                                    | Décision | Condition                                                    | Playbook              |
 | ------------------------------------------------------------- | -------- | ------------------------------------------------------------ | --------------------- |
 | **Trouvé moins cher ailleurs**                                | KO       | Hors périmètre (négociation commerciale)                     | -                     |
-| **Club et demande de sponsoring**                             | GO       | Si playbook applicable                                       | -                     |
+| **Club et demande de sponsoring**                             | GO       | Réponse via gabarit Pros & Clubs                             | PLB-PRC-037           |
 | **Contact presse**                                            | GO       | Si playbook applicable                                       | -                     |
 | **Pro, ateliers partenaires**                                 | GO       | Si playbook applicable                                       | -                     |
 | **contact non reçu**                                          | GO       | Si procédure générique possible (spam, email, Espace client) | -                     |

@@ -5,17 +5,31 @@
 
 ---
 
-## PLB-RET-007 - Demande de retour standard
+# PLB-RET-007 - Demande de retour standard
 
-**Catégorie** : 2. MES COMMANDES ET RETOURS  
-**Sous-catégorie** : 2.5 Demande de retour  
-**Priorité** : P1  
-**Tags** : retour, retourner, renvoyer, retractation, ne convient pas, trop grand, trop petit, mauvaise taille, echanger, rembourser  
-**Version** : v1.0
+## 1. 🎯 Objectif
+
+Expliquer au client la procédure de retour, les conditions d'éligibilité et le guider vers les outils self-service pour générer son étiquette de retour.
 
 ---
 
-### 1. Intention(s) couverte(s)
+## 2. 🗂️ Métadonnées (ID, Catégorie, Tags, Priorité)
+
+| Propriété          | Valeur                                                                                                                                        |
+| ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Identifiant**    | PLB-RET-007                                                                                                                                   |
+| **Catégorie**      | 2. MES COMMANDES ET RETOURS                                                                                                                   |
+| **Sous-catégorie** | 2.5 Demande de retour                                                                                                                         |
+| **Tags Clés**      | `retour`, `retourner`, `renvoyer`, `retractation`, `ne convient pas`, `trop grand`, `trop petit`, `mauvaise taille`, `echanger`, `rembourser` |
+| **Priorité**       | P1                                                                                                                                            |
+
+---
+
+## 3. 🔎 Conditions de Déclenchement
+
+Le playbook doit s'activer si le client demande à retourner un article (retour standard / rétractation) ou un remboursement lié à un retour.
+
+**Exemples de formulations clients :**
 
 - "Je voudrais retourner cet article"
 - "Le produit ne me convient pas"
@@ -23,27 +37,22 @@
 - "La taille ne va pas"
 - "Je souhaite me faire rembourser"
 
-### 2. Conditions & règles métier (résumé)
+---
 
-- Objectif : expliquer au client la **procédure de retour**, les **conditions d'éligibilité** et le guider vers les outils self-service pour générer son étiquette de retour.
-- Délai standard : **30 jours** après réception (ou **100 jours** pour les membres Alltricks+).
-- Différence de traitement entre **produit Alltricks** et **vendeur partenaire**.
-- Conditions produit : article neuf, non monté, non utilisé, dans son emballage d'origine.
+## 4. 📋 Informations à Identifier dans l'email
 
-### 3. Décision IA
+| Information                          | Utilité                                                                  |
+| ------------------------------------ | ------------------------------------------------------------------------ |
+| Produit concerné (si mentionné)      | Adapter la réponse (conditions, retour en magasin vs renvoi colis, etc.) |
+| Mention Alltricks+                   | Rappeler le délai étendu (100 jours)                                     |
+| Mention vendeur partenaire           | Adapter vers la procédure « Contacter le vendeur »                       |
+| Produit monté/utilisé (si mentionné) | Alerter sur un retour potentiellement refusé / décote                    |
 
-- **L’IA peut répondre seule ?**  
-  Oui, pour décrire la procédure standard de retour et rappeler les conditions.
+---
 
-- **Accès données nécessaire ?**  
-  Non, les règles sont générales.
+## 5. 💬 Gabarits de Réponse
 
-- **Cas à escalader d’office** :
-  - Cas particuliers non couverts (produit déjà utilisé, problème de conformité, litige).
-
-### 4. Template(s) de réponse
-
-#### 4.1. Template standard – Produit Alltricks
+### 5.1. Réponse standard - Produit Alltricks
 
 ```markdown
 Bonjour [Prénom],
@@ -60,7 +69,7 @@ Le produit reçu ne vous convient pas ? Pas de souci, vous disposez de **30 jour
 
 **Étape 2 : Choisissez parmi les 3 options suivantes :**
 
-**Option 1 : Retour dans l'un de nos 9 magasins**
+**Option 1 : Retour dans l'un de nos magasins**
 
 - Une fois sur place, vous pourrez choisir entre un avoir ou un remboursement **sans frais**
 - L'avoir est généré **immédiatement**
@@ -106,12 +115,12 @@ Retournez vos produits soit par renvoi colis, soit en magasin selon l'option cho
 - Un avoir sera créé automatiquement (frais de retour déduits)
 - Vous pourrez demander le remboursement depuis "Mes Avoirs"
 
-💡 **Astuce** : Le retour en magasin Alltricks est **gratuit** et l'avoir est généré immédiatement !
+Astuce : Le retour en magasin Alltricks est **gratuit** et l'avoir est généré immédiatement !
 
 L'équipe Alltricks
 ```
 
-#### 4.2. Template – Vendeur partenaire
+### 5.2. Réponse - Vendeur partenaire
 
 ```markdown
 Bonjour [Prénom],
@@ -134,21 +143,28 @@ Vous disposez également de **30 jours** pour retourner votre produit vendu par 
 L'équipe Alltricks
 ```
 
-### 5. Variantes / paramètres
+---
 
-- Si le client mentionne être **Alltricks+**, rappeler explicitement le délai de 100 jours.
-- Si le client parle d'**échange**, orienter vers PLB-RET-010 (pas d'échange direct, retour + nouvelle commande).
+## 6. ⚠️ Règles et Points d'Attention
+
+- Délai standard : **30 jours** après réception (ou **100 jours** pour les membres Alltricks+).
+- Différence de traitement entre **produit Alltricks** et **vendeur partenaire**.
+- Conditions produit : article neuf, non monté, non utilisé, dans son emballage d'origine.
+- Si le client parle d'**échange**, orienter vers `PLB-RET-010` (pas d'échange direct, retour + nouvelle commande).
 - Si le client indique que le produit est "monté" ou "utilisé", avertir que le retour peut être refusé ou faire l'objet d'une décote.
-
-### 6. Historique
-
-| Version | Date    | Modification                  |
-| ------- | ------- | ----------------------------- |
-| v1.0    | 2025-01 | Création initiale du playbook |
 
 ---
 
-## PLB-RET-008 - Retour vélo / article volumineux
+## 7. 🔗 Ressources et Liens
+
+| Ressource               | URL                                               |
+| ----------------------- | ------------------------------------------------- |
+| Mes commandes & Retours | https://www.alltricks.fr/mon-compte/mes-commandes |
+| Nos magasins            | https://www.alltricks.fr/magasins                 |
+
+---
+
+# PLB-RET-008 - Retour vélo / article volumineux
 
 ## 1. 🎯 Objectif
 
@@ -156,7 +172,7 @@ Expliquer la procédure spécifique pour retourner un vélo ou un article volumi
 
 ---
 
-## 2. 🗂️ Métadonnées
+## 2. 🗂️ Métadonnées (ID, Catégorie, Tags, Priorité)
 
 | Propriété          | Valeur                                                                                          |
 | ------------------ | ----------------------------------------------------------------------------------------------- |
@@ -165,8 +181,6 @@ Expliquer la procédure spécifique pour retourner un vélo ou un article volumi
 | **Sous-catégorie** | 2.5 Demande de retour                                                                           |
 | **Tags Clés**      | `retour vélo`, `vélo`, `volumineux`, `hors gabarit`, `porte-vélo`, `home trainer`, `gros colis` |
 | **Priorité**       | P2                                                                                              |
-
----
 
 ## 3. 🔎 Conditions de Déclenchement
 
@@ -178,16 +192,12 @@ L'agent doit s'activer si le client veut retourner un vélo ou un article volumi
 - "Je veux renvoyer mon porte-vélo"
 - "Le vélo ne me convient pas"
 
----
-
 ## 4. 📋 Informations à Identifier dans l'email
 
 | Information                                           | Utilité               |
 | ----------------------------------------------------- | --------------------- |
 | Type de produit (vélo complet, accessoire volumineux) | Adapte la procédure   |
 | Mention vendeur partenaire                            | Redirige vers vendeur |
-
----
 
 ## 5. 💬 Gabarits de Réponse
 
@@ -218,8 +228,6 @@ Nous pourrons organiser le retour via France Express (70€, assurance incluse) 
 L'équipe Alltricks
 ```
 
----
-
 ## 6. ⚠️ Règles et Points d'Attention
 
 | Situation                   | Action                                                  |
@@ -234,8 +242,6 @@ L'équipe Alltricks
 - Retour vélo = 70€ via France Express (ou gratuit en magasin)
 - Étiquette spécifique générée automatiquement pour hors-gabarit
 
----
-
 ## 7. 🔗 Ressources et Liens
 
 | Ressource     | URL                                               |
@@ -245,17 +251,13 @@ L'équipe Alltricks
 
 ---
 
----
-
 # PLB-RET-009 - Suivi retour et avoir remboursable
 
 ## 1. 🎯 Objectif
 
 Informer le client sur les délais de traitement de son retour et la procédure pour obtenir son avoir remboursable.
 
----
-
-## 2. 🗂️ Métadonnées
+## 2. 🗂️ Métadonnées (ID, Catégorie, Tags, Priorité)
 
 | Propriété          | Valeur                                                                                          |
 | ------------------ | ----------------------------------------------------------------------------------------------- |
@@ -264,8 +266,6 @@ Informer le client sur les délais de traitement de son retour et la procédure 
 | **Sous-catégorie** | 2.6 Suivre mon retour                                                                           |
 | **Tags Clés**      | `suivi retour`, `retour reçu`, `remboursement`, `avoir`, `quand remboursé`, `traitement retour` |
 | **Priorité**       | P2                                                                                              |
-
----
 
 ## 3. 🔎 Conditions de Déclenchement
 
@@ -278,16 +278,12 @@ L'agent doit s'activer si le client demande des nouvelles de son retour ou de so
 - "Mon avoir n'est pas encore créé"
 - "Où en est mon remboursement ?"
 
----
-
 ## 4. 📋 Informations à Identifier dans l'email
 
 | Information                | Utilité                    |
 | -------------------------- | -------------------------- |
 | Date de dépôt mentionnée   | Évalue si délai normal     |
 | Preuve de dépôt mentionnée | Rassure sur la traçabilité |
-
----
 
 ## 5. 💬 Gabarits de Réponse
 
@@ -323,8 +319,6 @@ Si après 72h suivant la réception de votre colis par nos services vous n'avez 
 L'équipe Alltricks
 ```
 
----
-
 ## 6. ⚠️ Règles et Points d'Attention
 
 | Situation                                    | Action                                                   |
@@ -339,8 +333,6 @@ L'équipe Alltricks
 - Remboursement de l'avoir : 5 jours ouvrés max
 - Preuve de dépôt = indispensable en cas de litige
 
----
-
 ## 7. 🔗 Ressources et Liens
 
 | Ressource               | URL                                               |
@@ -350,17 +342,13 @@ L'équipe Alltricks
 
 ---
 
----
-
 # PLB-RET-010 - Échange de produit
 
 ## 1. 🎯 Objectif
 
 Expliquer au client qu'il n'y a pas d'échange direct chez Alltricks et lui présenter la procédure alternative (retour + nouvelle commande).
 
----
-
-## 2. 🗂️ Métadonnées
+## 2. 🗂️ Métadonnées (ID, Catégorie, Tags, Priorité)
 
 | Propriété          | Valeur                                                                         |
 | ------------------ | ------------------------------------------------------------------------------ |
@@ -369,8 +357,6 @@ Expliquer au client qu'il n'y a pas d'échange direct chez Alltricks et lui pré
 | **Sous-catégorie** | 2.5 Demande de retour                                                          |
 | **Tags Clés**      | `échange`, `échanger`, `autre taille`, `autre couleur`, `remplacer`, `changer` |
 | **Priorité**       | P2                                                                             |
-
----
 
 ## 3. 🔎 Conditions de Déclenchement
 
@@ -382,16 +368,12 @@ L'agent doit s'activer si le client demande un échange de produit.
 - "Pouvez-vous m'envoyer une autre couleur ?"
 - "Je veux le même produit mais en M au lieu de L"
 
----
-
 ## 4. 📋 Informations à Identifier dans l'email
 
 | Information                 | Utilité              |
 | --------------------------- | -------------------- |
 | Produit souhaité en échange | Permet de conseiller |
 | Mention vendeur partenaire  | Adapte la procédure  |
-
----
 
 ## 5. 💬 Gabarits de Réponse
 
@@ -439,8 +421,6 @@ Le vendeur vous indiquera sa procédure et vous remboursera sur le mode de paiem
 L'équipe Alltricks
 ```
 
----
-
 ## 6. ⚠️ Règles et Points d'Attention
 
 | Situation                             | Action                                              |
@@ -455,8 +435,6 @@ L'équipe Alltricks
 - Nouvelle commande possible avant réception du retour
 - Vendeur partenaire : politique propre au vendeur
 
----
-
 ## 7. 🔗 Ressources et Liens
 
 | Ressource               | URL                                               |
@@ -466,17 +444,13 @@ L'équipe Alltricks
 
 ---
 
----
-
 # PLB-RET-011 - Délais de remboursement d'un avoir
 
 ## 1. 🎯 Objectif
 
 Informer le client sur les délais de remboursement d'un avoir selon le mode de paiement utilisé.
 
----
-
-## 2. 🗂️ Métadonnées
+## 2. 🗂️ Métadonnées (ID, Catégorie, Tags, Priorité)
 
 | Propriété          | Valeur                                                                                                 |
 | ------------------ | ------------------------------------------------------------------------------------------------------ |
@@ -485,8 +459,6 @@ Informer le client sur les délais de remboursement d'un avoir selon le mode de 
 | **Sous-catégorie** | 3.3 Question à propos d'un remboursement                                                               |
 | **Tags Clés**      | `délai remboursement`, `quand remboursé`, `pas reçu remboursement`, `CB`, `virement`, `carte bancaire` |
 | **Priorité**       | P2                                                                                                     |
-
----
 
 ## 3. 🔎 Conditions de Déclenchement
 
@@ -498,16 +470,12 @@ L'agent doit s'activer si le client demande des précisions sur les délais de r
 - "Le remboursement n'apparaît pas sur mon compte"
 - "Ça fait X jours que j'attends mon remboursement"
 
----
-
 ## 4. 📋 Informations à Identifier dans l'email
 
 | Information                          | Utilité           |
 | ------------------------------------ | ----------------- |
 | Mode de paiement mentionné           | Adapte les délais |
 | Carte expirée / changement de banque | Cas particulier   |
-
----
 
 ## 5. 💬 Gabarits de Réponse
 
@@ -539,8 +507,6 @@ Répondez à ce message en précisant votre numéro de commande : nous pourrons 
 L'équipe Alltricks
 ```
 
----
-
 ## 6. ⚠️ Règles et Points d'Attention
 
 | Situation               | Action                                             |
@@ -554,15 +520,11 @@ L'équipe Alltricks
 - Carte expirée/opposée : remboursement automatique sur le compte
 - Débit différé : apparition à la prochaine date de mouvement
 
----
-
 ## 7. 🔗 Ressources et Liens
 
 | Ressource              | URL                                    |
 | ---------------------- | -------------------------------------- |
 | Mes moyens de paiement | Espace client > Mes moyens de paiement |
-
----
 
 ---
 
@@ -572,9 +534,7 @@ L'équipe Alltricks
 
 Expliquer au client comment fonctionne le remboursement lorsqu'il a payé avec Oney (paiement en plusieurs fois).
 
----
-
-## 2. 🗂️ Métadonnées
+## 2. 🗂️ Métadonnées (ID, Catégorie, Tags, Priorité)
 
 | Propriété          | Valeur                                                                       |
 | ------------------ | ---------------------------------------------------------------------------- |
@@ -583,8 +543,6 @@ Expliquer au client comment fonctionne le remboursement lorsqu'il a payé avec O
 | **Sous-catégorie** | 3.3 Question à propos d'un remboursement                                     |
 | **Tags Clés**      | `oney`, `remboursement oney`, `mensualité`, `3x`, `4x`, `10x`, `financement` |
 | **Priorité**       | P3                                                                           |
-
----
 
 ## 3. 🔎 Conditions de Déclenchement
 
@@ -596,7 +554,13 @@ L'agent doit s'activer si le client a payé en plusieurs fois avec Oney et deman
 - "Mes mensualités Oney vont-elles être annulées ?"
 - "Je veux un remboursement sur mon paiement Oney"
 
----
+## 4. 📋 Informations à Identifier dans l'email
+
+| Information                                      | Utilité                                 |
+| ------------------------------------------------ | --------------------------------------- |
+| Montant demandé / remboursement total ou partiel | Expliquer l'impact sur les mensualités  |
+| Mensualités déjà prélevées mentionnées           | Expliquer le remboursement sur la carte |
+| Problème technique / question financement        | Rediriger vers Oney si besoin           |
 
 ## 5. 💬 Gabarits de Réponse
 
@@ -635,8 +599,6 @@ Ou via votre espace client Oney.
 L'équipe Alltricks
 ```
 
----
-
 ## 6. ⚠️ Règles et Points d'Attention
 
 | Situation                             | Action                                |
@@ -651,8 +613,6 @@ L'équipe Alltricks
 - Mensualités déjà prélevées = remboursement sur CB
 - Contact Oney : 3670
 
----
-
 ## 7. 🔗 Ressources et Liens
 
 | Ressource           | URL                           |
@@ -662,17 +622,13 @@ L'équipe Alltricks
 
 ---
 
----
-
 # PLB-RET-013 - Frais de retour
 
 ## 1. 🎯 Objectif
 
 Informer le client sur les frais de retour et les options pour les éviter.
 
----
-
-## 2. 🗂️ Métadonnées
+## 2. 🗂️ Métadonnées (ID, Catégorie, Tags, Priorité)
 
 | Propriété          | Valeur                                                                               |
 | ------------------ | ------------------------------------------------------------------------------------ |
@@ -681,8 +637,6 @@ Informer le client sur les frais de retour et les options pour les éviter.
 | **Sous-catégorie** | 2.5 Demande de retour                                                                |
 | **Tags Clés**      | `frais de retour`, `retour gratuit`, `coût retour`, `payant`, `frais de port retour` |
 | **Priorité**       | P3                                                                                   |
-
----
 
 ## 3. 🔎 Conditions de Déclenchement
 
@@ -694,7 +648,13 @@ L'agent doit s'activer si le client pose une question sur les frais de retour.
 - "Combien coûte un retour ?"
 - "Le retour est-il à ma charge ?"
 
----
+## 4. 📋 Informations à Identifier dans l'email
+
+| Information                             | Utilité                                                   |
+| --------------------------------------- | --------------------------------------------------------- |
+| Produit Alltricks vs vendeur partenaire | Adapter la réponse (frais Alltricks vs politique vendeur) |
+| Statut Alltricks+ mentionné             | Clarifier que les frais s'appliquent aussi                |
+| Proximité d'un magasin mentionnée       | Mettre en avant l'option gratuite en magasin              |
 
 ## 5. 💬 Gabarits de Réponse
 

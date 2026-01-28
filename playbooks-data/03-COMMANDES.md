@@ -5,13 +5,15 @@
 
 ---
 
+# PLB-CMD-014 - Annulation de commande
+
 ## 1. 🎯 Objectif
 
 Expliquer au client les conditions et la procédure pour annuler sa commande selon son statut.
 
 ---
 
-## 2. 🗂️ Métadonnées
+## 2. 🗂️ Métadonnées (ID, Catégorie, Tags, Priorité)
 
 | Propriété          | Valeur                                                                         |
 | ------------------ | ------------------------------------------------------------------------------ |
@@ -32,6 +34,16 @@ L'agent doit s'activer si le client souhaite annuler sa commande.
 - "Je voudrais annuler ma commande"
 - "Comment supprimer ma commande ?"
 - "Je ne veux plus de cette commande"
+
+---
+
+## 4. 📋 Informations à Identifier dans l'email
+
+| Information                             | Utilité                                                |
+| --------------------------------------- | ------------------------------------------------------ |
+| Numéro de commande mentionné            | Reprendre la référence sans jamais l'inventer          |
+| Statut/avancement indiqué (si connu)    | Orienter sur annulation vs refus/retour                |
+| Produit Alltricks vs vendeur partenaire | Adapter la démarche (annulation SC vs contact vendeur) |
 
 ---
 
@@ -70,26 +82,6 @@ Dans les deux cas, vous pourrez demander le remboursement de l'avoir depuis "Mes
 L'équipe Alltricks
 ```
 
-### 5.2. Réponse - Vendeur Partenaire
-
-```
-Bonjour [Prénom],
-
-Pour annuler une commande expédiée par un vendeur partenaire :
-
-**Si la commande n'est pas encore expédiée :**
-Depuis votre commande, utilisez "Contacter le vendeur" pour demander l'annulation :
-1. Connectez-vous à "Mes Commandes & Retours"
-2. Sélectionnez l'article concerné
-3. Cliquez sur "Contacter le vendeur"
-4. Expliquez votre demande d'annulation
-
-**Si la commande est déjà en livraison :**
-Le vendeur vous indiquera sa procédure de retour et de remboursement.
-
-L'équipe Alltricks
-```
-
 ---
 
 ## 6. ⚠️ Règles et Points d'Attention
@@ -98,21 +90,6 @@ L'équipe Alltricks
 | --------------------- | -------------------------------- |
 | Commande en livraison | Proposer refus ou retour         |
 | Vendeur partenaire    | Contacter le vendeur directement |
-
-**Points clés FAQ :**
-
-- Annulation possible tant que la commande n'est pas en livraison
-- Commande en livraison : refuser le colis = retour gratuit
-- Avoir créé après traitement du retour
-
----
-
-## 7. 🔗 Ressources et Liens
-
-| Ressource     | URL                                               |
-| ------------- | ------------------------------------------------- |
-| Mes commandes | https://www.alltricks.fr/mon-compte/mes-commandes |
-| Mes Avoirs    | https://www.alltricks.fr/mon-compte/mes-avoirs    |
 
 ---
 
@@ -126,7 +103,7 @@ Guider le client qui n'a pas reçu tous les articles de sa commande vers la proc
 
 ---
 
-## 2. 🗂️ Métadonnées
+## 2. 🗂️ Métadonnées (ID, Catégorie, Tags, Priorité)
 
 | Propriété          | Valeur                                                                        |
 | ------------------ | ----------------------------------------------------------------------------- |
@@ -147,6 +124,16 @@ L'agent doit s'activer si le client signale qu'il n'a pas reçu tous ses article
 - "Il manque un article dans ma commande"
 - "Je n'ai pas reçu tous mes produits"
 - "Ma commande est incomplète"
+
+---
+
+## 4. 📋 Informations à Identifier dans l'email
+
+| Information                                   | Utilité                                            |
+| --------------------------------------------- | -------------------------------------------------- |
+| Numéro de commande mentionné                  | Reprendre la référence sans jamais l'inventer      |
+| Article(s) manquant(s) cité(s)                | Cadrer la réclamation et éviter les allers-retours |
+| Mention de colis multiples / plusieurs envois | Vérifier si l'envoi est fractionné                 |
 
 ---
 
@@ -175,24 +162,6 @@ Nous traiterons votre demande dans les plus brefs délais.
 L'équipe Alltricks
 ```
 
-### 5.2. Réponse - Vendeur Partenaire
-
-```
-Bonjour [Prénom],
-
-Pour un article manquant expédié par un vendeur partenaire :
-
-1. Connectez-vous à "Mes Commandes & Retours" : https://www.alltricks.fr/mon-compte/mes-commandes
-2. Sélectionnez l'article concerné
-3. Cliquez sur "Contacter le vendeur"
-4. Sélectionnez le motif approprié
-5. Décrivez le problème rencontré
-
-Le vendeur vous répondra directement dans votre messagerie.
-
-L'équipe Alltricks
-```
-
 ---
 
 ## 6. ⚠️ Règles et Points d'Attention
@@ -201,20 +170,6 @@ L'équipe Alltricks
 | ------------------------------------------ | -------------------------------------- |
 | Client n'a pas vérifié les colis multiples | Demander de vérifier d'abord           |
 | Réclamation urgente                        | Orienter vers le formulaire de contact |
-
-**Points clés FAQ :**
-
-- Vérifier d'abord si plusieurs colis sont prévus
-- Réclamation via "Contacter le Service Client" depuis la commande
-- Vendeur partenaire : contacter le vendeur directement
-
----
-
-## 7. 🔗 Ressources et Liens
-
-| Ressource     | URL                                               |
-| ------------- | ------------------------------------------------- |
-| Mes commandes | https://www.alltricks.fr/mon-compte/mes-commandes |
 
 ---
 
@@ -228,7 +183,7 @@ Expliquer au client qu'il n'est pas possible de modifier une commande validée e
 
 ---
 
-## 2. 🗂️ Métadonnées
+## 2. 🗂️ Métadonnées (ID, Catégorie, Tags, Priorité)
 
 | Propriété          | Valeur                                                               |
 | ------------------ | -------------------------------------------------------------------- |
@@ -249,6 +204,16 @@ L'agent doit s'activer si le client veut modifier sa commande.
 - "Je voudrais ajouter un article à ma commande"
 - "Pouvez-vous modifier ma commande ?"
 - "J'ai oublié un produit"
+
+---
+
+## 4. 📋 Informations à Identifier dans l'email
+
+| Information                          | Utilité                                                          |
+| ------------------------------------ | ---------------------------------------------------------------- |
+| Numéro de commande mentionné         | Reprendre la référence sans jamais l'inventer                    |
+| Type de modification demandée        | Expliquer l'alternative adaptée (nouvelle commande / annulation) |
+| Statut/avancement indiqué (si connu) | Déterminer si une annulation est possible                        |
 
 ---
 
@@ -283,20 +248,6 @@ L'équipe Alltricks
 | ------------------------------ | ------------------------------------ |
 | Client veut retirer un article | Proposer annulation totale ou retour |
 
-**Points clés FAQ :**
-
-- Aucune modification possible après validation
-- Processus logistique immédiat
-- Alternative : nouvelle commande ou annulation
-
----
-
-## 7. 🔗 Ressources et Liens
-
-| Ressource     | URL                                               |
-| ------------- | ------------------------------------------------- |
-| Mes commandes | https://www.alltricks.fr/mon-compte/mes-commandes |
-
 ---
 
 ---
@@ -309,7 +260,7 @@ Indiquer au client où et comment télécharger sa facture.
 
 ---
 
-## 2. 🗂️ Métadonnées
+## 2. 🗂️ Métadonnées (ID, Catégorie, Tags, Priorité)
 
 | Propriété          | Valeur                                                                              |
 | ------------------ | ----------------------------------------------------------------------------------- |
@@ -330,6 +281,16 @@ L'agent doit s'activer si le client cherche sa facture.
 - "Où puis-je trouver ma facture ?"
 - "Comment télécharger ma facture ?"
 - "J'ai besoin de ma facture pour ma comptabilité"
+
+---
+
+## 4. 📋 Informations à Identifier dans l'email
+
+| Information                             | Utilité                                            |
+| --------------------------------------- | -------------------------------------------------- |
+| Numéro de commande mentionné            | Reprendre la référence sans jamais l'inventer      |
+| Produit Alltricks vs vendeur partenaire | Adapter la démarche (facture Alltricks vs vendeur) |
+| Contexte achat événement/stand          | Identifier un cas nécessitant un conseiller        |
 
 ---
 
@@ -355,42 +316,6 @@ La facture sera automatiquement téléchargée.
 L'équipe Alltricks
 ```
 
-### 5.2. Réponse - Vendeur Partenaire
-
-```
-Bonjour [Prénom],
-
-Pour un article expédié par un vendeur partenaire, la facture est gérée par le vendeur.
-
-Pour l'obtenir :
-1. Connectez-vous à "Mes Commandes & Retours"
-2. Sélectionnez l'article concerné
-3. Cliquez sur "Contacter le vendeur"
-4. Demandez votre facture
-
-Le vendeur vous répondra dans votre messagerie.
-
-L'équipe Alltricks
-```
-
-### 5.3. Réponse - Achat événement/stand
-
-```
-Bonjour [Prénom],
-
-Pour un achat effectué lors d'un événement sportif ou sur un stand Alltricks, un conseiller doit vérifier votre achat.
-
-Merci de préciser :
-- Le détail de votre achat
-- La date et le lieu de l'événement
-- Le montant total
-- Le mode de règlement (CB, espèces, etc.)
-
-Nous éditerons votre facture dans les meilleurs délais.
-
-L'équipe Alltricks
-```
-
 ---
 
 ## 6. ⚠️ Règles et Points d'Attention
@@ -399,20 +324,6 @@ L'équipe Alltricks
 | --------------------- | ----------------------------- |
 | Commande non expédiée | Facture pas encore disponible |
 | Achat en événement    | Transmettre à un conseiller   |
-
-**Points clés FAQ :**
-
-- Facture disponible après expédition
-- Téléchargement dans "Mes Commandes & Retours"
-- Vendeur partenaire : contacter le vendeur
-
----
-
-## 7. 🔗 Ressources et Liens
-
-| Ressource     | URL                                               |
-| ------------- | ------------------------------------------------- |
-| Mes commandes | https://www.alltricks.fr/mon-compte/mes-commandes |
 
 ---
 
@@ -426,7 +337,7 @@ Expliquer au client pourquoi sa commande PayPal n'apparaît pas dans son compte 
 
 ---
 
-## 2. 🗂️ Métadonnées
+## 2. 🗂️ Métadonnées (ID, Catégorie, Tags, Priorité)
 
 | Propriété          | Valeur                                                                               |
 | ------------------ | ------------------------------------------------------------------------------------ |
@@ -450,12 +361,14 @@ L'agent doit s'activer si le client ne trouve pas sa commande PayPal.
 
 ---
 
-## 4. ✅ Décision (OK/KO)
+## 4. 📋 Informations à Identifier dans l'email
 
-| Situation constatée                                                                                                                   | Décision | Suite à donner                                                                          |
-| ------------------------------------------------------------------------------------------------------------------------------------- | -------- | --------------------------------------------------------------------------------------- |
-| Paiement PayPal Express effectué, commande non visible car l'adresse e-mail PayPal diffère de l'adresse du compte Alltricks habituel  | **OK**   | Expliquer l'accès via l'e-mail PayPal (parcours "Mot de passe oublié")                  |
-| Client indique un débit / paiement confirmé mais ne retrouve aucune commande / aucune confirmation (quelle que soit l'adresse e-mail) | **KO**   | **Handoff vers un conseiller** (vérification interne commande + paiement indispensable) |
+| Information                            | Utilité                                     |
+| -------------------------------------- | ------------------------------------------- |
+| Adresse e-mail PayPal utilisée         | Expliquer le compte créé via PayPal Express |
+| Date du paiement / montant             | Nécessaire si escalade pour vérification    |
+| Numéro de transaction PayPal           | Nécessaire si escalade pour vérification    |
+| Mention d'un débit / paiement confirmé | Déterminer si une escalade est nécessaire   |
 
 ---
 
@@ -495,6 +408,11 @@ L'équipe Alltricks
 ---
 
 ## 6. ⚠️ Règles et Points d'Attention
+
+| Situation constatée                                                                                                                   | Décision | Suite à donner                                                                          |
+| ------------------------------------------------------------------------------------------------------------------------------------- | -------- | --------------------------------------------------------------------------------------- |
+| Paiement PayPal Express effectué, commande non visible car l'adresse e-mail PayPal diffère de l'adresse du compte Alltricks habituel  | **OK**   | Expliquer l'accès via l'e-mail PayPal (parcours "Mot de passe oublié")                  |
+| Client indique un débit / paiement confirmé mais ne retrouve aucune commande / aucune confirmation (quelle que soit l'adresse e-mail) | **KO**   | **Handoff vers un conseiller** (vérification interne commande + paiement indispensable) |
 
 | Situation                 | Action                                            |
 | ------------------------- | ------------------------------------------------- |

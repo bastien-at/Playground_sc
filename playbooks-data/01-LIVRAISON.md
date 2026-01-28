@@ -5,17 +5,25 @@
 
 ---
 
-## PLB-LIV-001 - Suivi de commande
+# PLB-LIV-001 - Suivi de commande
 
-**Catégorie** : 2. MES COMMANDES ET RETOURS  
-**Sous-catégorie** : 2.1 Suivi livraison  
-**Priorité** : P1  
-**Tags** : suivi, tracking, colis, livraison, ou est ma commande, expedition, transporteur, statut, quand, reception, numero de suivi  
-**Version** : v1.0
+## 1. 🎯 Objectif
+
+Rediriger le client vers les outils self-service pour suivre sa commande et lui expliquer comment accéder aux informations de suivi.
 
 ---
 
-### 1. Intention(s) couverte(s)
+## 2. 🗂️ Métadonnées (ID, Catégorie, Tags, Priorité)
+
+| Propriété          | Valeur                                                                                                                                           |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Identifiant**    | PLB-LIV-001                                                                                                                                      |
+| **Catégorie**      | 2. MES COMMANDES ET RETOURS                                                                                                                      |
+| **Sous-catégorie** | 2.1 Suivi livraison                                                                                                                              |
+| **Tags Clés**      | `suivi`, `tracking`, `colis`, `livraison`, `ou est ma commande`, `expedition`, `transporteur`, `statut`, `quand`, `reception`, `numero de suivi` |
+| **Priorité**       | P1                                                                                                                                               |
+
+## 3. 🔎 Conditions de Déclenchement
 
 - "Où en est ma commande ?"
 - "Je n'ai pas reçu de nouvelles de mon colis"
@@ -23,29 +31,17 @@
 - "Mon colis est-il expédié ?"
 - "Pouvez-vous me donner le numéro de suivi ?"
 
-### 2. Conditions & règles métier (résumé)
+## 4. 📋 Informations à Identifier dans l'email
 
-- Objectif principal : rediriger le client vers les outils self-service pour suivre sa commande et lui expliquer comment accéder aux informations de suivi.
-- L’IA n’a **pas accès** au statut réel de la commande ni au tracking transporteur.
-- Le suivi est disponible dans **Mes Commandes & Retours** de l'Espace client.
-- Un e-mail avec le numéro de suivi est envoyé dès l’expédition.
+| Information                             | Utilité                                        |
+| --------------------------------------- | ---------------------------------------------- |
+| Numéro de commande mentionné            | Reprendre la référence sans jamais l'inventer  |
+| Produit Alltricks vs vendeur partenaire | Adapter le gabarit (Alltricks / vendeur)       |
+| Mention d'un retard important           | Déterminer si la situation doit être escaladée |
 
-### 3. Décision IA
+## 5. 💬 Gabarits de Réponse
 
-- **L’IA peut répondre seule ?**  
-  Oui, pour expliquer où trouver le suivi et comment l’utiliser.
-
-- **Accès données nécessaire ?**  
-  Non, la réponse reste générale et orientée self-service.
-
-- **Cas à escalader d’office** :
-  - Client mentionne un retard important (> 7 jours) ou plusieurs relances.
-  - Ton très mécontent / agressif.
-  - Référence explicite à un litige / à un avocat / à une plainte.
-
-### 4. Template(s) de réponse
-
-#### 4.1. Template standard – Produit Alltricks
+### 5.1. Template standard – Produit Alltricks
 
 ```markdown
 Bonjour [Prénom],
@@ -70,7 +66,7 @@ Vous recevez un e-mail avec le numéro de suivi dès l'expédition de votre comm
 L'équipe Alltricks
 ```
 
-#### 4.2. Template – Vendeur partenaire
+### 5.2. Template – Vendeur partenaire
 
 ```markdown
 Bonjour [Prénom],
@@ -89,62 +85,61 @@ Le vendeur vous répondra directement dans votre messagerie avec les information
 L'équipe Alltricks
 ```
 
-### 5. Variantes / paramètres
+## 6. ⚠️ Règles et Points d'Attention
 
-- `[Prénom]` : utiliser si disponible, sinon commencer directement par la première phrase.
-- `[numero_commande]` : ne jamais inventer.
-  - Si le numéro est présent dans l’email client, il peut être repris dans la réponse.
-  - Sinon rester générique ("votre commande").
-- Ne jamais donner de date de livraison précise ni de promesse ("demain"), seulement des informations sur **où suivre** la commande.
+- Objectif principal : rediriger le client vers les outils self-service pour suivre sa commande et lui expliquer comment accéder aux informations de suivi.
+- L’IA n’a **pas accès** au statut réel de la commande ni au tracking transporteur.
+- Le suivi est disponible dans **Mes Commandes & Retours** de l'Espace client.
+- Un e-mail avec le numéro de suivi est envoyé dès l’expédition.
 
-### 6. Historique
+- Cas à escalader :
+  - Client mentionne un retard important (> 7 jours) ou plusieurs relances.
+  - Ton très mécontent / agressif.
+  - Référence explicite à un litige / à un avocat / à une plainte.
 
-| Version | Date    | Modification                  |
-| ------- | ------- | ----------------------------- |
-| v1.0    | 2025-01 | Création initiale du playbook |
+## 7. 🔗 Ressources et Liens
 
----
-
-## PLB-LIV-002 - Colis indiqué livré mais non reçu
-
-**Catégorie** : 2. MES COMMANDES ET RETOURS  
-**Sous-catégorie** : 2.1 Suivi livraison  
-**Priorité** : P1  
-**Tags** : pas recu, livre mais, jamais recu, colis perdu, vole, disparu, non livre, litige, marque livre  
-**Version** : v1.0
+| Ressource       | URL                                               |
+| --------------- | ------------------------------------------------- |
+| Mes commandes   | https://www.alltricks.fr/mon-compte/mes-commandes |
+| Page Livraisons | https://www.alltricks.fr/livraisons               |
 
 ---
 
-### 1. Intention(s) couverte(s)
+# PLB-LIV-002 - Colis indiqué livré mais non reçu
+
+## 1. 🎯 Objectif
+
+Guider le client vers les vérifications préalables et la procédure de réclamation appropriée lorsqu'un colis est indiqué comme livré mais non reçu.
+
+## 2. 🗂️ Métadonnées (ID, Catégorie, Tags, Priorité)
+
+| Propriété          | Valeur                                                                                                           |
+| ------------------ | ---------------------------------------------------------------------------------------------------------------- |
+| **Identifiant**    | PLB-LIV-002                                                                                                      |
+| **Catégorie**      | 2. MES COMMANDES ET RETOURS                                                                                      |
+| **Sous-catégorie** | 2.1 Suivi livraison                                                                                              |
+| **Tags Clés**      | `pas recu`, `livre mais`, `jamais recu`, `colis perdu`, `vole`, `disparu`, `non livre`, `litige`, `marque livre` |
+| **Priorité**       | P1                                                                                                               |
+
+## 3. 🔎 Conditions de Déclenchement
 
 - "Mon colis est marqué livré mais je n'ai rien reçu"
 - "Je n'ai jamais reçu ma commande"
 - "Le transporteur dit que c'est livré mais ce n'est pas vrai"
 - "Mon colis a été volé / perdu"
 
-### 2. Conditions & règles métier (résumé)
+## 4. 📋 Informations à Identifier dans l'email
 
-- Objectif : guider le client qui conteste la réception de son colis vers les **vérifications préalables** et la **procédure de réclamation** appropriée.
-- L’IA ne peut **pas confirmer** la livraison réelle ni accéder au détail du tracking.
-- Vérifications standard à demander avant ouverture d’enquête (voisins, boîte aux lettres, foyer).
-- Différence de traitement entre **produit Alltricks** et **vendeur partenaire**.
+| Information                         | Utilité                                       |
+| ----------------------------------- | --------------------------------------------- |
+| Numéro de commande mentionné        | Reprendre la référence sans jamais l'inventer |
+| Mode de livraison (relais/domicile) | Adapter les vérifications (point relais)      |
+| Transporteur / suivi mentionné      | Aider au cadrage de l'enquête (sans vérifier) |
 
-### 3. Décision IA
+## 5. 💬 Gabarits de Réponse
 
-- **L’IA peut répondre seule ?**  
-  Oui, pour guider sur les vérifications et la marche à suivre.
-
-- **Accès données nécessaire ?**  
-  Non, mais l’ouverture d’enquête nécessite ensuite une action humaine.
-
-- **Cas à escalader d’office** :
-  - Client a déjà effectué toutes les vérifications.
-  - Mention explicite de "vol", "arnaque", "plainte".
-  - Ton très mécontent / menace de recours.
-
-### 4. Template(s) de réponse
-
-#### 4.1. Template standard – Produit Alltricks
+### 5.1. Template standard – Produit Alltricks
 
 ```markdown
 Bonjour [Prénom],
@@ -172,12 +167,12 @@ Nous ouvrirons une enquête auprès du transporteur et reviendrons vers vous dan
 L'équipe Alltricks
 ```
 
-#### 4.2. Template – Vendeur partenaire
+### 5.2. Template – Vendeur partenaire
 
 ```markdown
 Bonjour [Prénom],
 
-Pour un article expédié par un vendeur partenaire, nous vous invitons à signaler ce problème directement au vendeur :
+Pour un article expédié par un vendeur partenaire, nous vous invitons à le contacter directement :
 
 1. Connectez-vous à votre espace client : https://www.alltricks.fr/mon-compte/mes-commandes
 2. Sélectionnez l'article concerné
@@ -189,58 +184,61 @@ Le vendeur prendra en charge votre réclamation et vous répondra dans votre mes
 L'équipe Alltricks
 ```
 
-### 5. Variantes / paramètres
+## 6. ⚠️ Règles et Points d'Attention
 
-- Adapter le paragraphe sur le **point relais** uniquement si le mode de livraison le suggère.
-- Si le client indique avoir déjà tout vérifié, **ne pas répéter** ces vérifications et orienter directement vers la réclamation.
-- Ton particulièrement empathique si le client parle de "vol" ou "arnaque".
+- Objectif : guider le client qui conteste la réception de son colis vers les **vérifications préalables** et la **procédure de réclamation** appropriée.
+- L’IA ne peut **pas confirmer** la livraison réelle ni accéder au détail du tracking.
+- Vérifications standard à demander avant ouverture d’enquête (voisins, boîte aux lettres, foyer).
+- Différence de traitement entre **produit Alltricks** et **vendeur partenaire**.
 
-### 6. Historique
+- Cas à escalader :
+  - Client a déjà effectué toutes les vérifications.
+  - Mention explicite de "vol", "arnaque", "plainte".
+  - Ton très mécontent / menace de recours.
 
-| Version | Date    | Modification                  |
-| ------- | ------- | ----------------------------- |
-| v1.0    | 2025-01 | Création initiale du playbook |
+## 7. 🔗 Ressources et Liens
 
----
-
-## PLB-LIV-003 - Retard de livraison
-
-**Catégorie** : 2. MES COMMANDES ET RETOURS  
-**Sous-catégorie** : 2.2 Retard livraison  
-**Priorité** : P2  
-**Tags** : retard, en retard, delai depasse, toujours pas recu, attente, quand livraison, urgent, pas livre  
-**Version** : v1.0
+| Ressource       | URL                                               |
+| --------------- | ------------------------------------------------- |
+| Mes commandes   | https://www.alltricks.fr/mon-compte/mes-commandes |
+| Page Livraisons | https://www.alltricks.fr/livraisons               |
 
 ---
 
-### 1. Intention(s) couverte(s)
+# PLB-LIV-003 - Retard de livraison
+
+## 1. 🎯 Objectif
+
+Informer le client sur les causes possibles d'un retard et l'orienter vers le suivi de commande ou la bonne démarche si le retard persiste.
+
+## 2. 🗂️ Métadonnées (ID, Catégorie, Tags, Priorité)
+
+| Propriété          | Valeur                                                                                                           |
+| ------------------ | ---------------------------------------------------------------------------------------------------------------- |
+| **Identifiant**    | PLB-LIV-003                                                                                                      |
+| **Catégorie**      | 2. MES COMMANDES ET RETOURS                                                                                      |
+| **Sous-catégorie** | 2.2 Retard livraison                                                                                             |
+| **Tags Clés**      | `retard`, `en retard`, `delai depasse`, `toujours pas recu`, `attente`, `quand livraison`, `urgent`, `pas livre` |
+| **Priorité**       | P2                                                                                                               |
+
+## 3. 🔎 Conditions de Déclenchement
 
 - "Ma commande devait arriver hier, toujours rien"
 - "Ça fait X jours que j'attends"
 - "C'est urgent, quand vais-je recevoir mon colis ?"
 - "Le délai annoncé est dépassé"
 
-### 2. Conditions & règles métier (résumé)
+## 4. 📋 Informations à Identifier dans l'email
 
-- Objectif : informer le client sur les causes possibles d'un retard et l'orienter vers les bons outils pour suivre sa commande ou signaler un problème.
-- Les délais peuvent varier selon : période (fêtes, soldes), aléas logistiques, disponibilité produit ("livraison différée").
-- L’IA ne doit jamais donner de promesse de date précise, seulement rappeler les **délais habituels** et orienter vers le suivi.
+| Information                            | Utilité                                       |
+| -------------------------------------- | --------------------------------------------- |
+| Numéro de commande mentionné           | Reprendre la référence sans jamais l'inventer |
+| Date / durée de retard mentionnée      | Cadrer la situation (sans promesse de date)   |
+| Dernier statut/événement de suivi cité | Aider à qualifier un suivi bloqué             |
 
-### 3. Décision IA
+## 5. 💬 Gabarits de Réponse
 
-- **L’IA peut répondre seule ?**  
-  Oui, pour expliquer les causes possibles et les prochaines étapes.
-
-- **Accès données nécessaire ?**  
-  Non, mais une enquête nécessite ensuite une intervention humaine.
-
-- **Cas à escalader d’office** :
-  - Retard important mentionné (par ex. > 7 jours) ou suivi bloqué depuis plusieurs jours.
-  - Ton très mécontent / urgent (cadeau, événement daté).
-
-### 4. Template(s) de réponse
-
-#### 4.1. Template standard – Produit Alltricks
+### 5.1. Template standard – Produit Alltricks
 
 ```markdown
 Bonjour [Prénom],
@@ -270,7 +268,7 @@ Nous nous rapprocherons du transporteur pour vous tenir informé.
 L'équipe Alltricks
 ```
 
-#### 4.2. Template – Vendeur partenaire
+### 5.2. Template – Vendeur partenaire
 
 ```markdown
 Bonjour [Prénom],
@@ -287,31 +285,42 @@ Le vendeur vous apportera des précisions sur l'acheminement de votre commande.
 L'équipe Alltricks
 ```
 
-### 5. Variantes / paramètres
+## 6. ⚠️ Règles et Points d'Attention
 
-- Si le client mentionne un contexte **urgent** (cadeau, événement daté), insister sur la possibilité de contacter rapidement le Service Client.
-- Ne jamais confirmer une date de livraison précise.
-- Adapter la référence à "livraison différée" si le client l’a mentionnée ou si elle est connue dans la policy associée.
+- Objectif : informer le client sur les causes possibles d'un retard et l'orienter vers le suivi de commande ou la bonne démarche si le retard persiste.
+- Les délais peuvent varier selon : période (fêtes, soldes), aléas logistiques, disponibilité produit ("livraison différée").
+- L’IA ne doit jamais donner de promesse de date précise, seulement rappeler les **délais habituels** et orienter vers le suivi.
 
-### 6. Historique
+- Cas à escalader :
+  - Retard important mentionné (par ex. > 7 jours) ou suivi bloqué depuis plusieurs jours.
+  - Ton très mécontent / urgent (cadeau, événement daté).
 
-| Version | Date    | Modification                  |
-| ------- | ------- | ----------------------------- |
-| v1.0    | 2025-01 | Création initiale du playbook |
+## 7. 🔗 Ressources et Liens
 
----
-
-## PLB-LIV-004 - Modes et délais de livraison
-
-**Catégorie** : 2. MES COMMANDES ET RETOURS  
-**Sous-catégorie** : 2.1 Suivi livraison  
-**Priorité** : P3  
-**Tags** : livraison, mode livraison, delai, point relais, domicile, magasin, gratuit, frais de port, combien de temps, livraison express, same day  
-**Version** : v1.0
+| Ressource       | URL                                               |
+| --------------- | ------------------------------------------------- |
+| Mes commandes   | https://www.alltricks.fr/mon-compte/mes-commandes |
+| Page Livraisons | https://www.alltricks.fr/livraisons               |
 
 ---
 
-### 1. Intention(s) couverte(s)
+# PLB-LIV-004 - Modes et délais de livraison
+
+## 1. 🎯 Objectif
+
+Informer sur les options de livraison, les délais et les conditions de gratuité, et renvoyer vers la page Livraisons.
+
+## 2. 🗂️ Métadonnées (ID, Catégorie, Tags, Priorité)
+
+| Propriété          | Valeur                                                                                                                                                         |
+| ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Identifiant**    | PLB-LIV-004                                                                                                                                                    |
+| **Catégorie**      | 2. MES COMMANDES ET RETOURS                                                                                                                                    |
+| **Sous-catégorie** | 2.1 Suivi livraison                                                                                                                                            |
+| **Tags Clés**      | `livraison`, `mode livraison`, `delai`, `point relais`, `domicile`, `magasin`, `gratuit`, `frais de port`, `combien de temps`, `livraison express`, `same day` |
+| **Priorité**       | P3                                                                                                                                                             |
+
+## 3. 🔎 Conditions de Déclenchement
 
 - "Quels sont les modes de livraison ?"
 - "Livrez-vous en point relais ?"
@@ -319,26 +328,17 @@ L'équipe Alltricks
 - "La livraison est-elle gratuite ?"
 - "Livrez-vous à l'étranger ?"
 
-### 2. Conditions & règles métier (résumé)
+## 4. 📋 Informations à Identifier dans l'email
 
-- Objectif : informer sur les **options de livraison**, les **délais** et les **conditions de gratuité**.
-- Différencier France métropolitaine / international / Alltricks+.
-- Certains modes spécifiques (France Express, Mondial Relay XL, Chronopost RDV) ne peuvent pas être gratuits.
+| Information                          | Utilité                                               |
+| ------------------------------------ | ----------------------------------------------------- |
+| Pays / zone de livraison mentionnée  | Orienter vers le bon gabarit (France / international) |
+| Statut Alltricks+ mentionné          | Adapter les informations (avantages livraison)        |
+| Mode de livraison souhaité mentionné | Cadrer la réponse (relais/domicile/magasin)           |
 
-### 3. Décision IA
+## 5. 💬 Gabarits de Réponse
 
-- **L’IA peut répondre seule ?**  
-  Oui, en donnant une vision générale et en renvoyant vers la page Livraisons.
-
-- **Accès données nécessaire ?**  
-  Non, les informations sont générales et publiques.
-
-- **Cas à escalader d’office** :
-  - Question très spécifique liée à une adresse ou un pays exotique non couvert.
-
-### 4. Template(s) de réponse
-
-#### 4.1. Template – France métropolitaine
+### 5.1. Template – France métropolitaine
 
 ```markdown
 Bonjour [Prénom],
@@ -357,12 +357,9 @@ Faites livrer gratuitement dans l'un de nos magasins. Liste disponible sur https
 📦 **Retrait à l'entrepôt de Châteaudun**
 Venez récupérer votre commande à notre entrepôt (7 Rue des 13 Langues, 28200 Châteaudun) après réception de l'email de préparation.
 
-⚡ **Livraison Same Day**
-Livraison le jour même si commande passée avant 10h (zones limitées).
-
 **Conditions de gratuité :**
 
-- Livraison gratuite en point relais dès 120€ d'achat
+- Livraison gratuite en point relais dès 100€ d'achat
 - Livraison gratuite en magasin sans minimum
 - Membres Alltricks+ : livraison gratuite sans minimum d'achat
 
@@ -373,7 +370,7 @@ Plus d'informations : https://www.alltricks.fr/livraisons
 L'équipe Alltricks
 ```
 
-#### 4.2. Template – Livraison internationale
+### 5.2. Template – Livraison internationale
 
 ```markdown
 Bonjour [Prénom],
@@ -393,7 +390,7 @@ Note : Alltricks ne dispose pas de magasins à l'étranger.
 L'équipe Alltricks
 ```
 
-#### 4.3. Template – Client Alltricks+
+### 5.3. Template – Client Alltricks+
 
 ```markdown
 Bonjour [Prénom],
@@ -406,43 +403,62 @@ En tant que membre Alltricks+, vous bénéficiez d'avantages exclusifs :
 
 Ces avantages s'appliquent aux produits vendus et expédiés par Alltricks.
 
-Note : Certains modes spécifiques (France Express, Mondial Relay XL, Chronopost sur RDV) ne peuvent pas être proposés gratuitement.
+Note : Certains modes spécifiques (France Express, Mondial Relay XL, Chronopost RDV) ne peuvent pas être gratuits.
 
 L'équipe Alltricks
 ```
 
-**Version** : v1.0
+## 6. ⚠️ Règles et Points d'Attention
+
+- Objectif : informer sur les **options de livraison**, les **délais** et les **conditions de gratuité**.
+- Différencier France métropolitaine / international / Alltricks+.
+- Certains modes spécifiques (France Express, Mondial Relay XL, Chronopost RDV) ne peuvent pas être gratuits.
+
+- Cas à escalader :
+  - Question très spécifique liée à une adresse ou un pays exotique non couvert.
+
+## 7. 🔗 Ressources et Liens
+
+| Ressource       | URL                                               |
+| --------------- | ------------------------------------------------- |
+| Mes commandes   | https://www.alltricks.fr/mon-compte/mes-commandes |
+| Page Livraisons | https://www.alltricks.fr/livraisons               |
 
 ---
 
-### 1. Intention(s) couverte(s)
+# PLB-LIV-005 - Modification d'adresse de livraison
+
+## 1. 🎯 Objectif
+
+Expliquer les conditions et la procédure pour modifier l'adresse de livraison.
+
+## 2. 🗂️ Métadonnées (ID, Catégorie, Tags, Priorité)
+
+| Propriété          | Valeur                                                                                           |
+| ------------------ | ------------------------------------------------------------------------------------------------ |
+| **Identifiant**    | PLB-LIV-005                                                                                      |
+| **Catégorie**      | 2. MES COMMANDES ET RETOURS                                                                      |
+| **Sous-catégorie** | 2.1 Suivi livraison                                                                              |
+| **Tags Clés**      | `modification`, `adresse`, `livraison`, `changer`, `erreur`, `autre adresse`, `nouvelle adresse` |
+| **Priorité**       | P3                                                                                               |
+
+## 3. 🔎 Conditions de Déclenchement
 
 - "Je voudrais changer mon adresse de livraison"
 - "J'ai fait une erreur dans l'adresse"
 - "Pouvez-vous livrer à une autre adresse ?"
 
-### 2. Conditions & règles métier (résumé)
+## 4. 📋 Informations à Identifier dans l'email
 
-- Objectif : expliquer les **conditions** et la **procédure** pour modifier l'adresse de livraison.
-- Règles clés :
-  - Modification possible tant que la commande n'est pas en préparation.
-  - Pour les commandes PayPal, aucune modification possible après paiement (sécurité PayPal).
-  - Le mode de livraison doit rester identique (point relais ↔ domicile impossible).
+| Information                             | Utilité                                       |
+| --------------------------------------- | --------------------------------------------- |
+| Mode de paiement mentionné (PayPal)     | Déterminer si la modification est possible    |
+| Statut/avancement de commande mentionné | Cadrer si la modification est encore faisable |
+| Nouvelle adresse / correction demandée  | Reformuler clairement la demande au besoin    |
 
-### 3. Décision IA
+## 5. 💬 Gabarits de Réponse
 
-- **L’IA peut répondre seule ?**  
-  Oui, pour expliquer les règles et les alternatives.
-
-- **Accès données nécessaire ?**  
-  Non, les règles sont générales.
-
-- **Cas à escalader d’office** :
-  - Client avec situation complexe (plusieurs modifications, changement de pays, etc.).
-
-### 4. Template(s) de réponse
-
-#### 4.1. Template standard
+### 5.1. Template standard
 
 ```markdown
 Bonjour [Prénom],
@@ -472,7 +488,7 @@ La modification n'est plus possible. Vous pouvez refuser le colis à la livraiso
 L'équipe Alltricks
 ```
 
-#### 4.2. Template – Commande PayPal
+### 5.2. Template – Commande PayPal
 
 ```markdown
 Bonjour [Prénom],
@@ -489,20 +505,27 @@ Cette restriction est liée aux conditions de sécurité PayPal.
 L'équipe Alltricks
 ```
 
-### 5. Variantes / paramètres
+## 6. ⚠️ Règles et Points d'Attention
 
-- Si le client mentionne **PayPal**, utiliser prioritairement le template dédié.
-- Si la commande est déjà en livraison, insister sur le refus du colis comme alternative.
+- Objectif : expliquer les **conditions** et la **procédure** pour modifier l'adresse de livraison.
+- Règles clés :
+  - Modification possible tant que la commande n'est pas en préparation.
+  - Pour les commandes PayPal, aucune modification possible après paiement (sécurité PayPal).
+  - Le mode de livraison doit rester identique (point relais ↔ domicile impossible).
 
-### 6. Historique
+- Cas à escalader :
+  - Client avec situation complexe (plusieurs modifications, changement de pays, etc.).
 
-| Version | Date    | Modification                  |
-| ------- | ------- | ----------------------------- |
-| v1.0    | 2025-01 | Création initiale du playbook |
+## 7. 🔗 Ressources et Liens
+
+| Ressource       | URL                                               |
+| --------------- | ------------------------------------------------- |
+| Mes commandes   | https://www.alltricks.fr/mon-compte/mes-commandes |
+| Page Livraisons | https://www.alltricks.fr/livraisons               |
 
 ---
 
-## PLB-LIV-006 - Indisponibilité pour réceptionner
+# PLB-LIV-006 - Indisponibilité pour réceptionner
 
 ## 1. 🎯 Objectif
 
@@ -510,7 +533,7 @@ Informer le client des options disponibles s'il ne peut pas être présent pour 
 
 ---
 
-## 2. 🗂️ Métadonnées
+## 2. 🗂️ Métadonnées (ID, Catégorie, Tags, Priorité)
 
 | Propriété          | Valeur                                                                                                                    |
 | ------------------ | ------------------------------------------------------------------------------------------------------------------------- |

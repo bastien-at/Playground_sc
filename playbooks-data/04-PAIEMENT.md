@@ -13,7 +13,7 @@ Aider le client dont le paiement a été refusé à identifier la cause et à tr
 
 ---
 
-## 2. 🗂️ Métadonnées
+## 2. 🗂️ Métadonnées (ID, Catégorie, Tags, Priorité)
 
 | Propriété          | Valeur                                                                                     |
 | ------------------ | ------------------------------------------------------------------------------------------ |
@@ -37,13 +37,13 @@ L'agent doit s'activer si le client ne peut pas finaliser son paiement.
 
 ---
 
-## 4. ✅ Décision (GO/KO)
+## 4. 📋 Informations à Identifier dans l'email
 
-| Situation constatée                                                           | Décision | Suite à donner                                                               |
-| ----------------------------------------------------------------------------- | -------- | ---------------------------------------------------------------------------- |
-| Paiement refusé ponctuel / client peut refaire un essai après vérifications   | **GO**   | Guider sur les vérifications (plafonds, infos carte, 3D Secure) + retenter   |
-| Paiement refusé à répétition après vérifications (plafond/3DS/infos carte OK) | **KO**   | Orienter vers la banque (autorisation / 3D Secure) + proposer un autre moyen |
-| Client indique un débit / suspicion de paiement passé sans commande confirmée | **KO**   | Basculer vers PLB-PAY-022 (vérification interne indispensable) / handoff     |
+| Information                                    | Utilité                                                    |
+| ---------------------------------------------- | ---------------------------------------------------------- |
+| Message d'erreur / étape où le paiement échoue | Qualifier le problème (3DS, infos CB, erreur technique)    |
+| Mention d'un débit / transaction sur le relevé | Basculer vers investigation (PLB-PAY-022)                  |
+| Tentatives déjà effectuées (si mentionnées)    | Éviter les répétitions et orienter (banque vs alternative) |
 
 ---
 
@@ -83,13 +83,17 @@ L'équipe Alltricks
 
 ## 6. ⚠️ Règles et Points d'Attention
 
+| Situation constatée                                                           | Décision | Suite à donner                                                               |
+| ----------------------------------------------------------------------------- | -------- | ---------------------------------------------------------------------------- |
+| Paiement refusé ponctuel / client peut refaire un essai après vérifications   | **GO**   | Guider sur les vérifications (plafonds, infos carte, 3D Secure) + retenter   |
+| Paiement refusé à répétition après vérifications (plafond/3DS/infos carte OK) | **KO**   | Orienter vers la banque (autorisation / 3D Secure) + proposer un autre moyen |
+| Client indique un débit / suspicion de paiement passé sans commande confirmée | **KO**   | Basculer vers PLB-PAY-022 (vérification interne indispensable) / handoff     |
+
 **Points clés FAQ :**
 
 - 3D Secure obligatoire pour les paiements CB
 - Plafond bancaire souvent en cause pour gros montants
 - Alternatives : PayPal, virement, Oney, chèque
-
----
 
 ## 7. 🔗 Ressources et Liens
 
@@ -97,19 +101,13 @@ L'équipe Alltricks
 | -------------- | ---------------------------------- |
 | Page Paiements | https://www.alltricks.fr/paiements |
 
----
-
----
-
 # PLB-PAY-020 - Paiement en plusieurs fois Oney
 
 ## 1. 🎯 Objectif
 
 Expliquer le fonctionnement du paiement en plusieurs fois avec Oney.
 
----
-
-## 2. 🗂️ Métadonnées
+## 2. 🗂️ Métadonnées (ID, Catégorie, Tags, Priorité)
 
 | Propriété          | Valeur                                                                   |
 | ------------------ | ------------------------------------------------------------------------ |
@@ -118,8 +116,6 @@ Expliquer le fonctionnement du paiement en plusieurs fois avec Oney.
 | **Sous-catégorie** | 3.1 Question à propos des paiements                                      |
 | **Tags Clés**      | `oney`, `plusieurs fois`, `3x`, `4x`, `10x`, `mensualité`, `financement` |
 | **Priorité**       | P2                                                                       |
-
----
 
 ## 3. 🔎 Conditions de Déclenchement
 
@@ -131,17 +127,13 @@ L'agent doit s'activer si le client pose des questions sur Oney.
 - "C'est quoi Oney ?"
 - "Y a-t-il des frais pour le 4x ?"
 
----
+## 4. 📋 Informations à Identifier dans l'email
 
-## 4. ✅ Décision (GO/KO)
-
-| Situation constatée                                               | Décision | Suite à donner                                                       |
-| ----------------------------------------------------------------- | -------- | -------------------------------------------------------------------- |
-| Demande d'information (conditions, frais, délai, documents)       | **GO**   | Expliquer les options (3x/4x/10x), les délais et les documents       |
-| Refus Oney / dossier rejeté / scoring Oney défavorable            | **KO**   | Orienter vers Oney (3670) et proposer un autre moyen de paiement     |
-| Problème technique bloquant au checkout (impossible de finaliser) | **KO**   | Handoff vers un conseiller pour investigation + proposer alternative |
-
----
+| Information                               | Utilité                                    |
+| ----------------------------------------- | ------------------------------------------ |
+| Option souhaitée (3x/4x/10x)              | Adapter explications et délais             |
+| Message d'erreur / refus mentionné        | Orienter (Oney vs problème technique)      |
+| Question financement (mensualités, frais) | Répondre précisément sur le fonctionnement |
 
 ## 5. 💬 Gabarits de Réponse
 
@@ -174,17 +166,19 @@ Plus d'infos : https://www.alltricks.fr/paiements
 L'équipe Alltricks
 ```
 
----
-
 ## 6. ⚠️ Règles et Points d'Attention
+
+| Situation constatée                                               | Décision | Suite à donner                                                       |
+| ----------------------------------------------------------------- | -------- | -------------------------------------------------------------------- |
+| Demande d'information (conditions, frais, délai, documents)       | **GO**   | Expliquer les options (3x/4x/10x), les délais et les documents       |
+| Refus Oney / dossier rejeté / scoring Oney défavorable            | **KO**   | Orienter vers Oney (3670) et proposer un autre moyen de paiement     |
+| Problème technique bloquant au checkout (impossible de finaliser) | **KO**   | Handoff vers un conseiller pour investigation + proposer alternative |
 
 **Points clés FAQ :**
 
 - 3x/4x sans frais
 - 10x avec frais, documents requis, délai 5-7 jours
 - Contact Oney : 3670
-
----
 
 ## 7. 🔗 Ressources et Liens
 
@@ -193,19 +187,13 @@ L'équipe Alltricks
 | Page Paiements | https://www.alltricks.fr/paiements |
 | Oney           | 3670                               |
 
----
-
----
-
 # PLB-PAY-021 - Commande en attente de paiement
 
 ## 1. 🎯 Objectif
 
 Expliquer pourquoi une commande est en attente et comment finaliser.
 
----
-
-## 2. 🗂️ Métadonnées
+## 2. 🗂️ Métadonnées (ID, Catégorie, Tags, Priorité)
 
 | Propriété          | Valeur                                                |
 | ------------------ | ----------------------------------------------------- |
@@ -215,24 +203,17 @@ Expliquer pourquoi une commande est en attente et comment finaliser.
 | **Tags Clés**      | `attente paiement`, `virement`, `chèque`, `finaliser` |
 | **Priorité**       | P2                                                    |
 
----
-
 ## 3. 🔎 Conditions de Déclenchement
 
 L'agent doit s'activer si le client a une commande en attente de paiement.
 
----
+## 4. 📋 Informations à Identifier dans l'email
 
-## 4. ✅ Décision (GO/KO)
-
-| Situation constatée                                                             | Décision | Suite à donner                                                             |
-| ------------------------------------------------------------------------------- | -------- | -------------------------------------------------------------------------- |
-| Paiement par virement/chèque en cours, délais standards non dépassés            | **GO**   | Expliquer délais + où trouver le RIB / l'adresse chèque + rappeler 7 jours |
-| Client souhaite finaliser/changer de mode de paiement depuis "Mes Commandes"    | **GO**   | Indiquer le chemin "Finaliser ma commande"                                 |
-| Paiement envoyé mais commande toujours "en attente" au-delà des délais annoncés | **KO**   | Handoff vers un conseiller (vérification réception paiement)               |
-| Plus de 7 jours / commande expirée / indisponibilité annoncée                   | **KO**   | Informer qu'il faut repasser commande (selon disponibilité)                |
-
----
+| Information                                | Utilité                                    |
+| ------------------------------------------ | ------------------------------------------ |
+| Mode de paiement (virement, chèque, autre) | Donner la procédure et les délais adaptés  |
+| Date d'envoi du paiement (si mentionnée)   | Évaluer si le délai est normal ou dépassé  |
+| Besoin de finaliser/changer de mode        | Indiquer le chemin "Finaliser ma commande" |
 
 ## 5. 💬 Gabarits de Réponse
 
@@ -256,9 +237,14 @@ Commande réservée **7 jours**. Passé ce délai, disponibilité non garantie.
 L'équipe Alltricks
 ```
 
----
-
 ## 6. ⚠️ Règles et Points d'Attention
+
+| Situation constatée                                                             | Décision | Suite à donner                                                             |
+| ------------------------------------------------------------------------------- | -------- | -------------------------------------------------------------------------- |
+| Paiement par virement/chèque en cours, délais standards non dépassés            | **GO**   | Expliquer délais + où trouver le RIB / l'adresse chèque + rappeler 7 jours |
+| Client souhaite finaliser/changer de mode de paiement depuis "Mes Commandes"    | **GO**   | Indiquer le chemin "Finaliser ma commande"                                 |
+| Paiement envoyé mais commande toujours "en attente" au-delà des délais annoncés | **KO**   | Handoff vers un conseiller (vérification réception paiement)               |
+| Plus de 7 jours / commande expirée / indisponibilité annoncée                   | **KO**   | Informer qu'il faut repasser commande (selon disponibilité)                |
 
 **Points clés FAQ :**
 
@@ -266,17 +252,11 @@ L'équipe Alltricks
 - Réservation 7 jours max
 - Adresse chèque : AVANIS, 5 avenue Newton, 78180 Montigny-le-Bretonneux
 
----
-
 ## 7. 🔗 Ressources et Liens
 
 | Ressource     | URL                                               |
 | ------------- | ------------------------------------------------- |
 | Mes commandes | https://www.alltricks.fr/mon-compte/mes-commandes |
-
----
-
----
 
 # PLB-PAY-022 - Débité mais commande annulée
 
@@ -284,9 +264,7 @@ L'équipe Alltricks
 
 Rassurer et orienter le client débité sans commande validée.
 
----
-
-## 2. 🗂️ Métadonnées
+## 2. 🗂️ Métadonnées (ID, Catégorie, Tags, Priorité)
 
 | Propriété          | Valeur                                        |
 | ------------------ | --------------------------------------------- |
@@ -296,21 +274,17 @@ Rassurer et orienter le client débité sans commande validée.
 | **Tags Clés**      | `débité`, `annulé`, `prélevé`, `double débit` |
 | **Priorité**       | P1                                            |
 
----
-
 ## 3. 🔎 Conditions de Déclenchement
 
 L'agent doit s'activer si le client signale un débit sans commande.
 
----
+## 4. 📋 Informations à Identifier dans l'email
 
-## 4. ✅ Décision (GO/KO)
-
-| Situation constatée                                                          | Décision | Suite à donner                                                                          |
-| ---------------------------------------------------------------------------- | -------- | --------------------------------------------------------------------------------------- |
-| Client indique un débit et ne retrouve aucune commande / aucune confirmation | **KO**   | **Handoff vers un conseiller** (vérification interne commande + paiement indispensable) |
-
----
+| Information                                      | Utilité                                |
+| ------------------------------------------------ | -------------------------------------- |
+| Date et montant du débit                         | Permet de retrouver la transaction     |
+| Intitulé de la transaction / identifiant         | Facilite l'identification du paiement  |
+| Email / nom / CP / numéro de commande (si dispo) | Aider à retrouver la commande associée |
 
 ## 5. 💬 Gabarits de Réponse
 
@@ -343,25 +317,23 @@ Traitement prioritaire garanti.
 L'équipe Alltricks
 ```
 
----
-
 ## 6. ⚠️ Règles et Points d'Attention
+
+| Situation constatée                                                          | Décision | Suite à donner                                                                          |
+| ---------------------------------------------------------------------------- | -------- | --------------------------------------------------------------------------------------- |
+| Client indique un débit et ne retrouve aucune commande / aucune confirmation | **KO**   | **Handoff vers un conseiller** (vérification interne commande + paiement indispensable) |
 
 **Points clés FAQ :**
 
 - Demander détails du débit
 - Traitement prioritaire
 
----
-
 ## 7. 🔗 Ressources et Liens
 
-| Ressource | URL |
-| --------- | --- |
-
----
-
----
+| Ressource      | URL                                               |
+| -------------- | ------------------------------------------------- |
+| Mes commandes  | https://www.alltricks.fr/mon-compte/mes-commandes |
+| Page Paiements | https://www.alltricks.fr/paiements                |
 
 # PLB-PAY-023 - Déconnexion pendant le paiement
 
@@ -369,9 +341,7 @@ L'équipe Alltricks
 
 Rassurer le client déconnecté pendant le paiement.
 
----
-
-## 2. 🗂️ Métadonnées
+## 2. 🗂️ Métadonnées (ID, Catégorie, Tags, Priorité)
 
 | Propriété          | Valeur                                         |
 | ------------------ | ---------------------------------------------- |
@@ -381,16 +351,17 @@ Rassurer le client déconnecté pendant le paiement.
 | **Tags Clés**      | `déconnecté`, `coupure`, `paiement interrompu` |
 | **Priorité**       | P3                                             |
 
----
+## 3. 🔎 Conditions de Déclenchement
 
-## 4. ✅ Décision (GO/KO)
+L'agent doit s'activer si le client indique une déconnexion / coupure pendant le paiement.
 
-| Situation constatée                                                      | Décision | Suite à donner                                                          |
-| ------------------------------------------------------------------------ | -------- | ----------------------------------------------------------------------- |
-| Déconnexion pendant paiement + aucun email de confirmation + aucun débit | **GO**   | Rassurer + inviter à reprendre/relancer la commande via "Mes Commandes" |
-| Déconnexion pendant paiement + débit constaté (même sans confirmation)   | **KO**   | Handoff vers un conseiller (vérification interne commande + paiement)   |
+## 4. 📋 Informations à Identifier dans l'email
 
----
+| Information                              | Utilité                               |
+| ---------------------------------------- | ------------------------------------- |
+| Réception d'un email de confirmation     | Distinguer commande finalisée vs non  |
+| Débit constaté sur le compte             | Déclencher une vérification (handoff) |
+| Possibilité de relancer depuis le compte | Guider vers "Finaliser ma commande"   |
 
 ## 5. 💬 Gabarits de Réponse
 
@@ -415,7 +386,12 @@ Si le bouton n'est pas accessible, dites-le nous.
 L'équipe Alltricks
 ```
 
----
+## 6. ⚠️ Règles et Points d'Attention
+
+| Situation constatée                                                      | Décision | Suite à donner                                                          |
+| ------------------------------------------------------------------------ | -------- | ----------------------------------------------------------------------- |
+| Déconnexion pendant paiement + aucun email de confirmation + aucun débit | **GO**   | Rassurer + inviter à reprendre/relancer la commande via "Mes Commandes" |
+| Déconnexion pendant paiement + débit constaté (même sans confirmation)   | **KO**   | Handoff vers un conseiller (vérification interne commande + paiement)   |
 
 ## 7. 🔗 Ressources et Liens
 
@@ -423,19 +399,13 @@ L'équipe Alltricks
 | ------------- | ------------------------------------------------- |
 | Mes commandes | https://www.alltricks.fr/mon-compte/mes-commandes |
 
----
-
----
-
 # PLB-PAY-024 - Modes de paiement disponibles
 
 ## 1. 🎯 Objectif
 
 Informer sur tous les modes de paiement acceptés.
 
----
-
-## 2. 🗂️ Métadonnées
+## 2. 🗂️ Métadonnées (ID, Catégorie, Tags, Priorité)
 
 | Propriété          | Valeur                                                       |
 | ------------------ | ------------------------------------------------------------ |
@@ -447,12 +417,18 @@ Informer sur tous les modes de paiement acceptés.
 
 ---
 
-## 4. ✅ Décision (GO/KO)
+## 3. 🔎 Conditions de Déclenchement
 
-| Situation constatée                                          | Décision | Suite à donner                                                       |
-| ------------------------------------------------------------ | -------- | -------------------------------------------------------------------- |
-| Demande d'information sur les moyens de paiement acceptés    | **GO**   | Lister les moyens disponibles + contraintes (3D Secure, partenaires) |
-| Client veut payer avec un moyen non proposé / non disponible | **KO**   | Indiquer que ce n'est pas possible + proposer les alternatives       |
+L'agent doit s'activer si le client demande les moyens de paiement acceptés ou refuse un moyen non disponible.
+
+---
+
+## 4. 📋 Informations à Identifier dans l'email
+
+| Information                | Utilité                                          |
+| -------------------------- | ------------------------------------------------ |
+| Moyen de paiement souhaité | Répondre si disponible / proposer alternative    |
+| Mention vendeur partenaire | Rappeler les restrictions possibles (CB parfois) |
 
 ---
 

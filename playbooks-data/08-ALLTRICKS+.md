@@ -1,5 +1,3 @@
-#+#+#+#+-------------------------------------------
-
 # ⭐ PLAYBOOK ALLTRICKS+ — Format IA-Ready
 
 > **Thématique** : Programme de fidélité Alltricks+ (abonnement annuel)
@@ -7,17 +5,31 @@
 
 ---
 
-## PLB-ATP-001 - Informations & conditions Alltricks+
+# PLB-ATP-001 - Informations & conditions Alltricks+
 
-**Catégorie** : 1. MON COMPTE & ABONNEMENTS  
-**Sous-catégorie** : 1.3 Programme Alltricks+  
-**Priorité** : P1  
-**Tags** : alltricks+, abonnement, fidelite, avantages, livraison gratuite, cashback, retour 100 jours, strava, prix, renouvellement  
-**Version** : v2.0
+## 1. 🎯 Objectif
+
+Informer le client sur l'offre Alltricks+ (prix/durée, avantages, conditions d'éligibilité, exclusions) et fournir les gabarits de réponse adaptés.
 
 ---
 
-### 1. Intention(s) couverte(s)
+## 2. 🗂️ Métadonnées (ID, Catégorie, Tags, Priorité)
+
+| Propriété          | Valeur                                                                                                                                        |
+| ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Identifiant**    | PLB-ATP-001                                                                                                                                   |
+| **Catégorie**      | 1. MON COMPTE & ABONNEMENTS                                                                                                                   |
+| **Sous-catégorie** | 1.3 Programme Alltricks+                                                                                                                      |
+| **Tags Clés**      | `alltricks+`, `abonnement`, `fidelite`, `avantages`, `livraison gratuite`, `cashback`, `retour 100 jours`, `strava`, `prix`, `renouvellement` |
+| **Priorité**       | P1                                                                                                                                            |
+
+---
+
+## 3. 🔎 Conditions de Déclenchement
+
+Le playbook doit s'activer si le client pose une question sur Alltricks+ (avantages, prix/durée, cashback, renouvellement, éligibilité, code anniversaire, exclusions Marketplace, Strava).
+
+**Exemples de formulations clients :**
 
 - "Qu'est-ce que Alltricks+ ?"
 - "Quels sont les avantages de l'abonnement ?"
@@ -26,75 +38,22 @@
 - "Le renouvellement est-il automatique ?"
 - "Quelles sont les conditions d'éligibilité ?"
 
-### 2. Conditions & règles métier (résumé)
+---
 
-- **Type d'offre** : abonnement annuel Alltricks+ (9,99€ TTC/an), durée 365 jours à l'activation.
-- **Renouvellement** : **non automatique**, renouvellement manuel uniquement après expiration.
-- **Éligibilité** : particuliers +18 ans, compte client actif, France métropolitaine (hors Corse) ou Belgique.
-- **Exclusions** : professionnels, personnes morales, Marketplace (tous les avantages exclus).
-- **Périmètre géographique** :
-  - France métropolitaine (hors Corse) : tous avantages
-  - Belgique : tous avantages **sauf cashback**
-  - Autres pays : non éligibles
-- **Droit de rétractation** : 14 jours, **perdu dès utilisation d'un avantage**.
+## 4. 📋 Informations à Identifier dans l'email
 
-#### Avantages principaux
+| Information                                      | Utilité                                                       |
+| ------------------------------------------------ | ------------------------------------------------------------- |
+| Sujet exact (livraison, cashback, retours, etc.) | Choisir le bon gabarit / détailler la règle pertinente        |
+| Pays / zone (France hors Corse, Belgique, etc.)  | Vérifier l'éligibilité et les limites (ex: cashback Belgique) |
+| Marketplace / vendeur partenaire mentionné       | Appliquer les exclusions Marketplace                          |
+| Mention d'un litige / contestation / juridique   | Déclencher une escalade (KO)                                  |
 
-1. **Livraison gratuite & illimitée** (produits Alltricks uniquement)
-   - Point relais standard/express + domicile standard gratuits
-   - Domicile express gratuit **dès 25€**
-   - Exclusions : France Express, Mondial Relay XL, RDV dimanche, colis volumineux en express
+---
 
-2. **Cashback (cagnotte virtuelle)**
-   - Crédité **après expédition** sur produits éligibles
-   - Utilisable en ligne et en magasin, cumulable avec promos
-   - **Pas de remboursement en €**, uniquement en cagnotte
-   - Perte à J+60 après expiration du compte
+## 5. 💬 Gabarits de Réponse
 
-3. **Retours étendus à 100 jours**
-   - Produits Alltricks uniquement
-   - Retour = **avoir**, pas remboursement
-
-4. **Code anniversaire Alltricks -10%**
-   - Événement unique en **mai** (anniversaire du site Alltricks)
-   - 1 utilisation, exclusions Marketplace/soldes/cartes cadeaux
-
-5. **Partenariat Strava**
-   - 60 jours Strava Premium gratuits (30 + 30)
-   - Éligibilité soumise aux règles Strava
-
-### 3. Décision IA
-
-#### ✅ CAS GO (L'IA répond seule)
-
-| Situation                           | Exemples de demandes                                                                | Action IA                                                         |
-| ----------------------------------- | ----------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
-| **Questions générales sur l'offre** | "Qu'est-ce que Alltricks+ ?", "Quels sont les avantages ?", "Combien ça coûte ?"    | Utiliser template 4.1 (présentation standard)                     |
-| **Fonctionnement du cashback**      | "Comment fonctionne le cashback ?", "Pourquoi je ne vois pas mon cashback ?"        | Utiliser template 4.2 ou 4.6 (cashback détaillé)                  |
-| **Code anniversaire**               | "Quand reçois-je mon code anniversaire ?", "C'est lié à ma date de naissance ?"     | Utiliser template 4.3 (code anniversaire)                         |
-| **Renouvellement**                  | "Mon abonnement se renouvelle-t-il automatiquement ?", "Comment renouveler ?"       | Utiliser template 4.4 (renouvellement)                            |
-| **Marketplace et exclusions**       | "Puis-je utiliser Alltricks+ sur la Marketplace ?", "Quelles sont les exclusions ?" | Utiliser template 4.5 (Marketplace exclus)                        |
-| **Conditions d'éligibilité**        | "Suis-je éligible ?", "Ça marche en Belgique ?", "Et pour les pros ?"               | Expliquer les conditions (France/Belgique, +18 ans, particuliers) |
-| **Avantages détaillés**             | "Comment fonctionne la livraison gratuite ?", "C'est quoi les retours 100 jours ?"  | Détailler l'avantage concerné depuis section 2                    |
-
-**Règle générale GO :** Toute question d'information générale sur l'offre, les avantages, les conditions ou le fonctionnement → **GO** avec template approprié.
-
-#### ❌ CAS KO (Escalade obligatoire)
-
-| Situation                                    | Exemples de demandes                                                            | Raison KO                                           | Action conseiller                                             |
-| -------------------------------------------- | ------------------------------------------------------------------------------- | --------------------------------------------------- | ------------------------------------------------------------- |
-| **Rétractation contestée**                   | "Je veux me rétracter mais vous refusez", "J'ai utilisé un avantage par erreur" | Litige commercial nécessitant vérification manuelle | Vérifier utilisation réelle des avantages + traiter selon CGV |
-| **Demande de remboursement exceptionnel**    | "Remboursez-moi mon abonnement", "Je veux un geste commercial"                  | Hors pouvoir IA, décision commerciale               | Analyser le cas et décider selon politique interne            |
-| **Litige juridique**                         | Mention "avocat", "plainte", "DGCCRF", "tribunal"                               | Escalade juridique obligatoire                      | Transférer au service juridique                               |
-| **Suspension de compte**                     | "Mon compte Alltricks+ est suspendu", "Pourquoi je suis bloqué ?"               | Nécessite accès BDD + vérification fraude           | Vérifier raison suspension + lever si légitime                |
-| **Problème technique bloquant**              | "Je ne peux pas activer mon abonnement", "Erreur de paiement récurrent"         | Nécessite accès technique/BDD                       | Débloquer techniquement + assistance activation               |
-| **Demande d'accès aux données personnelles** | "Donnez-moi toutes mes données Alltricks+", "RGPD"                              | Demande légale RGPD                                 | Procédure RGPD standard                                       |
-
-**Règle générale KO :** Toute demande nécessitant un accès BDD, une action commerciale exceptionnelle, un litige ou une vérification manuelle → **KO** avec escalade.
-
-### 4. Template(s) de réponse
-
-#### 4.1. Template standard – Présentation Alltricks+
+### 5.1. Template standard – Présentation Alltricks+
 
 ```markdown
 Bonjour [Prénom],
@@ -127,7 +86,7 @@ Si vous souhaitez, je peux détailler un avantage en particulier.
 L’équipe Alltricks
 ```
 
-#### 4.2. Template – Cashback (détail rapide)
+### 5.2. Template – Cashback (détail rapide)
 
 ```markdown
 Le cashback Alltricks+ est une cagnotte virtuelle :
@@ -139,7 +98,7 @@ Le cashback Alltricks+ est une cagnotte virtuelle :
 - Perdu 60 jours après expiration de l’abonnement si non utilisé
 ```
 
-#### 4.3. Template – Code anniversaire (date personnelle)
+### 5.3. Template – Code anniversaire (date personnelle)
 
 ```markdown
 Bonjour [Prénom],
@@ -155,7 +114,7 @@ Si vous souhaitez, je peux vous rappeler les dates exactes de l’opération All
 L’équipe Alltricks
 ```
 
-#### 4.4. Template – Renouvellement non automatique
+### 5.4. Template – Renouvellement non automatique
 
 ```markdown
 Bonjour [Prénom],
@@ -171,7 +130,7 @@ Vous recevrez un email de rappel quelques jours avant l’expiration pour vous p
 L’équipe Alltricks
 ```
 
-#### 4.5. Template – Marketplace exclus
+### 5.5. Template – Marketplace exclus
 
 ```markdown
 Bonjour [Prénom],
@@ -190,7 +149,7 @@ Vous pouvez identifier les produits Marketplace par la mention "Vendu par [Nom d
 L’équipe Alltricks
 ```
 
-#### 4.6. Template – Cashback non visible
+### 5.6. Template – Cashback non visible
 
 ```markdown
 Bonjour [Prénom],
@@ -210,13 +169,58 @@ Pour vérifier votre cashback :
 L’équipe Alltricks
 ```
 
-### 5. Variantes / paramètres
+---
+
+## 6. ⚠️ Règles et Points d'Attention
+
+**Conditions & règles métier (résumé) :**
+
+- **Type d'offre** : abonnement annuel Alltricks+ (9,99€ TTC/an), durée 365 jours à l'activation.
+- **Renouvellement** : **non automatique**, renouvellement manuel uniquement après expiration.
+- **Éligibilité** : particuliers +18 ans, compte client actif, France métropolitaine (hors Corse) ou Belgique.
+- **Exclusions** : professionnels, personnes morales, Marketplace (tous les avantages exclus).
+- **Périmètre géographique** :
+  - France métropolitaine (hors Corse) : tous avantages
+  - Belgique : tous avantages **sauf cashback**
+  - Autres pays : non éligibles
+- **Droit de rétractation** : 14 jours, **perdu dès utilisation d'un avantage**.
+
+**Décision (OK/KO) :**
+
+#### ✅ CAS GO (L'IA répond seule)
+
+| Situation                           | Exemples de demandes                                                                | Action IA                                                         |
+| ----------------------------------- | ----------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
+| **Questions générales sur l'offre** | "Qu'est-ce que Alltricks+ ?", "Quels sont les avantages ?", "Combien ça coûte ?"    | Utiliser template 5.1 (présentation standard)                     |
+| **Fonctionnement du cashback**      | "Comment fonctionne le cashback ?", "Pourquoi je ne vois pas mon cashback ?"        | Utiliser template 5.2 ou 5.6 (cashback détaillé)                  |
+| **Code anniversaire**               | "Quand reçois-je mon code anniversaire ?", "C'est lié à ma date de naissance ?"     | Utiliser template 5.3 (code anniversaire)                         |
+| **Renouvellement**                  | "Mon abonnement se renouvelle-t-il automatiquement ?", "Comment renouveler ?"       | Utiliser template 5.4 (renouvellement)                            |
+| **Marketplace et exclusions**       | "Puis-je utiliser Alltricks+ sur la Marketplace ?", "Quelles sont les exclusions ?" | Utiliser template 5.5 (Marketplace exclus)                        |
+| **Conditions d'éligibilité**        | "Suis-je éligible ?", "Ça marche en Belgique ?", "Et pour les pros ?"               | Expliquer les conditions (France/Belgique, +18 ans, particuliers) |
+| **Avantages détaillés**             | "Comment fonctionne la livraison gratuite ?", "C'est quoi les retours 100 jours ?"  | Détailler l'avantage concerné depuis section 5                    |
+
+**Règle générale GO :** Toute question d'information générale sur l'offre, les avantages, les conditions ou le fonctionnement → **GO** avec template approprié.
+
+#### ❌ CAS KO (Escalade obligatoire)
+
+| Situation                                    | Exemples de demandes                                                            | Raison KO                                           | Action conseiller                                             |
+| -------------------------------------------- | ------------------------------------------------------------------------------- | --------------------------------------------------- | ------------------------------------------------------------- |
+| **Rétractation contestée**                   | "Je veux me rétracter mais vous refusez", "J'ai utilisé un avantage par erreur" | Litige commercial nécessitant vérification manuelle | Vérifier utilisation réelle des avantages + traiter selon CGV |
+| **Demande de remboursement exceptionnel**    | "Remboursez-moi mon abonnement", "Je veux un geste commercial"                  | Hors pouvoir IA, décision commerciale               | Analyser le cas et décider selon politique interne            |
+| **Litige juridique**                         | Mention "avocat", "plainte", "DGCCRF", "tribunal"                               | Escalade juridique obligatoire                      | Transférer au service juridique                               |
+| **Suspension de compte**                     | "Mon compte Alltricks+ est suspendu", "Pourquoi je suis bloqué ?"               | Nécessite accès BDD + vérification fraude           | Vérifier raison suspension + lever si légitime                |
+| **Problème technique bloquant**              | "Je ne peux pas activer mon abonnement", "Erreur de paiement récurrent"         | Nécessite accès technique/BDD                       | Débloquer techniquement + assistance activation               |
+| **Demande d'accès aux données personnelles** | "Donnez-moi toutes mes données Alltricks+", "RGPD"                              | Demande légale RGPD                                 | Procédure RGPD standard                                       |
+
+**Règle générale KO :** Toute demande nécessitant un accès BDD, une action commerciale exceptionnelle, un litige ou une vérification manuelle → **KO** avec escalade.
+
+**Variantes / paramètres :**
 
 - `[Prénom]` : utiliser si disponible, sinon commencer directement par la première phrase.
 - Si le client demande un **cas précis** (livraison, cashback, retour), basculer sur la variante dédiée.
 - Ne pas promettre de cas d’exception (remboursement, prolongation, réactivation).
 
-### 6. Points d'attention & FAQ
+**FAQ / Points d'attention :**
 
 **Questions fréquentes :**
 
@@ -241,7 +245,16 @@ L’équipe Alltricks
 - Livraison RDV dimanche
 - Colis volumineux en express
 
-### 7. Ressources et liens
+**Historique :**
+
+| Version | Date    | Modification                          |
+| ------- | ------- | ------------------------------------- |
+| v2.0    | 2025-01 | Mise à jour offre + avantages actuels |
+| v2.1    | 2025-01 | Ajout FAQ et points d'attention       |
+
+---
+
+## 7. 🔗 Ressources et Liens
 
 | Ressource       | URL                                            |
 | --------------- | ---------------------------------------------- |
@@ -249,10 +262,3 @@ L’équipe Alltricks
 | Mon compte      | https://www.alltricks.fr/mon-compte            |
 | Mes Avoirs      | https://www.alltricks.fr/mon-compte/mes-avoirs |
 | CGV Alltricks+  | https://www.alltricks.fr/cgv-alltricks-plus    |
-
-### 8. Historique
-
-| Version | Date    | Modification                          |
-| ------- | ------- | ------------------------------------- |
-| v2.0    | 2025-01 | Mise à jour offre + avantages actuels |
-| v2.1    | 2025-01 | Ajout FAQ et points d'attention       |

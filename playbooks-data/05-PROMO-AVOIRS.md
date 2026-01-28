@@ -11,19 +11,14 @@
 
 Aider le client à comprendre pourquoi son code promo ne fonctionne pas et lui proposer des solutions.
 
----
+## 2. 🗂️ Métadonnées (ID, Catégorie, Tags, Priorité)
 
-## 2. 🗂️ Métadonnées
-
-| Propriété          | Valeur                                                                       |
-| ------------------ | ---------------------------------------------------------------------------- |
-| **Identifiant**    | PLB-PRO-025                                                                  |
-| **Catégorie**      | 7. AUTRES QUESTIONS                                                          |
-| **Sous-catégorie** | 7.5 Toutes autres demandes                                                   |
-| **Tags Clés**      | `code promo`, `réduction`, `ne fonctionne pas`, `code invalide`, `promotion` |
-| **Priorité**       | P2                                                                           |
-
----
+| Propriété       | Valeur                                                                       |
+| --------------- | ---------------------------------------------------------------------------- |
+| **Identifiant** | PLB-PRO-025                                                                  |
+| **Catégorie**   | 7. AUTRES QUESTIONS                                                          |
+| **Tags Clés**   | `code promo`, `réduction`, `ne fonctionne pas`, `code invalide`, `promotion` |
+| **Priorité**    | P2                                                                           |
 
 ## 3. 🔎 Conditions de Déclenchement
 
@@ -35,7 +30,14 @@ L'agent doit s'activer si le client a un problème avec un code promo.
 - "Le code est refusé"
 - "La réduction ne s'applique pas"
 
----
+## 4. 📋 Informations à Identifier dans l'email
+
+| Information                                   | Utilité                                               |
+| --------------------------------------------- | ----------------------------------------------------- |
+| Code promo saisi                              | Vérifier la saisie et le type de code                 |
+| Message d'erreur affiché (si mentionné)       | Qualifier la cause (invalide, expiré, non éligible)   |
+| Contenu du panier / vendeur partenaire        | Expliquer les exclusions (partenaires, non éligibles) |
+| Montant minimum / conditions (si mentionnées) | Vérifier les règles de l'offre                        |
 
 ## 5. 💬 Gabarits de Réponse
 
@@ -65,8 +67,6 @@ Les codes trouvés sur des sites tiers peuvent être expirés ou non valides.
 L'équipe Alltricks
 ```
 
----
-
 ## 6. ⚠️ Règles et Points d'Attention
 
 **Points clés FAQ :**
@@ -76,15 +76,11 @@ L'équipe Alltricks
 - Code oublié = non récupérable après validation
 - Codes tiers non garantis
 
----
-
 ## 7. 🔗 Ressources et Liens
 
 | Ressource             | URL                                       |
 | --------------------- | ----------------------------------------- |
 | Codes promo officiels | https://www.alltricks.fr/surl/codespromos |
-
----
 
 ---
 
@@ -94,9 +90,7 @@ L'équipe Alltricks
 
 Expliquer comment utiliser et gérer les avoirs.
 
----
-
-## 2. 🗂️ Métadonnées
+## 2. 🗂️ Métadonnées (ID, Catégorie, Tags, Priorité)
 
 | Propriété          | Valeur                                                     |
 | ------------------ | ---------------------------------------------------------- |
@@ -106,13 +100,17 @@ Expliquer comment utiliser et gérer les avoirs.
 | **Tags Clés**      | `avoir`, `utiliser avoir`, `remboursement avoir`, `crédit` |
 | **Priorité**       | P3                                                         |
 
----
-
 ## 3. 🔎 Conditions de Déclenchement
 
 L'agent doit s'activer si le client demande comment utiliser un avoir.
 
----
+## 4. 📋 Informations à Identifier dans l'email
+
+| Information                                   | Utilité                                   |
+| --------------------------------------------- | ----------------------------------------- |
+| L'avoir est remboursable (si mentionné)       | Orienter vers "Demander le remboursement" |
+| Nombre d'avoirs / montant (si mentionnés)     | Expliquer le cumul et l'utilisation       |
+| Mention vendeur partenaire / type de produits | Rappeler les restrictions d'éligibilité   |
 
 ## 5. 💬 Gabarits de Réponse
 
@@ -143,8 +141,6 @@ Voici comment gérer vos avoirs Alltricks :
 L'équipe Alltricks
 ```
 
----
-
 ## 6. ⚠️ Règles et Points d'Attention
 
 **Points clés FAQ :**
@@ -155,15 +151,11 @@ L'équipe Alltricks
 - Pas sur produits partenaires
 - Utilisables en magasin
 
----
-
 ## 7. 🔗 Ressources et Liens
 
 | Ressource  | URL                                            |
 | ---------- | ---------------------------------------------- |
 | Mes Avoirs | https://www.alltricks.fr/mon-compte/mes-avoirs |
-
----
 
 ---
 
@@ -173,9 +165,7 @@ L'équipe Alltricks
 
 Informer sur l'utilisation des chèques-cadeaux.
 
----
-
-## 2. 🗂️ Métadonnées
+## 2. 🗂️ Métadonnées (ID, Catégorie, Tags, Priorité)
 
 | Propriété          | Valeur                                                 |
 | ------------------ | ------------------------------------------------------ |
@@ -185,7 +175,17 @@ Informer sur l'utilisation des chèques-cadeaux.
 | **Tags Clés**      | `chèque cadeau`, `gift card`, `carte cadeau`, `offrir` |
 | **Priorité**       | P3                                                     |
 
----
+## 3. 🔎 Conditions de Déclenchement
+
+L'agent doit s'activer si le client demande comment utiliser un chèque-cadeau ou souhaite l'annuler.
+
+## 4. 📋 Informations à Identifier dans l'email
+
+| Information                                   | Utilité                                       |
+| --------------------------------------------- | --------------------------------------------- |
+| Code / référence du chèque-cadeau             | Identifier le bon chèque-cadeau               |
+| Achat Alltricks vs site tiers (si mentionné)  | Distinguer qui gère l'annulation / le support |
+| Demande d'annulation et date (si mentionnées) | Vérifier le délai (30/100 jours)              |
 
 ## 5. 💬 Gabarits de Réponse
 
@@ -215,8 +215,6 @@ En cas de retour, le remboursement se fait sous forme d'avoir non remboursable.
 L'équipe Alltricks
 ```
 
----
-
 ## 6. ⚠️ Règles et Points d'Attention
 
 **Points clés FAQ :**
@@ -226,15 +224,11 @@ L'équipe Alltricks
 - Remboursement possible sous 30/100 jours
 - Retour = avoir non remboursable
 
----
-
 ## 7. 🔗 Ressources et Liens
 
 | Ressource    | URL                               |
 | ------------ | --------------------------------- |
 | Nos magasins | https://www.alltricks.fr/magasins |
-
----
 
 ---
 
@@ -244,9 +238,7 @@ L'équipe Alltricks
 
 Clarifier les règles de cumul des différentes remises.
 
----
-
-## 2. 🗂️ Métadonnées
+## 2. 🗂️ Métadonnées (ID, Catégorie, Tags, Priorité)
 
 | Propriété          | Valeur                                                       |
 | ------------------ | ------------------------------------------------------------ |
@@ -256,7 +248,17 @@ Clarifier les règles de cumul des différentes remises.
 | **Tags Clés**      | `cumuler`, `cumul`, `plusieurs codes`, `remise`, `réduction` |
 | **Priorité**       | P3                                                           |
 
----
+## 3. 🔎 Conditions de Déclenchement
+
+L'agent doit s'activer si le client demande si plusieurs remises (codes promo, chèques-cadeaux, avoirs) peuvent être cumulées.
+
+## 4. 📋 Informations à Identifier dans l'email
+
+| Information                              | Utilité                                         |
+| ---------------------------------------- | ----------------------------------------------- |
+| Types de remises concernées              | Répondre selon les règles (code vs avoir, etc.) |
+| Nombre de codes promo (si mentionné)     | Rappeler : 1 seul code promo par commande       |
+| Chèques-cadeaux / avoirs (si mentionnés) | Confirmer la cumulabilité                       |
 
 ## 5. 💬 Gabarits de Réponse
 
@@ -284,8 +286,6 @@ Les codes promo et les avoirs sont de nature différente :
 L'équipe Alltricks
 ```
 
----
-
 ## 6. ⚠️ Règles et Points d'Attention
 
 **Points clés FAQ :**
@@ -294,3 +294,10 @@ L'équipe Alltricks
 - Avoirs et chèques-cadeaux cumulables
 - Avoir ≠ code promo
 - Codes anniversaire Alltricks+ : voir PLB-008 (08-ALLTRICKS+.md)
+
+## 7. 🔗 Ressources et Liens
+
+| Ressource   | URL                                            |
+| ----------- | ---------------------------------------------- |
+| Codes promo | https://www.alltricks.fr/surl/codespromos      |
+| Mes Avoirs  | https://www.alltricks.fr/mon-compte/mes-avoirs |

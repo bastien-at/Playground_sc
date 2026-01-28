@@ -13,7 +13,7 @@ Aider le client qui n'arrive pas à se connecter à son compte.
 
 ---
 
-## 2. 🗂️ Métadonnées
+## 2. 🗂️ Métadonnées (ID, Catégorie, Tags, Priorité)
 
 | Propriété          | Valeur                                                             |
 | ------------------ | ------------------------------------------------------------------ |
@@ -37,14 +37,13 @@ L'agent doit s'activer si le client a des difficultés de connexion.
 
 ---
 
-## 4. ✅ Décision (OK/KO)
+## 4. 📋 Informations à Identifier dans l'email
 
-| Situation constatée                                                                           | Décision | Suite à donner                                                        |
-| --------------------------------------------------------------------------------------------- | -------- | --------------------------------------------------------------------- |
-| Problème de connexion / mot de passe / compte bloqué                                          | **OK**   | Appliquer le gabarit ci-dessous                                       |
-| Suspicion de compte compromis / piratage (activité anormale, e-mail modifié, etc.)            | **KO**   | **Handoff vers un conseiller** (vérification identité / sécurisation) |
-| Client demande une modification d'email / informations personnelles liée à l'accès            | **KO**   | **Handoff vers un conseiller** (contrôles nécessaires)                |
-| Problème persistant après toutes les vérifications (cache/cookies, autre navigateur/appareil) | **KO**   | **Handoff vers un conseiller** (diagnostic technique / accès interne) |
+| Information                                               | Utilité                                             |
+| --------------------------------------------------------- | --------------------------------------------------- |
+| Message d'erreur / contexte (compte bloqué, mot de passe) | Qualifier le type de problème et guider les étapes  |
+| Tentatives déjà faites (reset, navigateur, appareil)      | Éviter les répétitions / orienter vers diagnostic   |
+| Suspicion de compte compromis (si mentionnée)             | Déclencher un handoff (sécurisation / vérification) |
 
 ---
 
@@ -83,6 +82,13 @@ L'équipe Alltricks
 
 ## 6. ⚠️ Règles et Points d'Attention
 
+| Situation constatée                                                                           | Décision | Suite à donner                                                        |
+| --------------------------------------------------------------------------------------------- | -------- | --------------------------------------------------------------------- |
+| Problème de connexion / mot de passe / compte bloqué                                          | **OK**   | Appliquer le gabarit ci-dessous                                       |
+| Suspicion de compte compromis / piratage (activité anormale, e-mail modifié, etc.)            | **KO**   | **Handoff vers un conseiller** (vérification identité / sécurisation) |
+| Client demande une modification d'email / informations personnelles liée à l'accès            | **KO**   | **Handoff vers un conseiller** (contrôles nécessaires)                |
+| Problème persistant après toutes les vérifications (cache/cookies, autre navigateur/appareil) | **KO**   | **Handoff vers un conseiller** (diagnostic technique / accès interne) |
+
 **Points clés FAQ :**
 
 - Vérifier majuscules et espaces
@@ -99,8 +105,6 @@ L'équipe Alltricks
 
 ---
 
----
-
 # PLB-CPT-030 - Mot de passe oublié
 
 ## 1. 🎯 Objectif
@@ -109,7 +113,7 @@ Guider le client pour réinitialiser son mot de passe.
 
 ---
 
-## 2. 🗂️ Métadonnées
+## 2. 🗂️ Métadonnées (ID, Catégorie, Tags, Priorité)
 
 | Propriété          | Valeur                                                                   |
 | ------------------ | ------------------------------------------------------------------------ |
@@ -133,14 +137,13 @@ L'agent doit s'activer si le client demande une réinitialisation de mot de pass
 
 ---
 
-## 4. ✅ Décision (OK/KO)
+## 4. 📋 Informations à Identifier dans l'email
 
-| Situation constatée                                                                                    | Décision | Suite à donner                                                             |
-| ------------------------------------------------------------------------------------------------------ | -------- | -------------------------------------------------------------------------- |
-| Demande de réinitialisation de mot de passe                                                            | **OK**   | Appliquer le gabarit ci-dessous                                            |
-| Client n'a plus accès à l'adresse email du compte                                                      | **KO**   | **Handoff vers un conseiller** (vérification identité / mise à jour email) |
-| Email de réinitialisation non reçu malgré spam/indésirables + délai raisonnable + nouvelles tentatives | **KO**   | **Handoff vers un conseiller** (vérification délivrabilité / compte)       |
-| Suspension / blocage suspect (tentatives multiples, message d'erreur inhabituel)                       | **KO**   | **Handoff vers un conseiller** (contrôles anti-fraude / déblocage)         |
+| Information                                  | Utilité                                            |
+| -------------------------------------------- | -------------------------------------------------- |
+| Adresse email du compte (si doute)           | Vérifier que la demande concerne le bon compte     |
+| Email de réinitialisation reçu ou non + spam | Identifier un problème de délivrabilité            |
+| Accès à l'adresse email (oui/non)            | Si non : handoff (contrôle identité / mise à jour) |
 
 ---
 
@@ -169,6 +172,13 @@ L'équipe Alltricks
 
 ## 6. ⚠️ Règles et Points d'Attention
 
+| Situation constatée                                                                                    | Décision | Suite à donner                  |
+| ------------------------------------------------------------------------------------------------------ | -------- | ------------------------------- |
+| Demande de réinitialisation de mot de passe                                                            | **OK**   | Appliquer le gabarit ci-dessous |
+| Client n'a plus accès à l'adresse email du compte                                                      | **KO**   | **Handoff vers un conseiller**  |
+| Email de réinitialisation non reçu malgré spam/indésirables + délai raisonnable + nouvelles tentatives | **KO**   | **Handoff vers un conseiller**  |
+| Suspension / blocage suspect (tentatives multiples, message d'erreur inhabituel)                       | **KO**   | **Handoff vers un conseiller**  |
+
 **Points clés FAQ :**
 
 - Lien envoyé par email automatiquement
@@ -184,8 +194,6 @@ L'équipe Alltricks
 
 ---
 
----
-
 # PLB-CPT-031 - Suppression de compte
 
 ## 1. 🎯 Objectif
@@ -194,7 +202,7 @@ Qualifier une demande RGPD / suppression de données personnelles et l'escalader
 
 ---
 
-## 2. 🗂️ Métadonnées
+## 2. 🗂️ Métadonnées (ID, Catégorie, Tags, Priorité)
 
 | Propriété          | Valeur                                                                         |
 | ------------------ | ------------------------------------------------------------------------------ |
@@ -218,11 +226,12 @@ L'agent doit s'activer si le client demande la suppression de son compte, l'effa
 
 ---
 
-## 4. ✅ Décision (OK/KO)
+## 4. 📋 Informations à Identifier dans l'email
 
-| Situation constatée                                                             | Décision | Suite à donner                                  |
-| ------------------------------------------------------------------------------- | -------- | ----------------------------------------------- |
-| Demande de suppression de compte / effacement de données / demande liée au RGPD | **KO**   | **Handoff vers un conseiller** (procédure RGPD) |
+| Information                                | Utilité                                   |
+| ------------------------------------------ | ----------------------------------------- |
+| Nature de la demande (RGPD / suppression)  | Confirmer qu'il s'agit d'une demande RGPD |
+| Identité / email du compte (si mentionnés) | Aider le conseiller à traiter la demande  |
 
 ---
 
@@ -244,6 +253,10 @@ L'équipe Alltricks
 
 ## 6. ⚠️ Règles et Points d'Attention
 
+| Situation constatée                                                             | Décision | Suite à donner                                  |
+| ------------------------------------------------------------------------------- | -------- | ----------------------------------------------- |
+| Demande de suppression de compte / effacement de données / demande liée au RGPD | **KO**   | **Handoff vers un conseiller** (procédure RGPD) |
+
 **Points clés FAQ :**
 
 - Toute demande RGPD / données personnelles est **KO**
@@ -259,8 +272,6 @@ L'équipe Alltricks
 
 ---
 
----
-
 # PLB-CPT-032 - Newsletter
 
 ## 1. 🎯 Objectif
@@ -269,7 +280,7 @@ Qualifier une demande de gestion newsletter et l'escalader vers un conseiller.
 
 ---
 
-## 2. 🗂️ Métadonnées
+## 2. 🗂️ Métadonnées (ID, Catégorie, Tags, Priorité)
 
 | Propriété          | Valeur                                                        |
 | ------------------ | ------------------------------------------------------------- |
@@ -293,11 +304,12 @@ L'agent doit s'activer si le client demande un désabonnement newsletter, une mo
 
 ---
 
-## 4. ✅ Décision (OK/KO)
+## 4. 📋 Informations à Identifier dans l'email
 
-| Situation constatée                                              | Décision | Suite à donner                 |
-| ---------------------------------------------------------------- | -------- | ------------------------------ |
-| Demande de désabonnement / gestion / personnalisation newsletter | **KO**   | **Handoff vers un conseiller** |
+| Information                                   | Utilité                                 |
+| --------------------------------------------- | --------------------------------------- |
+| Nature de la demande (désabonnement, réglage) | Qualifier la demande newsletter         |
+| Adresse email concernée (si mentionnée)       | Permettre le traitement côté conseiller |
 
 ---
 
