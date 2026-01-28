@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SF Sidebar</title>
+    <link rel="stylesheet" href="sidebar.css" />
+  </head>
+  <body>
+    <div class="shell">
+      <header class="drawerHeader">
+        <div class="drawerHeaderInner">
+          <div class="drawerTitle" id="title">Assistant Conseiller</div>
+          <button class="drawerClose" id="closeDrawer" type="button" aria-label="Fermer">
+            ×
+          </button>
+        </div>
+      </header>
+
+      <main class="main">
+        <div class="subtitle" id="subtitle">Chargement…</div>
+
+        <section class="card">
+          <div class="cardTitle">Suggestion n8n</div>
+          <div class="actions" style="grid-template-columns: 1fr; margin-bottom: 10px;">
+            <button class="btn" id="captureEmail">Capturer le texte de l'email (sélection ou page)</button>
+          </div>
+          <textarea class="textarea" id="emailText" placeholder="Texte email à envoyer à n8n" ></textarea>
+          <div class="field">
+            <div class="label">Prénom</div>
+            <input class="input" id="firstname" type="text" placeholder="Prénom client" />
+          </div>
+          <div class="field">
+            <div class="label">Nom</div>
+            <input class="input" id="lastname" type="text" placeholder="Nom client" />
+          </div>
+          <div class="field">
+            <div class="label">Webhook URL (n8n)</div>
+            <input class="input" id="n8nWebhookUrl" type="url" placeholder="https://.../webhook/..." />
+          </div>
+          <div class="actions" style="grid-template-columns: 1fr 1fr; margin-top: 10px;">
+            <button class="btn" id="saveN8n">Enregistrer</button>
+            <button class="btn btnPrimary" id="suggestN8n">Suggérer</button>
+          </div>
+          <div class="status" id="n8nStatus"></div>
+          <div class="judge" id="judgePanel" hidden>
+            <div class="judgeRow">
+              <span class="badge" id="agentStatusBadge">-</span>
+              <span class="badge" id="judgeDecisionBadge">-</span>
+              <span class="judgeScore" id="judgeScore">-</span>
+            </div>
+            <div class="progress" aria-hidden="true">
+              <div class="progressBar" id="judgeProgress"></div>
+            </div>
+            <div class="judgeComment" id="judgeComment"></div>
+          </div>
+          <textarea class="textarea textareaPrimary" id="n8nSuggestion" placeholder="La suggestion apparaîtra ici" readonly></textarea>
+          <div class="actions" style="grid-template-columns: 1fr 1fr; margin-top: 10px;">
+            <button class="btn" id="copySuggestion">Copier</button>
+            <button class="btn btnPrimary" id="pasteSuggestion">Coller dans Salesforce</button>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="cardTitle">Actions rapides</div>
+          <div class="actions">
+            <button class="btn" id="copyRecordId">Copier Record Id</button>
+            <button class="btn" id="copyUrl">Copier URL</button>
+          </div>
+        </section>
+      </main>
+
+    </div>
+
+    <script src="sidebar.js"></script>
+  </body>
+</html>
