@@ -1,0 +1,40 @@
+{
+  "manifest_version": 3,
+  "name": "Salesforce Advisor Sidebar (MVP)",
+  "version": "0.1.0",
+  "description": "Sidebar assistant for Salesforce (MVP A).",
+  "permissions": ["storage"],
+  "host_permissions": [
+    "https://*.lightning.force.com/*",
+    "https://*.my.salesforce.com/*",
+    "https://*.salesforce.com/*",
+    "https://n8n.srv1094459.hstgr.cloud/*"
+  ],
+  "background": {
+    "service_worker": "service-worker.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://*.lightning.force.com/*",
+        "https://*.my.salesforce.com/*",
+        "https://*.salesforce.com/*"
+      ],
+      "js": ["content-script.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["sidebar.html", "sidebar.css", "sidebar.js"],
+      "matches": [
+        "https://*.lightning.force.com/*",
+        "https://*.my.salesforce.com/*",
+        "https://*.salesforce.com/*"
+      ]
+    }
+  ],
+  "action": {
+    "default_title": "SF Sidebar MVP"
+  }
+}
