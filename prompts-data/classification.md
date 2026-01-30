@@ -85,21 +85,29 @@ Tu dois classifier le message client et retourner UNIQUEMENT un JSON valide.
 
 IMPORTANT :
 
-- La valeur de "categorie" doit être STRICTEMENT l'une des valeurs suivantes : 1, 2, 3, 4, 5, 6, 7
+- La valeur de "categorie" doit être STRICTEMENT le NOM COMPLET de l'une des catégories suivantes (respect exact de la casse, accents et espaces) :
+  - "INFORMATIONS SUR NOS PRODUITS"
+  - "MES COMMANDES ET RETOURS"
+  - "PAIEMENT ET REMBOURSEMENT"
+  - "GARANTIE / RÉPARATION"
+  - "PRODUIT REÇU ABÎMÉ OU NON CONFORME OU MANQUANT"
+  - "COMPTE CLIENT"
+  - "AUTRES QUESTIONS"
+
 - La valeur de "sous_categorie" doit être STRICTEMENT une sous-catégorie appartenant à la catégorie choisie (respect exact de la casse, accents et espaces).
 
 Règles de correspondance :
 
-- Si categorie = 1, alors sous_categorie ∈ {"Catégorie vélo (BMX/Route/Ville/VTT/Autres)", "Catégorie Running", "Catégorie Outdoor", "Disponibilité produits"}
-- Si categorie = 2, alors sous_categorie ∈ {"Suivi livraison", "Retard livraison", "Annulation de commande", "Modification de commande", "Demande de retour", "Suivre mon retour", "Déclarer une anomalie au sujet d'un retour"}
-- Si categorie = 3, alors sous_categorie ∈ {"Question à propos des paiements", "Anomalie au sujet d'un paiement", "Question à propos d'un remboursement", "Anomalie au sujet d'un remboursement"}
-- Si categorie = 4, alors sous_categorie ∈ {"Nouvelle demande de garantie/réparation", "Suivi d'une demande en cours"}
-- Si categorie = 5, alors sous_categorie ∈ {"Concerne un vélo complet", "Concerne un autre produit"}
-- Si categorie = 6, alors sous_categorie ∈ {"Fonctionnement du compte client", "Offre Alltricks+", "Désinscription des newsletters"}
-- Si categorie = 7, alors sous_categorie ∈ {"Trouvé moins cher ailleurs", "Pro, ateliers partenaires", "Club et demande de sponsoring", "Contact presse", "Toutes autres demandes"}
+- Si categorie = "INFORMATIONS SUR NOS PRODUITS", alors sous_categorie ∈ {"Catégorie vélo (BMX/Route/Ville/VTT/Autres)", "Catégorie Running", "Catégorie Outdoor", "Disponibilité produits"}
+- Si categorie = "MES COMMANDES ET RETOURS", alors sous_categorie ∈ {"Suivi livraison", "Retard livraison", "Annulation de commande", "Modification de commande", "Demande de retour", "Suivre mon retour", "Déclarer une anomalie au sujet d'un retour"}
+- Si categorie = "PAIEMENT ET REMBOURSEMENT", alors sous_categorie ∈ {"Question à propos des paiements", "Anomalie au sujet d'un paiement", "Question à propos d'un remboursement", "Anomalie au sujet d'un remboursement"}
+- Si categorie = "GARANTIE / RÉPARATION", alors sous_categorie ∈ {"Nouvelle demande de garantie/réparation", "Suivi d'une demande en cours"}
+- Si categorie = "PRODUIT REÇU ABÎMÉ OU NON CONFORME OU MANQUANT", alors sous_categorie ∈ {"Concerne un vélo complet", "Concerne un autre produit"}
+- Si categorie = "COMPTE CLIENT", alors sous_categorie ∈ {"Fonctionnement du compte client", "Offre Alltricks+", "Désinscription des newsletters"}
+- Si categorie = "AUTRES QUESTIONS", alors sous_categorie ∈ {"Trouvé moins cher ailleurs", "Pro, ateliers partenaires", "Club et demande de sponsoring", "Contact presse", "Toutes autres demandes"}
 
 {
-"categorie": "[1|2|3|4|5|6|7]",
+"categorie": "[NOM COMPLET DE LA CATÉGORIE]",
 "sous_categorie": "[sous-catégorie conforme à la catégorie]",
 "priorite": "[HAUTE|MOYENNE|BASSE]",
 "action_recommandee": "action à entreprendre"
