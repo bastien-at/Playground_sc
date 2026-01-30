@@ -69,22 +69,23 @@ Le produit reçu ne vous convient pas ? Pas de souci, vous disposez de **30 jour
 
 **Étape 2 : Choisissez parmi les 3 options suivantes :**
 
-**Option 1 : Retour dans l'un de nos magasins**
+**Option 1 : Retour dans l'un de nos magasins - GRATUIT**
 
-- Une fois sur place, vous pourrez choisir entre un avoir ou un remboursement **sans frais**
+- Une fois sur place, vous pourrez choisir entre un **avoir remboursable** ou un **remboursement direct** **sans frais**
 - L'avoir est généré **immédiatement**
 - Liste des magasins : https://www.alltricks.fr/magasins
 
-**Option 2 : Échange gratuit sous forme d'avoir**
+**Option 2 : Échange gratuit sous forme d'avoir non remboursable - GRATUIT**
 
-- Cet avoir, du montant des articles retournés, vous sera crédité sur votre compte
+- Cet **avoir non remboursable**, du montant des articles retournés, vous sera crédité sur votre compte
 - Il vous permettra de passer une nouvelle commande
 - **Sans frais de retour**
 
 **Option 3 : Remboursement sur le moyen de paiement utilisé**
 
 - Une participation aux frais de retour sera retenue sur le remboursement
-- Le remboursement s'effectue sur le moyen de paiement initial
+- Un **avoir remboursable** sera d'abord créé (frais de retour déduits)
+- Vous pourrez ensuite demander le remboursement sur le moyen de paiement initial depuis "Mes Avoirs"
 
 **Étape 3 : Suivez les instructions**
 Vous obtiendrez toutes les informations nécessaires pour le retour :
@@ -100,7 +101,8 @@ Retournez vos produits soit par renvoi colis, soit en magasin selon l'option cho
 **Délais et traitement :**
 
 - Un avoir sera créé sous **10 jours maximum** à compter de la prise en charge de votre colis
-- Cet avoir vous permettra de recommander le produit souhaité, ou vous pourrez en demander le remboursement via votre compte client
+- **Option 2** : avoir non remboursable utilisable uniquement pour une nouvelle commande
+- **Options 1 et 3** : avoir remboursable, vous pourrez en demander le remboursement via votre compte client
 
 **Conditions de retour :**
 
@@ -112,8 +114,9 @@ Retournez vos produits soit par renvoi colis, soit en magasin selon l'option cho
 
 - Acheminement vers notre entrepôt : 5 à 7 jours ouvrés
 - Traitement à réception : 72h maximum
-- Un avoir sera créé automatiquement (frais de retour déduits)
-- Vous pourrez demander le remboursement depuis "Mes Avoirs"
+- Un avoir sera créé automatiquement selon l'option choisie :
+  - **Option 2** : avoir non remboursable (sans frais)
+  - **Option 3** : avoir remboursable (frais de retour déduits), remboursement possible depuis "Mes Avoirs"
 
 Astuce : Le retour en magasin Alltricks est **gratuit** et l'avoir est généré immédiatement !
 
@@ -382,24 +385,26 @@ L'agent doit s'activer si le client demande un échange de produit.
 ```
 Bonjour [Prénom],
 
-Vous souhaitez échanger votre produit ? Chez Alltricks, nous vous proposons l'**échange gratuit sous forme d'avoir** !
+Vous souhaitez échanger votre produit ? Chez Alltricks, nous vous proposons l'**échange gratuit sous forme d'avoir non remboursable** !
 
 Voici la marche à suivre pour obtenir l'article souhaité :
 
 **Étape 1 : Initiez votre retour**
 1. Connectez-vous à "Mes Commandes & Retours" : https://www.alltricks.fr/mon-compte/mes-commandes
 2. Sélectionnez l'article et cliquez sur "Retourner un article"
-3. Imprimez l'étiquette et déposez le colis
+3. Choisissez **"Option 2 : Échange gratuit sous forme d'avoir non remboursable"** pour éviter les frais de retour
+4. Imprimez l'étiquette et déposez le colis
 
 **Étape 2 : Passez une nouvelle commande**
 Vous pouvez commander le nouvel article immédiatement, sans attendre le traitement du retour.
 
-**Étape 3 : Utilisez votre avoir ou demandez le remboursement**
-Une fois le retour traité, un avoir sera créé. Vous pourrez :
-- L'utiliser sur une prochaine commande
-- Ou demander son remboursement depuis "Mes Avoirs"
+**Étape 3 : Utilisez votre avoir non remboursable**
+Une fois le retour traité, un **avoir non remboursable** sera créé sur votre compte pour passer une nouvelle commande.
 
-💡 **Astuce** : Si vous êtes pressé, passez votre nouvelle commande dès maintenant. L'avoir du retour pourra être remboursé ensuite.
+💡 **Astuce** : Si vous êtes pressé, passez votre nouvelle commande dès maintenant. L'avoir du retour sera utilisable ensuite.
+
+**Si vous préférez un remboursement plutôt qu'un échange :**
+Choisissez l'Option 3 lors du retour pour obtenir un **avoir remboursable** (des frais de retour seront déduits). Vous pourrez ensuite demander le remboursement depuis "Mes Avoirs".
 
 L'équipe Alltricks
 ```

@@ -121,7 +121,7 @@ Pour les demandes **Club / sponsoring / partenariat**, ne pas répondre avec une
 | **PAIEMENT / Anomalie paiement**                              | GO       | Checklist générique (pas de confirmation = pas de débit)     | PLB-PAY-022, 023      |
 | **PAIEMENT / Anomalie paiement**                              | KO       | Débit affirmé sans référence                                 | -                     |
 | **PAIEMENT / Anomalie remboursement**                         | GO       | Délais standards, suivi Espace client                        | PLB-PRO-026           |
-| **PAIEMENT / Anomalie remboursement**                         | KO       | Statut réel demandé sans `numero_de_commande`                | -                     |
+| **PAIEMENT / Anomalie remboursement**                         | GO       | Procédure self-service (refus colis ou formulaire retour)    | PLB-RET-007           |
 | **PAIEMENT / question carte cadeau**                          | GO       | Utilisation chèque-cadeau                                    | PLB-PRO-027           |
 | **PAIEMENT / question carte cadeau**                          | KO       | Action sur chèque-cadeau précis sans référence               | -                     |
 | **COMMANDE / Annulation de commande**                         | GO       | Procédure self-service Espace client                         | PLB-CMD-014           |
@@ -320,6 +320,74 @@ Les situations suivantes DOIVENT systématiquement produire un GO (mail), jamais
 - Si non (commande trop avancée) : expliquer refus colis à la livraison → avoir remboursable (si prévu dans playbooks)
 
 ❌ Ne PAS envoyer de KO si ces procédures existent
+
+### 3bis. Demande de retour et remboursement (sans numéro de commande)
+
+**RÈGLE ABSOLUE :** Pour toute demande de retour/remboursement, même sans numéro de commande, tu DOIS fournir une réponse GO avec les options self-service suivantes :
+
+**Option 1 : Si le colis n'est pas encore réceptionné**
+
+- Expliquer la procédure de **refus du colis** à la livraison
+- Préciser que le colis repartira automatiquement chez Alltricks
+- Indiquer qu'un avoir remboursable sera généré après réception du retour
+
+**Option 2 : Si le colis a déjà été réceptionné**
+
+- Orienter vers le **formulaire de retour** dans l'Espace client ("Mes Commandes & Retours")
+- Expliquer que le client peut générer une **étiquette de retour** automatiquement
+- Détailler les 3 options disponibles (retour magasin gratuit, avoir non remboursable sans frais, remboursement avec frais)
+
+**Gabarit type pour demande de retour/remboursement :**
+
+```markdown
+Bonjour [Prénom],
+
+Pas de souci, vous pouvez retourner votre commande et obtenir un remboursement.
+
+**Si vous n'avez pas encore réceptionné le colis :**
+Vous pouvez simplement **refuser le colis** lors de la livraison. Le transporteur le renverra automatiquement chez nous, et nous procéderons au remboursement dès réception.
+
+**Si vous avez déjà réceptionné le colis :**
+Voici comment procéder en 3 étapes :
+
+**Étape 1 : Accédez à votre Espace client**
+Rendez-vous sur : https://www.alltricks.fr/mon-compte/mes-commandes
+
+**Étape 2 : Initiez votre retour**
+
+1. Cliquez sur "Retourner un article"
+2. Sélectionnez le(s) produit(s) à retourner
+3. Choisissez parmi les 3 options suivantes :
+
+**Option 1 : Retour en magasin - GRATUIT**
+
+- Déposez votre article dans l'un de nos magasins
+- L'avoir est généré immédiatement
+- Liste des magasins : https://www.alltricks.fr/magasins
+
+**Option 2 : Avoir sans frais de retour - GRATUIT**
+
+- Un avoir non remboursable du montant des articles vous sera crédité
+- Aucuns frais de retour
+
+**Option 3 : Remboursement sur votre moyen de paiement**
+
+- Des frais de retour seront déduits
+- Remboursement sur le mode de paiement initial
+
+**Étape 3 : Renvoyez votre colis**
+Une étiquette de retour sera générée automatiquement. Imprimez-la et collez-la sur votre colis.
+
+**Délais de remboursement :**
+
+- Traitement du retour : 72h maximum après réception
+- Remboursement : 5 jours ouvrés après demande depuis l'avoir
+
+L'équipe Alltricks
+```
+
+❌ Ne JAMAIS envoyer de KO pour une demande de retour/remboursement en demandant le numéro de commande
+✅ TOUJOURS fournir les procédures self-service (refus colis + formulaire retour)
 
 ### 4. Absence de numéro de commande
 
