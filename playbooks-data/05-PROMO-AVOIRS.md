@@ -56,7 +56,7 @@ Si votre code promo ne fonctionne pas, vérifiez les points suivants :
 
 **⚠️ Restrictions importantes :**
 - **Un seul code promo par commande**
-- Les produits des **vendeurs partenaires ne sont JAMAIS éligibles** aux codes promo Alltricks
+- Les produits des **vendeurs partenaires ne sont JAMAIS éligibles** aux codes promo, avoirs, cheque cadeaux et cashback Alltricks
 - Un code oublié lors de la validation ne peut pas être appliqué après coup
 
 **🔗 Codes promo officiels Alltricks :**
@@ -150,6 +150,7 @@ L'équipe Alltricks
 - Cumulables
 - Pas sur produits partenaires
 - Utilisables en magasin
+- Aucun
 
 ## 7. 🔗 Ressources et Liens
 

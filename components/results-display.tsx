@@ -143,6 +143,9 @@ export function ResultsDisplay() {
           : (getString(judge.commentaire) ? [getString(judge.commentaire)!] : null))
       : null;
 
+    const playbookSections = reponse ? (reponse.playbook_sections_checked ?? reponse.playbook_sections) : null;
+    const relevantPassages = reponse ? reponse.relevant_passages : null;
+
     return {
       motifIa: motif ? getString(motif.categorie) : getString(item.motif_ia),
       motifSousCategorie: motif ? getString(motif.sous_categorie) : (motifDetails ? getString(motifDetails.sous_categorie) : null),
@@ -161,6 +164,12 @@ export function ResultsDisplay() {
         : (geminiLegacy && Array.isArray(geminiLegacy.debug) 
             ? geminiLegacy.debug.map(getString).filter((v): v is string => Boolean(v))
             : null),
+      playbookSectionsChecked: Array.isArray(playbookSections)
+        ? playbookSections.map(getString).filter((v): v is string => Boolean(v))
+        : null,
+      relevantPassages: Array.isArray(relevantPassages)
+        ? relevantPassages.map(getString).filter((v): v is string => Boolean(v))
+        : null,
       judgeDecision: judge ? getString(judge.decision) : null,
       judgeNote: judge ? getNumber(judge.note) : null,
       judgeFeedback,
@@ -340,6 +349,32 @@ export function ResultsDisplay() {
               <p className="mt-2 whitespace-pre-wrap rounded-md border border-border bg-muted/30 p-2 text-sm text-foreground">
                 {extracted.geminiResponse || (extracted.geminiAgent ? extracted.geminiAgent : "—")}
               </p>
+
+              {extracted.playbookSectionsChecked && extracted.playbookSectionsChecked.length > 0 ? (
+                <div className="mt-3 space-y-2">
+                  <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                    Playbooks consultés
+                  </p>
+                  <div className="rounded-md border border-dashed border-border bg-muted/20 p-2 text-xs text-muted-foreground">
+                    {extracted.playbookSectionsChecked.join(", ")}
+                  </div>
+                </div>
+              ) : null}
+
+              {extracted.relevantPassages && extracted.relevantPassages.length > 0 ? (
+                <div className="mt-3 space-y-2">
+                  <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                    Extraits pertinents
+                  </p>
+                  <div className="rounded-md border border-dashed border-border bg-muted/20 p-2">
+                    <ul className="list-inside list-disc space-y-1 text-xs text-muted-foreground">
+                      {extracted.relevantPassages.map((item, i) => (
+                        <li key={i}>{item}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              ) : null}
 
               {extracted.geminiDebug && extracted.geminiDebug.length > 0 ? (
                 <div className="mt-3 space-y-2">

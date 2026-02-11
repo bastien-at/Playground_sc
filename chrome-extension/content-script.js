@@ -292,4 +292,41 @@
   }
 
   ensureSidebar();
+
+  // --- Auto-sync context on SPA navigation (no refresh needed) ---
+  let lastHref = location.href;
+
+  function broadcastContextIfChanged() {
+    if (location.href === lastHref) return;
+    lastHref = location.href;
+    const iframe = document.querySelector(`#${EXT_ROOT_ID} iframe`);
+    if (iframe?.contentWindow) {
+      iframe.contentWindow.postMessage(
+        {
+          source: 'sf-advisor-sidebar',
+          type: 'context',
+          payload: parseContext(),
+        },
+        '*',
+      );
+    }
+  }
+
+  // Intercept history.pushState / replaceState (Lightning SPA navigation)
+  const origPushState = history.pushState;
+  const origReplaceState = history.replaceState;
+  history.pushState = function (...args) {
+    origPushState.apply(this, args);
+    broadcastContextIfChanged();
+  };
+  history.replaceState = function (...args) {
+    origReplaceState.apply(this, args);
+    broadcastContextIfChanged();
+  };
+
+  window.addEventListener('popstate', () => broadcastContextIfChanged());
+  window.addEventListener('hashchange', () => broadcastContextIfChanged());
+
+  // Polling fallback – some Lightning navigations bypass history API
+  setInterval(broadcastContextIfChanged, 1000);
 })();
