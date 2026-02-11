@@ -30,7 +30,7 @@ export default function LoginPage() {
       if (response.ok) {
         const data = await response.json();
         // Le cookie est défini par le serveur, on redirige simplement
-        router.push("/");
+        router.push("/dashboard");
       } else {
         const data = await response.json();
         setError(data.error || "Mot de passe incorrect");
