@@ -33,11 +33,11 @@ EMAIL CLIENT → CLASSIFICATION → GÉNÉRATION RÉPONSE → ÉVALUATION QUALIT
 
 Le système fonctionne en **3 agents IA spécialisés** :
 
-| Agent                  | Rôle                                      | Prompt                   |
-| ---------------------- | ----------------------------------------- | ------------------------ |
-| **Agent Classification** | Identifier catégorie et priorité          | `classification.md`      |
-| **Agent Réponse**        | Générer la réponse client                 | `Agent_reponse.md`       |
-| **Agent Judge**          | Évaluer la qualité et décider de l'envoi  | `Agent_judge.md`         |
+| Agent                    | Rôle                                     | Prompt              |
+| ------------------------ | ---------------------------------------- | ------------------- |
+| **Agent Classification** | Identifier catégorie et priorité         | `classification.md` |
+| **Agent Réponse**        | Générer la réponse client                | `Agent_reponse.md`  |
+| **Agent Judge**          | Évaluer la qualité et décider de l'envoi | `Agent_judge.md`    |
 
 ### Capacités et limites
 
@@ -101,12 +101,14 @@ Le système fonctionne en **3 agents IA spécialisés** :
 #### 1. Interface Next.js (`app/`)
 
 **Fichiers clés :**
+
 - `app/page.tsx` : Dashboard principal avec formulaire de test
 - `app/api/execute-workflow/route.ts` : API Route pour appeler n8n
 - `lib/n8n-client.ts` : Client HTTP pour communiquer avec n8n
 - `lib/types.ts` : Types TypeScript
 
 **Fonctionnalités :**
+
 - Formulaire de test avec prénom, nom, message
 - Affichage des résultats en temps réel
 - Historique des 10 dernières exécutions
@@ -127,12 +129,14 @@ Le système fonctionne en **3 agents IA spécialisés** :
 ```
 
 **Sécurité :**
+
 - Validation Zod côté serveur
 - Sanitization des inputs
 - Rate limiting en mémoire
 - Support Basic Auth + API Key pour n8n
 
 **Gestion des erreurs :**
+
 - Timeout 30s
 - Retry automatique 1 fois sur erreur 5xx
 - Logs détaillés
@@ -149,6 +153,7 @@ N8N_BASIC_AUTH_PASSWORD=optional_password
 ```
 
 **Fonctionnalités :**
+
 - Appel HTTP POST vers webhook n8n
 - Headers d'authentification automatiques
 - Gestion timeout avec AbortController
@@ -171,6 +176,7 @@ WEBHOOK → AGENT CLASSIFICATION → AGENT RÉPONSE → AGENT JUDGE → SORTIE
 #### Étape 1 : Réception webhook
 
 **Input :**
+
 ```json
 {
   "firstname": "Jean",
@@ -184,12 +190,14 @@ WEBHOOK → AGENT CLASSIFICATION → AGENT RÉPONSE → AGENT JUDGE → SORTIE
 **Prompt utilisé :** `prompts-data/classification.md`
 
 **Mission :**
+
 - Identifier la catégorie principale (7 catégories)
 - Identifier la sous-catégorie
 - Définir la priorité (HAUTE/MOYENNE/BASSE)
 - Recommander l'action
 
 **Output :**
+
 ```json
 {
   "categorie": "MES COMMANDES ET RETOURS",
@@ -200,6 +208,7 @@ WEBHOOK → AGENT CLASSIFICATION → AGENT RÉPONSE → AGENT JUDGE → SORTIE
 ```
 
 **Signaux d'escalade détectés :**
+
 - Ton agressif (inadmissible, scandaleux, voleurs)
 - Juridique (avocat, plainte, DGCCRF)
 - RGPD (supprimer mes données)
@@ -211,12 +220,14 @@ WEBHOOK → AGENT CLASSIFICATION → AGENT RÉPONSE → AGENT JUDGE → SORTIE
 **Prompt utilisé :** `prompts-data/Agent_reponse.md`
 
 **Mission :**
+
 - Générer une réponse basée sur les playbooks
 - Décider entre GO (réponse directe) ou KO (escalade)
 - Respecter le tone of voice Alltricks
 
 **Playbooks consultés :**
 Les 9 fichiers dans `playbooks-data/` :
+
 - `01-LIVRAISON.md` (6 playbooks)
 - `02-RETOURS.md` (7 playbooks)
 - `03-COMMANDES.md` (5 playbooks)
@@ -228,6 +239,7 @@ Les 9 fichiers dans `playbooks-data/` :
 - `09-PROS-CLUBS.md` (3 playbooks)
 
 **Output GO (réponse directe) :**
+
 ```json
 {
   "status": "GO",
@@ -240,6 +252,7 @@ Les 9 fichiers dans `playbooks-data/` :
 ```
 
 **Output KO (escalade) :**
+
 ```json
 {
   "status": "KO",
@@ -256,11 +269,13 @@ Les 9 fichiers dans `playbooks-data/` :
 **Règle fondamentale : GO par défaut**
 
 L'agent doit produire un GO si :
+
 - Les playbooks contiennent une procédure applicable
 - Une information générale peut aider le client
 - Une orientation self-service est possible
 
 L'agent ne peut produire un KO que si :
+
 - La demande est hors périmètre (conseil produit, juridique, RGPD)
 - Une information indispensable manque (n° commande pour vérification)
 - Aucune procédure générique n'existe
@@ -270,6 +285,7 @@ L'agent ne peut produire un KO que si :
 **Prompt utilisé :** `prompts-data/Agent_judge.md`
 
 **Mission :**
+
 - Évaluer la qualité de la réponse générée
 - Décider : SEND / REVIEW / REJECT
 - Détecter les KO abusifs
@@ -285,6 +301,7 @@ L'agent ne peut produire un KO que si :
 | 1    | REJECT        | REJECT        | Inutilisable                           |
 
 **Critères bloquants (REJECT) :**
+
 - Erreur factuelle sur procédure ou délais
 - Hors sujet complet
 - Promesse interdite (délai garanti)
@@ -293,6 +310,7 @@ L'agent ne peut produire un KO que si :
 **Détection KO abusif :**
 
 Un KO est considéré comme potentiellement abusif si :
+
 - ✅ Procédure générique complète fournie
 - ✅ Ressources accessibles (liens Espace client)
 - ✅ Aucun besoin d'expertise technique
@@ -302,6 +320,7 @@ Un KO est considéré comme potentiellement abusif si :
 → **Verdict : REVIEW (note 3)** pour validation humaine
 
 **Output :**
+
 ```json
 {
   "decision": "SEND",
@@ -437,34 +456,33 @@ Un KO est considéré comme potentiellement abusif si :
 
 **Glossaire obligatoire :**
 
-| ✅ Terme officiel       | ❌ Ne JAMAIS utiliser                |
-| ----------------------- | ------------------------------------ |
-| Alltricks               | Alltrick, All tricks                 |
-| Alltricks+              | Alltricks Plus, AT+                  |
-| Vendeur partenaire      | Marketplace, seller                  |
-| Espace client           | Mon compte, dashboard                |
-| Point relais            | Relay, pickup                        |
-| Mes Commandes & Retours | Historique commandes                 |
-| Code promo              | Coupon, code réduction               |
-| Avoir                   | Bon d'achat, crédit                  |
-| Chèque-cadeau           | Gift card                            |
+| ✅ Terme officiel       | ❌ Ne JAMAIS utiliser  |
+| ----------------------- | ---------------------- |
+| Alltricks               | Alltrick, All tricks   |
+| Alltricks+              | Alltricks Plus, AT+    |
+| Vendeur partenaire      | Marketplace, seller    |
+| Espace client           | Mon compte, dashboard  |
+| Point relais            | Relay, pickup          |
+| Mes Commandes & Retours | Historique commandes   |
+| Code promo              | Coupon, code réduction |
+| Avoir                   | Bon d'achat, crédit    |
+| Chèque-cadeau           | Gift card              |
 
 **Tone of Voice Alltricks :**
 
-| Attribut     | Application                                    |
-| ------------ | ---------------------------------------------- |
-| Expert       | Précis, maîtrise technique                     |
-| Accessible   | Langage simple, pas de jargon                  |
+| Attribut     | Application                                        |
+| ------------ | -------------------------------------------------- |
+| Expert       | Précis, maîtrise technique                         |
+| Accessible   | Langage simple, pas de jargon                      |
 | Encourageant | Positif ("Pas d'inquiétude !", "Bonne nouvelle !") |
-| Concis       | Direct, phrases courtes                        |
-| Confiant     | Affirmatif ("Voici comment faire")             |
+| Concis       | Direct, phrases courtes                            |
+| Confiant     | Affirmatif ("Voici comment faire")                 |
 
 **Structure obligatoire du mail :**
 
 ```
 Bonjour [Prénom],
 
-[Empathie si problème - 1 phrase max]
 
 [Réponse principale]
 
@@ -483,12 +501,12 @@ L'équipe Alltricks
 
 **Informations indispensables (déclenchent KO) :**
 
-| Domaine       | Info indispensable                       | Exemple KO                        |
-| ------------- | ---------------------------------------- | --------------------------------- |
-| livraison     | `numero_de_commande` OU `lien_tracking`  | "Où est mon colis ?" (vérif)      |
-| process       | `reference_transaction` / `id_paiement`  | "Annulez pour moi"                |
-| process       | `reference_cheque_cadeau`                | "Annulez mon chèque-cadeau"       |
-| process       | `numéro d'avoir`                         | "Où en est mon avoir ?"           |
+| Domaine   | Info indispensable                      | Exemple KO                   |
+| --------- | --------------------------------------- | ---------------------------- |
+| livraison | `numero_de_commande` OU `lien_tracking` | "Où est mon colis ?" (vérif) |
+| process   | `reference_transaction` / `id_paiement` | "Annulez pour moi"           |
+| process   | `reference_cheque_cadeau`               | "Annulez mon chèque-cadeau"  |
+| process   | `numéro d'avoir`                        | "Où en est mon avoir ?"      |
 
 **Cas avec GO obligatoire :**
 
@@ -499,11 +517,11 @@ L'équipe Alltricks
 
 **Promesses INTERDITES :**
 
-| ❌ Interdit                     | ✅ Alternative                                    |
-| ------------------------------- | ------------------------------------------------- |
-| "Vous serez remboursé demain"   | "Les remboursements sont traités sous 5 jours"    |
-| "Votre colis arrivera le [date]" | "Les délais habituels sont de X jours"            |
-| "Je vais faire le nécessaire"   | "Voici la marche à suivre"                        |
+| ❌ Interdit                      | ✅ Alternative                                 |
+| -------------------------------- | ---------------------------------------------- |
+| "Vous serez remboursé demain"    | "Les remboursements sont traités sous 5 jours" |
+| "Votre colis arrivera le [date]" | "Les délais habituels sont de X jours"         |
+| "Je vais faire le nécessaire"    | "Voici la marche à suivre"                     |
 
 ### 3. Agent Judge (`Agent_judge.md`)
 
@@ -511,16 +529,17 @@ L'équipe Alltricks
 
 **Périmètre :**
 
-| Agent             | Périmètre                                | Source template       |
-| ----------------- | ---------------------------------------- | --------------------- |
-| **Agent Réponse** | Après-vente (livraison, commandes, SAV)  | `template_conseiller` |
-| **Agent Produit** | Avant-vente (conseil technique)          | `template`            |
+| Agent             | Périmètre                               | Source template       |
+| ----------------- | --------------------------------------- | --------------------- |
+| **Agent Réponse** | Après-vente (livraison, commandes, SAV) | `template_conseiller` |
+| **Agent Produit** | Avant-vente (conseil technique)         | `template`            |
 
 **Règle absolue :**
 
 Un KO ne peut **JAMAIS** être `SEND`. Seuls les GO peuvent être `SEND`.
 
 **Pour les KO :**
+
 - **KO légitime** (hors périmètre, expertise requise) → `REVIEW` (note 4-5)
 - **KO potentiellement abusif** (procédure complète) → `REVIEW` (note 3)
 - **KO invalide** (erreur factuelle) → `REJECT` (note 1-2)
@@ -529,16 +548,17 @@ Un KO ne peut **JAMAIS** être `SEND`. Seuls les GO peuvent être `SEND`.
 
 Un KO est **potentiellement abusif** si le template contient **TOUS** ces éléments :
 
-| Critère                             | Description                                      |
-| ----------------------------------- | ------------------------------------------------ |
-| ✅ **Procédure générique complète** | Instructions détaillées et exploitables          |
-| ✅ **Ressources accessibles**       | Liens directs vers Espace client                 |
-| ✅ **Aucun besoin d'expertise**     | Pas de conseil technique requis                  |
-| ✅ **Aucun placeholder**            | Pas de `[À CONFIRMER]`, `[VÉRIFIER]`             |
+| Critère                             | Description                             |
+| ----------------------------------- | --------------------------------------- |
+| ✅ **Procédure générique complète** | Instructions détaillées et exploitables |
+| ✅ **Ressources accessibles**       | Liens directs vers Espace client        |
+| ✅ **Aucun besoin d'expertise**     | Pas de conseil technique requis         |
+| ✅ **Aucun placeholder**            | Pas de `[À CONFIRMER]`, `[VÉRIFIER]`    |
 
 → Si le client peut résoudre SEUL = KO potentiellement abusif
 
 **Exceptions acceptables (ne pas considérer comme abusif) :**
+
 - Demande nécessitant une donnée client spécifique
 - Besoin de vérification en base de données
 - Contexte client ambigu nécessitant clarification
@@ -546,17 +566,20 @@ Un KO est **potentiellement abusif** si le template contient **TOUS** ces élém
 **Grille d'évaluation :**
 
 **Niveau 1 : Critères Bloquants → REJECT (note ≤ 2)**
+
 - Erreur factuelle sur procédure, caractéristiques, délais
 - Hors sujet ou ne traite pas la demande
 - Promesse interdite (délai garanti)
 - Mode GO/KO incorrect
 
 **Niveau 2 : Critères Majeurs → REVIEW (note 3)**
+
 - Ne couvre pas tous les points du client
 - Client ne sait pas quoi faire concrètement
 - Manque étapes ou conditions importantes
 
 **Niveau 3 : Critères Mineurs → REVIEW si cumulés**
+
 - Structure confuse, formulation ambiguë
 - Manque empathie, trop sec, trop verbeux
 - Longueur disproportionnée
@@ -610,6 +633,7 @@ playbooks-data/
 ## 1. 🎯 Objectif
 
 ## 2. 🗂️ Métadonnées
+
 - ID: PLB-XXX-XXX
 - Catégorie: [Catégorie]
 - Tags: [tags]
@@ -631,6 +655,7 @@ playbooks-data/
 **Objectif :** Aider le client à suivre sa commande
 
 **Conditions de déclenchement :**
+
 - "Où est ma commande ?"
 - "Suivi de livraison"
 - "Tracking"
@@ -655,12 +680,12 @@ L'équipe Alltricks
 
 ### Légende priorités
 
-| Niveau | Description                  | Action agent                           |
-| ------ | ---------------------------- | -------------------------------------- |
-| **P1** | Critique - Client bloqué     | Réponse immédiate + escalade si besoin |
-| **P2** | Haute - Demande importante   | Réponse complète sous 4h               |
+| Niveau | Description                    | Action agent                           |
+| ------ | ------------------------------ | -------------------------------------- |
+| **P1** | Critique - Client bloqué       | Réponse immédiate + escalade si besoin |
+| **P2** | Haute - Demande importante     | Réponse complète sous 4h               |
 | **P3** | Moyenne - Information standard | Réponse sous 24h                       |
-| **P4** | Basse - Information simple   | Réponse sous 48h                       |
+| **P4** | Basse - Information simple     | Réponse sous 48h                       |
 
 ---
 
@@ -819,6 +844,7 @@ INFORMER → GUIDER → REDIRIGER
 ```
 
 L'IA est un **premier niveau de réponse** qui :
+
 1. Identifie l'intention du client
 2. Fournit l'information générale (FAQ)
 3. Redirige vers les outils self-service
@@ -826,22 +852,26 @@ L'IA est un **premier niveau de réponse** qui :
 #### ✅ Ce que l'IA a le DROIT de faire
 
 **Informer :**
+
 - Expliquer une procédure
 - Donner des délais standards
 - Présenter les options disponibles
 - Citer les conditions générales
 
 **Guider :**
+
 - Décrire les étapes d'une action
 - Indiquer où trouver une information
 - Proposer des vérifications
 - Suggérer une alternative
 
 **Rediriger :**
+
 - Orienter vers l'espace client
 - Orienter vers un vendeur partenaire
 
 **Rassurer :**
+
 - Accuser réception du problème
 - Confirmer une règle rassurante
 - Indiquer qu'une solution existe
@@ -849,6 +879,7 @@ L'IA est un **premier niveau de réponse** qui :
 #### ❌ Ce que l'IA n'a PAS le droit de faire
 
 **Actions interdites :**
+
 - ❌ Annuler une commande
 - ❌ Modifier une adresse
 - ❌ Créer un avoir
@@ -856,6 +887,7 @@ L'IA est un **premier niveau de réponse** qui :
 - ❌ Ouvrir une enquête transporteur
 
 **Informations interdites :**
+
 - ❌ Statut réel d'une commande
 - ❌ Localisation d'un colis
 - ❌ Montant d'un avoir
@@ -863,6 +895,7 @@ L'IA est un **premier niveau de réponse** qui :
 - ❌ Données personnelles
 
 **Promesses interdites :**
+
 - ❌ "Vous serez remboursé demain"
 - ❌ "Je vous offre X€ de geste commercial"
 - ❌ "Votre colis arrivera le [date]"
@@ -870,6 +903,7 @@ L'IA est un **premier niveau de réponse** qui :
 - ❌ "C'est réglé"
 
 **Comportements interdits :**
+
 - ❌ Inventer des informations
 - ❌ Deviner le statut d'une commande
 - ❌ Accuser le transporteur
@@ -899,6 +933,7 @@ L'IA est un **premier niveau de réponse** qui :
 | 🔴 Faible confiance  | < 60%  | Escalade directe              |
 
 **Cas de confiance basse automatique :**
+
 - Email en langue étrangère (hors FR/EN)
 - Email avec pièces jointes
 - Email avec ton agressif détecté
@@ -932,6 +967,7 @@ L'IA est un **premier niveau de réponse** qui :
 ### Exemple 1 : Demande de retour (GO + SEND)
 
 **Email client :**
+
 ```
 Bonjour,
 Je souhaite retourner un article que j'ai reçu. Comment faire ?
@@ -940,6 +976,7 @@ Marie
 ```
 
 **Classification :**
+
 ```json
 {
   "categorie": "MES COMMANDES ET RETOURS",
@@ -950,6 +987,7 @@ Marie
 ```
 
 **Réponse (Agent Réponse) :**
+
 ```json
 {
   "status": "GO",
@@ -962,6 +1000,7 @@ Marie
 ```
 
 **Évaluation (Agent Judge) :**
+
 ```json
 {
   "decision": "SEND",
@@ -978,6 +1017,7 @@ Marie
 ### Exemple 2 : Suivi commande sans n° (KO + REVIEW légitime)
 
 **Email client :**
+
 ```
 Bonjour,
 Où en est ma commande ? Je l'attends depuis 10 jours !
@@ -985,6 +1025,7 @@ Jean
 ```
 
 **Classification :**
+
 ```json
 {
   "categorie": "MES COMMANDES ET RETOURS",
@@ -995,6 +1036,7 @@ Jean
 ```
 
 **Réponse (Agent Réponse) :**
+
 ```json
 {
   "status": "KO",
@@ -1009,6 +1051,7 @@ Jean
 ```
 
 **Évaluation (Agent Judge) :**
+
 ```json
 {
   "decision": "REVIEW",
@@ -1025,6 +1068,7 @@ Jean
 ### Exemple 3 : Code promo ne fonctionne pas (GO + SEND)
 
 **Email client :**
+
 ```
 Bonjour,
 Mon code promo BIKE20 ne fonctionne pas au moment du paiement.
@@ -1033,6 +1077,7 @@ Sophie
 ```
 
 **Classification :**
+
 ```json
 {
   "categorie": "PAIEMENT ET REMBOURSEMENT",
@@ -1043,6 +1088,7 @@ Sophie
 ```
 
 **Réponse (Agent Réponse) :**
+
 ```json
 {
   "status": "GO",
@@ -1055,6 +1101,7 @@ Sophie
 ```
 
 **Évaluation (Agent Judge) :**
+
 ```json
 {
   "decision": "SEND",
@@ -1071,6 +1118,7 @@ Sophie
 ### Exemple 4 : Demande RGPD (KO + REVIEW immédiat)
 
 **Email client :**
+
 ```
 Bonjour,
 Je souhaite que vous supprimiez toutes mes données personnelles conformément au RGPD.
@@ -1078,6 +1126,7 @@ Merci
 ```
 
 **Classification :**
+
 ```json
 {
   "categorie": "COMPTE CLIENT",
@@ -1088,6 +1137,7 @@ Merci
 ```
 
 **Réponse (Agent Réponse) :**
+
 ```json
 {
   "status": "KO",
@@ -1102,6 +1152,7 @@ Merci
 ```
 
 **Évaluation (Agent Judge) :**
+
 ```json
 {
   "decision": "REVIEW",
@@ -1172,18 +1223,19 @@ curl -X POST http://localhost:3000/api/execute-workflow \
 
 ### Indicateurs clés
 
-| Métrique                    | Description                              | Objectif |
-| --------------------------- | ---------------------------------------- | -------- |
-| **Taux de GO**              | % de réponses directes (GO)              | > 70%    |
-| **Taux de SEND**            | % de GO validés automatiquement          | > 80%    |
-| **Taux de KO abusifs**      | % de KO potentiellement abusifs détectés | < 10%    |
-| **Note moyenne Judge**      | Note moyenne des évaluations             | > 4.0    |
-| **Temps de réponse**        | Durée totale du workflow                 | < 10s    |
-| **Taux d'erreur**           | % d'erreurs techniques                   | < 2%     |
+| Métrique               | Description                              | Objectif |
+| ---------------------- | ---------------------------------------- | -------- |
+| **Taux de GO**         | % de réponses directes (GO)              | > 70%    |
+| **Taux de SEND**       | % de GO validés automatiquement          | > 80%    |
+| **Taux de KO abusifs** | % de KO potentiellement abusifs détectés | < 10%    |
+| **Note moyenne Judge** | Note moyenne des évaluations             | > 4.0    |
+| **Temps de réponse**   | Durée totale du workflow                 | < 10s    |
+| **Taux d'erreur**      | % d'erreurs techniques                   | < 2%     |
 
 ### Logs disponibles
 
 **Console serveur :**
+
 ```
 [execute-workflow] {
   executionId: "uuid",
@@ -1196,6 +1248,7 @@ curl -X POST http://localhost:3000/api/execute-workflow \
 ```
 
 **Réponse API :**
+
 ```json
 {
   "success": true,
@@ -1271,21 +1324,21 @@ Les playbooks sont versionnés dans le dépôt Git. Pour mettre à jour :
 
 ## 🎓 Glossaire
 
-| Terme                | Définition                                                      |
-| -------------------- | --------------------------------------------------------------- |
-| **GO**               | Réponse directe au client (mail prêt à envoyer)                 |
-| **KO**               | Escalade vers conseiller humain (information manquante)         |
-| **SEND**             | Décision d'envoi automatique (validation Judge)                 |
-| **REVIEW**           | Validation humaine requise avant envoi                          |
-| **REJECT**           | Rejet de la réponse (erreur factuelle ou hors sujet)            |
-| **KO abusif**        | KO injustifié alors qu'un GO était possible                     |
-| **Playbook**         | Procédure officielle Alltricks pour un cas d'usage              |
-| **Agent**            | Module IA spécialisé (Classification, Réponse, Judge)           |
-| **Workflow n8n**     | Orchestration des agents IA                                     |
-| **Rate limiting**    | Limitation du nombre de requêtes par minute                     |
-| **Escalade**         | Transfert vers un conseiller humain                             |
-| **Self-service**     | Outils permettant au client de résoudre seul (Espace client)    |
-| **Espace client**    | Interface web Alltricks pour gérer commandes/retours            |
+| Terme             | Définition                                                   |
+| ----------------- | ------------------------------------------------------------ |
+| **GO**            | Réponse directe au client (mail prêt à envoyer)              |
+| **KO**            | Escalade vers conseiller humain (information manquante)      |
+| **SEND**          | Décision d'envoi automatique (validation Judge)              |
+| **REVIEW**        | Validation humaine requise avant envoi                       |
+| **REJECT**        | Rejet de la réponse (erreur factuelle ou hors sujet)         |
+| **KO abusif**     | KO injustifié alors qu'un GO était possible                  |
+| **Playbook**      | Procédure officielle Alltricks pour un cas d'usage           |
+| **Agent**         | Module IA spécialisé (Classification, Réponse, Judge)        |
+| **Workflow n8n**  | Orchestration des agents IA                                  |
+| **Rate limiting** | Limitation du nombre de requêtes par minute                  |
+| **Escalade**      | Transfert vers un conseiller humain                          |
+| **Self-service**  | Outils permettant au client de résoudre seul (Espace client) |
+| **Espace client** | Interface web Alltricks pour gérer commandes/retours         |
 
 ---
 
@@ -1311,4 +1364,4 @@ Les playbooks sont versionnés dans le dépôt Git. Pour mettre à jour :
 
 **Fin de la documentation**
 
-*Pour toute question ou suggestion d'amélioration, contactez l'équipe technique.*
+_Pour toute question ou suggestion d'amélioration, contactez l'équipe technique._

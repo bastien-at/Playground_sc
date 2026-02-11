@@ -123,6 +123,9 @@ export function ResultsDisplay() {
     // New payload: contact { nom, prenom, mail, message }
     // Old payload: client { firstname, lastname, mail, message }
     const contact = asRecord(item.contact) || asRecord(item.client);
+
+    // Fallback: use form input params when API response has null/empty client data
+    const inputParams = selected?.params?.input ? asRecord(selected.params.input) : null;
     
     // New payload: motif { categorie, sous_categorie, priorite, action_recommandee }
     // Old payload: motif_ia (string) + motif_details { sous_categorie, priorite, action_recommandee }
@@ -143,19 +146,62 @@ export function ResultsDisplay() {
           : (getString(judge.commentaire) ? [getString(judge.commentaire)!] : null))
       : null;
 
-    const playbookSections = reponse ? (reponse.playbook_sections_checked ?? reponse.playbook_sections) : null;
-    const relevantPassages = reponse ? reponse.relevant_passages : null;
+    // playbook_sections_checked & relevant_passages may live directly on reponse
+    // OR inside raw_response (a JSON string wrapped in ```json ... ```)
+    // This applies to both new format (reponse.raw_response) and legacy format (geminiLegacy.response which may contain JSON)
+    let parsedRaw: Record<string, unknown> | null = null;
+    const rawResponseStr = reponse?.raw_response ?? geminiLegacy?.response;
+    if (rawResponseStr && typeof rawResponseStr === "string") {
+      try {
+        const cleaned = (rawResponseStr as string)
+          .replace(/^```json\s*/, "")
+          .replace(/\s*```$/, "")
+          .trim();
+        const parsed = JSON.parse(cleaned);
+        if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) {
+          parsedRaw = parsed as Record<string, unknown>;
+        }
+      } catch {
+        parsedRaw = null;
+      }
+    }
+
+    const playbookSections =
+      (reponse ? (reponse.playbook_sections_checked ?? reponse.playbook_sections) : null)
+      ?? (geminiLegacy ? (geminiLegacy.playbook_sections_checked ?? geminiLegacy.playbook_sections) : null)
+      ?? (parsedRaw ? (parsedRaw.playbook_sections_checked ?? parsedRaw.playbook_sections) : null);
+    const relevantPassages =
+      (reponse ? reponse.relevant_passages : null)
+      ?? (geminiLegacy ? geminiLegacy.relevant_passages : null)
+      ?? (parsedRaw ? parsedRaw.relevant_passages : null);
 
     return {
       motifIa: motif ? getString(motif.categorie) : getString(item.motif_ia),
       motifSousCategorie: motif ? getString(motif.sous_categorie) : (motifDetails ? getString(motifDetails.sous_categorie) : null),
       motifPriorite: motif ? getString(motif.priorite) : (motifDetails ? getString(motifDetails.priorite) : null),
       motifAction: motif ? getString(motif.action_recommandee) : (motifDetails ? getString(motifDetails.action_recommandee) : null),
-      clientFirstname: contact ? (getString(contact.prenom) || getString(contact.firstname)) : null,
-      clientLastname: contact ? (getString(contact.nom) || getString(contact.lastname)) : null,
-      clientMessage: contact ? getString(contact.message) : null,
-      clientMail: contact ? getString(contact.mail) : null,
-      geminiStatus: reponse ? getString(reponse.status) : (geminiLegacy ? getString(geminiLegacy.status) : null),
+      clientFirstname: (contact ? (getString(contact.prenom) || getString(contact.firstname)) : null) || (inputParams ? getString(inputParams.firstname) : null),
+      clientLastname: (contact ? (getString(contact.nom) || getString(contact.lastname)) : null) || (inputParams ? getString(inputParams.lastname) : null),
+      clientMessage: (contact ? getString(contact.message) : null) || (inputParams ? getString(inputParams.message) : null),
+      clientMail: (contact ? getString(contact.mail) : null) || (inputParams ? getString(inputParams.mail) : null),
+      geminiStatus: reponse
+        ? getString(reponse.status)
+        : geminiLegacy
+          ? (() => {
+              // In legacy format, geminiLegacy.status may contain the Judge decision (REVIEW/SEND/REJECT)
+              // instead of the Agent Réponse status (GO/KO). Extract from debug array if available.
+              if (Array.isArray(geminiLegacy.debug)) {
+                const statusLine = geminiLegacy.debug
+                  .map(getString)
+                  .find((s) => s?.startsWith("Status:"));
+                if (statusLine) return statusLine.replace("Status:", "").trim();
+              }
+              const raw = getString(geminiLegacy.status);
+              // If the status looks like a Judge decision, don't use it as agent status
+              if (raw === "REVIEW" || raw === "SEND" || raw === "REJECT") return null;
+              return raw;
+            })()
+          : null,
       geminiResponse: reponse ? getString(reponse.message) : (geminiLegacy ? getString(geminiLegacy.response) : null),
       geminiKoReason: reponse ? getString((asRecord(reponse.ko_details))?.reason) : (geminiLegacy ? getString(geminiLegacy.ko_reason) : null),
       geminiAgent: reponse ? getString(reponse.agent) : (geminiLegacy ? getString(geminiLegacy.agent) : null),
@@ -197,9 +243,9 @@ export function ResultsDisplay() {
     judgeDecisionUpper
       ? null
       : extracted?.judgeNote !== null && extracted?.judgeNote !== undefined
-        ? extracted.judgeNote >= 4
+        ? extracted.judgeNote >= 3
           ? "SEND"
-          : extracted.judgeNote === 3
+          : extracted.judgeNote === 2
             ? "REVIEW"
             : "REJECT"
         : null;
@@ -245,10 +291,9 @@ export function ResultsDisplay() {
 
           <div className="flex items-center gap-2">
             {shown ? (
-              shown.success && extracted && hasJudge && judgeHeaderLabel ? (
-                <Badge variant={judgeVariant} className="gap-1">
-                  <Star className="h-3 w-3" />
-                  {judgeHeaderLabel}
+              shown.success && extracted?.geminiStatus ? (
+                <Badge variant={statusBadgeVariant as any}>
+                  {extracted.geminiStatus}
                 </Badge>
               ) : (
                 <Badge variant={shown.success ? "success" : "destructive"}>
@@ -392,14 +437,23 @@ export function ResultsDisplay() {
 
             {extracted.judgeDecision || extracted.judgeNote !== null || extracted.judgeFeedback ? (
               <div className="rounded-md border border-border p-3">
-                <p className="text-sm font-medium">Judge</p>
+                <div className="flex items-start justify-between gap-4">
+                  <p className="text-sm font-medium">Judge</p>
+                  <div className="flex items-center gap-2">
+                    {judgeDecisionForColor ? (
+                      <Badge variant={judgeVariant}>
+                        {judgeDecisionForColor}
+                      </Badge>
+                    ) : null}
+                    {judgeNoteLabel ? (
+                      <Badge variant="tag" className="gap-1">
+                        <Star className="h-3 w-3" />
+                        {judgeNoteLabel}
+                      </Badge>
+                    ) : null}
+                  </div>
+                </div>
                 <div className="mt-2 text-sm text-muted-foreground">
-                  {extracted.judgeDecision ? (
-                    <p>Decision: {extracted.judgeDecision}</p>
-                  ) : null}
-                  {extracted.judgeNote !== null ? (
-                    <p>Note: {extracted.judgeNote}</p>
-                  ) : null}
                   {extracted.judgeFeedback && extracted.judgeFeedback.length ? (
                     <p className="mt-2 whitespace-pre-wrap rounded-md border border-border bg-muted/30 p-2 text-foreground">
                       {extracted.judgeFeedback.join("\n")}

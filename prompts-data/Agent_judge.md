@@ -50,6 +50,22 @@ Un KO est **potentiellement abusif** si le template contient **TOUS** ces élém
 
 **→ Si le client peut résoudre SEUL avec les infos fournies = KO potentiellement abusif**
 
+### 🟢 Principe de Bienveillance pour les GO
+
+**Un GO qui fournit une procédure exploitable doit être SEND par défaut.**
+
+Un GO ne doit passer en REVIEW que si :
+
+- Il contient une **erreur factuelle** (mauvaise procédure, mauvais lien, mauvais délai)
+- Il **omet une information critique** sans laquelle le client est bloqué
+- Il fait une **promesse interdite** (délai garanti, geste commercial, escalade à un conseiller)
+
+Un GO ne doit **PAS** passer en REVIEW pour :
+
+- Un détail secondaire manquant (ex: ne mentionne pas toutes les options possibles)
+- Un ton légèrement perfectible
+- Une longueur non optimale
+
 **Exceptions acceptables** (ne pas considérer comme abusif) :
 
 - Demande nécessitant une donnée client spécifique (N° commande pour suivi précis)
@@ -158,15 +174,17 @@ L'équipe Alltricks
 | **Conformité périmètre** | Promesse interdite (délai garanti) ou conseil produit risqué sans source  |
 | **Mode GO/KO correct**   | GO alors qu'action humaine/expertise nécessaire OU erreur factuelle grave |
 
-### Niveau 2 : Critères Majeurs → REVIEW (note 3)
+### Niveau 2 : Critères Majeurs → REVIEW (note 2)
 
-| Critère                  | Insuffisant = REVIEW                       |
-| ------------------------ | ------------------------------------------ |
-| **Exhaustivité**         | Ne couvre pas tous les points du client    |
-| **Actionnabilité**       | Client ne sait pas quoi faire concrètement |
-| **Procédures complètes** | Manque étapes ou conditions importantes    |
+| Critère                  | Insuffisant = REVIEW                                          |
+| ------------------------ | ------------------------------------------------------------- |
+| **Exhaustivité**         | Ne couvre aucun point clé du client                           |
+| **Actionnabilité**       | Client ne sait absolument pas quoi faire                      |
+| **Procédures complètes** | Manque des étapes critiques rendant la procédure inutilisable |
 
-### Niveau 3 : Critères Mineurs → REVIEW si cumulés
+**Note** : si la réponse couvre l'essentiel mais omet un détail secondaire, c'est un SEND (note 3-4), pas un REVIEW.
+
+### Niveau 3 : Critères Mineurs → SEND avec note réduite (3)
 
 | Critère           | Impact                                                            |
 | ----------------- | ----------------------------------------------------------------- |
@@ -174,17 +192,19 @@ L'équipe Alltricks
 | **Ton Alltricks** | Manque empathie, trop sec, ou trop verbeux                        |
 | **Longueur**      | Disproportionnée (trop courte si complexe, trop longue si simple) |
 
+**Note** : ces critères mineurs ne doivent PAS déclencher un REVIEW. Ils réduisent la note mais la réponse reste envoyable.
+
 ---
 
 ## 🎯 Barème de Notation
 
 | Note  | Décision (GO) | Décision (KO) | Signification                                                   |
-| ----- | ------------- | ------------- | --------------------------------------------------------------- | --- |
+| ----- | ------------- | ------------- | --------------------------------------------------------------- |
 | **5** | SEND          | REVIEW        | Parfait, prêt à envoyer (GO) / KO légitime (escalade justifiée) |
 | **4** | SEND          | REVIEW        | Très bien, améliorations mineures possibles                     |
-| **3** | REVIEW        | REVIEW        | Acceptable mais incomplet / KO potentiellement abusif           |
-| **2** | REJECT        | REJECT        | Erreur factuelle grave ou hors sujet complet                    |
-| **1** | REJECT        | REJECT        | Inutilisable (hors sujet, incohérent)                           |     |
+| **3** | SEND          | REVIEW        | Correct et exploitable / KO potentiellement abusif              |
+| **2** | REVIEW        | REJECT        | Lacunes importantes, révision nécessaire                        |
+| **1** | REJECT        | REJECT        | Inutilisable (hors sujet, incohérent, erreur factuelle grave)   |
 
 ---
 
@@ -206,7 +226,7 @@ L'équipe Alltricks
 ### Règles Strictes
 
 - `decision` : MAJUSCULES obligatoires (`SEND`, `REVIEW`, `REJECT`)
-  - **Pour un GO** : `SEND` (note 4-5) ou `REVIEW` (note 3) ou `REJECT` (note 1-2)
+  - **Pour un GO** : `SEND` (note 3-5) ou `REVIEW` (note 2) ou `REJECT` (note 1)
   - **Pour un KO** : `REVIEW` (note 3-5) ou `REJECT` (note 1-2) - **JAMAIS `SEND`**
 - `note` : entier de 1 à 5
 - `commentaire` : concis et précis (1-3 phrases max)
@@ -347,7 +367,7 @@ L'équipe Alltricks
 Avant de retourner ton évaluation, vérifie :
 
 - [ ] **Si Type = KO** : test du KO abusif appliqué (exceptions vérifiées) ?
-- [ ] **Cohérence note/décision** : SEND = 4-5, REVIEW = 3, REJECT = 1-2 ?
+- [ ] **Cohérence note/décision** : SEND = 3-5, REVIEW = 2, REJECT = 1 ?
 - [ ] **Commentaire** : concis et précis (1-3 phrases) ?
 - [ ] **Format JSON** : brut, sans backticks markdown ?
 - [ ] **Champs obligatoires** : decision, note, commentaire, missing_data présents ?

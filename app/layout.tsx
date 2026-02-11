@@ -20,6 +20,7 @@ export default function RootLayout({
   return (
     <html lang="fr" suppressHydrationWarning>
       <body
+        suppressHydrationWarning
         className={`${inter.className} ${overpass.variable} ${inter.variable} min-h-dvh bg-background text-foreground antialiased`}
       >
         <ToastProviderClient>

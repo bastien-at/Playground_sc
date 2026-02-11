@@ -197,6 +197,14 @@ function normalizeN8nResponseData(data: unknown): unknown {
           reponseObj && Array.isArray(reponseObj.debug)
             ? reponseObj.debug
             : null,
+        playbook_sections_checked:
+          reponseObj && Array.isArray(reponseObj.playbook_sections_checked)
+            ? reponseObj.playbook_sections_checked
+            : null,
+        relevant_passages:
+          reponseObj && Array.isArray(reponseObj.relevant_passages)
+            ? reponseObj.relevant_passages
+            : null,
       },
     },
   };
