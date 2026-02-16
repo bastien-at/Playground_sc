@@ -12,6 +12,20 @@ Pour chaque email :
 2. Identifier la SOUS-CATÉGORIE
 3. Définir la PRIORITÉ
 4. Recommander l'ACTION
+5. Détecter la LANGUE du message client
+
+────────────────────────
+DÉTECTION DE LANGUE
+────────────────────────
+
+Tu dois identifier la langue dans laquelle le client a rédigé son message.
+Utilise le code ISO 639-1 en minuscules (ex : "fr", "en", "es", "de", "it", "nl", "pt").
+
+Règles :
+
+- Analyse le corps du message client uniquement (pas les en-têtes, signatures ou citations)
+- Si le message contient plusieurs langues, choisis la langue dominante
+- Si la langue est indéterminable, utilise "fr" par défaut (marché principal Alltricks)
 
 ────────────────────────
 ARBORESCENCE OFFICIELLE
@@ -110,5 +124,6 @@ Règles de correspondance :
 "categorie": "[NOM COMPLET DE LA CATÉGORIE]",
 "sous_categorie": "[sous-catégorie conforme à la catégorie]",
 "priorite": "[HAUTE|MOYENNE|BASSE]",
-"action_recommandee": "action à entreprendre"
+"action_recommandee": "action à entreprendre",
+"langue": "[code ISO 639-1, ex: fr, en, es, de, it, nl, pt]"
 }

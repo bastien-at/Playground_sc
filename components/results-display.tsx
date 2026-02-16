@@ -180,6 +180,7 @@ export function ResultsDisplay() {
       motifSousCategorie: motif ? getString(motif.sous_categorie) : (motifDetails ? getString(motifDetails.sous_categorie) : null),
       motifPriorite: motif ? getString(motif.priorite) : (motifDetails ? getString(motifDetails.priorite) : null),
       motifAction: motif ? getString(motif.action_recommandee) : (motifDetails ? getString(motifDetails.action_recommandee) : null),
+      motifLangue: motif ? getString(motif.langue) : (motifDetails ? getString(motifDetails.langue) : null),
       clientFirstname: (contact ? (getString(contact.prenom) || getString(contact.firstname)) : null) || (inputParams ? getString(inputParams.firstname) : null),
       clientLastname: (contact ? (getString(contact.nom) || getString(contact.lastname)) : null) || (inputParams ? getString(inputParams.lastname) : null),
       clientMessage: (contact ? getString(contact.message) : null) || (inputParams ? getString(inputParams.message) : null),
@@ -347,6 +348,9 @@ export function ResultsDisplay() {
                 ) : null}
                 {extracted.motifPriorite ? (
                   <p><span className="font-medium">Priorité :</span> {extracted.motifPriorite}</p>
+                ) : null}
+                {extracted.motifLangue ? (
+                  <p><span className="font-medium">Langue détectée :</span> {extracted.motifLangue.toUpperCase()}</p>
                 ) : null}
                 {extracted.motifAction ? (
                   <div className="mt-2 rounded-md bg-tagBlue/10 p-2 text-foreground">

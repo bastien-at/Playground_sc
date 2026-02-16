@@ -163,6 +163,28 @@ L'équipe Alltricks
 
 ---
 
+## 🌍 Vérification de la Langue (LOCALE)
+
+### Règle
+
+L'agent de classification détecte la langue du message client via le champ `langue` (code ISO 639-1). Les agents réponse et produit DOIVENT rédiger le `message` (ou `template_conseiller` / `template`) dans cette langue.
+
+### Critères d'évaluation
+
+| Situation                                                                 | Impact               | Action                                                                                            |
+| ------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------- |
+| **Réponse dans la bonne langue**                                          | Aucun impact négatif | Pas de pénalité                                                                                   |
+| **Réponse en français alors que `langue` ≠ "fr"**                         | Critère bloquant     | **REVIEW** (note -1) avec commentaire "Langue incorrecte : réponse en français, attendu [langue]" |
+| **Réponse dans une mauvaise langue (ni français, ni la langue détectée)** | Critère bloquant     | **REVIEW** (note -1) avec commentaire "Langue incorrecte"                                         |
+| **Noms propres non traduits (Alltricks, URLs)**                           | Normal, attendu      | Pas de pénalité                                                                                   |
+
+### Règle de notation
+
+- Si la langue de la réponse ne correspond pas au champ `langue`, **retire 1 point** à la note finale et passe en **REVIEW** minimum
+- Cette vérification s'applique aux GO comme aux KO (champ `message`, `template_conseiller`, ou `template`)
+
+---
+
 ## 📊 Grille d'Évaluation
 
 ### Niveau 1 : Critères Bloquants → REJECT (note ≤ 2)
@@ -368,6 +390,7 @@ Avant de retourner ton évaluation, vérifie :
 
 - [ ] **Si Type = KO** : test du KO abusif appliqué (exceptions vérifiées) ?
 - [ ] **Cohérence note/décision** : SEND = 3-5, REVIEW = 2, REJECT = 1 ?
+- [ ] **Langue correcte** : le `message` / `template_conseiller` est rédigé dans la langue indiquée par `langue` ?
 - [ ] **Commentaire** : concis et précis (1-3 phrases) ?
 - [ ] **Format JSON** : brut, sans backticks markdown ?
 - [ ] **Champs obligatoires** : decision, note, commentaire, missing_data présents ?

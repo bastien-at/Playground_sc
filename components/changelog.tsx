@@ -17,6 +17,27 @@ interface ChangelogEntry {
 
 const changelogData: ChangelogEntry[] = [
   {
+    version: "1.3.0",
+    date: "16 Février 2026",
+    type: "improvement",
+    title: "Agent Judge assoupli",
+    description: "Barème du Judge revu : les GO avec procédure exploitable sont désormais SEND par défaut (note 3-5). Les critères mineurs (ton, longueur) ne déclenchent plus de REVIEW.",
+  },
+  {
+    version: "1.2.1",
+    date: "16 Février 2026",
+    type: "improvement",
+    title: "Page de connexion",
+    description: "Ajout d'un bouton œil pour afficher/masquer le mot de passe. Correction de la redirection après connexion réussie.",
+  },
+  {
+    version: "1.2.0",
+    date: "11 Février 2026",
+    type: "fix",
+    title: "Affichage des résultats",
+    description: "Correction de l'affichage des données client, playbooks consultés et extraits pertinents. Les champs playbook_sections_checked et relevant_passages sont désormais préservés lors de la normalisation API.",
+  },
+  {
     version: "1.1.0",
     date: "14 Janvier 2026",
     type: "feature",
