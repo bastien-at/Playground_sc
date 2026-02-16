@@ -185,7 +185,59 @@ L'agent de classification détecte la langue du message client via le champ `lan
 
 ---
 
-## 📊 Grille d'Évaluation
+## � Détection de Conversation en Cours avec le Support
+
+### Règle
+
+Si le message client indique qu'il est **déjà en conversation active avec un conseiller Alltricks**, l'agent réponse NE DOIT PAS envoyer de réponse automatique.
+
+### Indicateurs de conversation en cours
+
+Le client mentionne explicitement :
+
+| Indicateur                    | Exemples                                                                                                                |
+| ----------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| **Référence à un conseiller** | "Votre collègue m'a dit...", "Le conseiller m'a répondu...", "On m'a demandé de...", "Suite à notre échange..."         |
+| **Suivi d'une demande**       | "Suite à mon message précédent", "Comme convenu avec votre équipe", "Vous m'aviez dit que...", "J'attends votre retour" |
+| **Référence à un ticket**     | "Ticket #123", "Dossier en cours", "Ma demande du [date]", "Numéro de suivi"                                            |
+| **Relance explicite**         | "Toujours pas de réponse", "Je relance ma demande", "Aucune nouvelle depuis...", "Où en est ma demande ?"               |
+| **Instructions reçues**       | "Vous m'avez demandé de fournir...", "Comme demandé, voici...", "Je vous envoie les documents"                          |
+
+### Action du Judge
+
+**Si détection de conversation en cours :**
+
+```json
+{
+  "decision": "REVIEW",
+  "note": 2,
+  "commentaire": "Client déjà en conversation avec le support (mention: [citation exacte]). Réponse automatique inappropriée. Recommandation: KO pour escalade au conseiller en charge.",
+  "missing_data": []
+}
+```
+
+### Justification
+
+- **Risque de doublon** : Le client attend une réponse d'un conseiller spécifique
+- **Contexte manquant** : L'historique de conversation n'est pas accessible à l'IA
+- **Expérience client** : Recevoir une réponse générique alors qu'un conseiller traite déjà le dossier dégrade l'expérience
+- **Escalade nécessaire** : Le conseiller en charge doit reprendre la main
+
+### Exceptions (ne PAS considérer comme conversation en cours)
+
+- Mention générique du "service client" sans référence à un échange précis
+- "J'ai contacté le service client il y a 6 mois" (délai trop ancien)
+- "Je vais contacter le service client" (intention future, pas conversation active)
+
+### Règle de notation
+
+- Si conversation en cours détectée : **REVIEW** (note 2) avec commentaire explicite
+- Cette règle s'applique aux GO comme aux KO
+- Le commentaire doit citer l'extrait exact du message client qui indique la conversation en cours
+
+---
+
+## � Grille d'Évaluation
 
 ### Niveau 1 : Critères Bloquants → REJECT (note ≤ 2)
 
@@ -391,6 +443,7 @@ Avant de retourner ton évaluation, vérifie :
 - [ ] **Si Type = KO** : test du KO abusif appliqué (exceptions vérifiées) ?
 - [ ] **Cohérence note/décision** : SEND = 3-5, REVIEW = 2, REJECT = 1 ?
 - [ ] **Langue correcte** : le `message` / `template_conseiller` est rédigé dans la langue indiquée par `langue` ?
+- [ ] **Conversation en cours détectée** : le message client indique-t-il un échange déjà en cours avec un conseiller ?
 - [ ] **Commentaire** : concis et précis (1-3 phrases) ?
 - [ ] **Format JSON** : brut, sans backticks markdown ?
 - [ ] **Champs obligatoires** : decision, note, commentaire, missing_data présents ?
