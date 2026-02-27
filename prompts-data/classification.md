@@ -13,6 +13,7 @@ Pour chaque email :
 3. Définir la PRIORITÉ
 4. Recommander l'ACTION
 5. Détecter la LANGUE du message client
+6. Déterminer le MOTIF DE CONTACT Salesforce
 
 ────────────────────────
 DÉTECTION DE LANGUE
@@ -93,6 +94,135 @@ Moyenne : Retard, retour, remboursement, annulation, garantie
 Basse : Information produit, compte, newsletter, autres
 
 ────────────────────────
+MOTIFS DE CONTACT SALESFORCE
+────────────────────────
+
+Tu dois sélectionner le motif de contact le PLUS PERTINENT parmi la liste suivante en fonction de la question du client.
+Choisis le motif qui correspond le mieux au sujet principal de la demande.
+
+**AUT : Autres**
+
+- AUT-Appel coupé
+- AUT-Club et CE
+- AUT-Demande FRN-Partenariats-démarchage
+- AUT-Requisition judiciaire
+- AUT-Troc Vélo
+
+**AV : Avant-Vente**
+
+- AV-Alignement de prix
+- AV-Demande de remise
+- AV-Info descriptif produits
+- AV-Taille produit
+
+**CDE : Commande**
+
+- CDE-Annulation commande
+- CDE-Commande suspecte
+- CDE-Demande de modif cde
+- CDE-Demande facture
+- CDE-Qualité produit (contestation)
+- CDE-Rupture stock
+
+**CPTE : Compte client**
+
+- CPTE-Compte PRO
+- CPTE-Desinscription compte
+- CPTE-Modification compte client
+- CPTE-Newsletter
+- CPTE-Pb connexion au compte
+- CPTE-Premium
+
+**GAR : Garantie**
+
+- GAR-Modalité-condition de garantie
+
+**LNC : Livraison non conforme**
+
+- LNC-Produit cassé ou défectueux
+- LNC-Produit incomplet
+- LNC-Produit manquant
+- LNC-Produit non confome/erreur pdt livré
+
+**MKP : Marketplace**
+
+- MKP-AUT-Autres questions
+- MKP-AUT-Communication vendeur (contestation)
+- MKP-AV-Info descriptif produit
+- MKP-CDE-Annulation
+- MKP-CDE-Qualité produit (contestation)
+- MKP-CPTE-Questions compte client
+- MKP-GAR-Modalité/Condition de garantie
+- MKP-LIV-Produit incomplet
+- MKP-LIV-Produit manquant
+- MKP-LIV-Produit non conforme/erreur pdt livré
+- MKP-LIV-Suivi
+- MKP-REMB-Remboursement
+- MKP-RET-Modalité de retour
+
+**NAV : Navigation site**
+
+- NAV-Bug/anomalie site
+- NAV-Navigation site
+
+**PAIE : Paiements**
+
+- PAIE-Info et problème paiement
+- PAIE-Problème paiement
+- PAIE-Utilisation avoir
+- PAIE-Utilisation code promo
+
+**PDT : Produits**
+
+- PDT-Demande de dispo
+- PDT-Demande de document
+- PDT-Fonctionnement/installation produit
+
+**REMB : Remboursements**
+
+- REMB-Erreur remboursement
+- REMB-Info remboursements
+
+**RET : Retours**
+
+- RET-Erreur enregistrement retour
+- RET-Modalité de retour
+- RET-Retour refusé
+- RET-Suivi retour
+
+**SL : Alltricks reconditionné (ex-Second Life)**
+
+- SL-AV-Info descriptif produit
+- SL-CDE-Qualité produit (contestation
+- SL-GAR-Modalité/condition de garantie
+- SL-LIV-Produit incomplet ou article manquant
+- SL-LIV-Prodtuit non conforme/erreur pdt livré
+- SL-PDT-Fontionnement/installation produit
+- SL-RET-Modalité de retour
+
+**TRA : Transport**
+
+- TRA-Contestation de livraison
+- TRA-Info mode et délai de livraison
+- TRA-Reroutage
+- TRA-Retard livraison
+- TRA-RDV non honoré
+
+**Z : autres**
+
+- Z-Atelier
+- Z-TV-Botmind
+- Z-TV-Contact
+- Z-TV-Modération
+
+**Règles de sélection :**
+
+- Choisis le motif le PLUS SPÉCIFIQUE qui correspond à la demande
+- Si la demande concerne un vendeur Marketplace, utilise les motifs MKP-\*
+- Si la demande concerne un produit reconditionné, utilise les motifs SL-\*
+- Si aucun motif ne correspond parfaitement, utilise le motif générique de la catégorie (ex: AUT, Z-TV-Contact)
+
+────────────────────────
 FORMAT DE SORTIE
 ────────────────────────
 Tu dois classifier le message client et retourner UNIQUEMENT un JSON valide.
@@ -120,10 +250,13 @@ Règles de correspondance :
 - Si categorie = "COMPTE CLIENT", alors sous_categorie ∈ {"Fonctionnement du compte client", "Offre Alltricks+", "Désinscription des newsletters"}
 - Si categorie = "AUTRES QUESTIONS", alors sous_categorie ∈ {"Trouvé moins cher ailleurs", "Pro, ateliers partenaires", "Club et demande de sponsoring", "Contact presse", "Toutes autres demandes"}
 
+- La valeur de "motif_contact" doit être STRICTEMENT l'un des motifs listés dans la section "MOTIFS DE CONTACT SALESFORCE" (respect exact de la casse, tirets et espaces).
+
 {
 "categorie": "[NOM COMPLET DE LA CATÉGORIE]",
 "sous_categorie": "[sous-catégorie conforme à la catégorie]",
 "priorite": "[HAUTE|MOYENNE|BASSE]",
 "action_recommandee": "action à entreprendre",
-"langue": "[code ISO 639-1, ex: fr, en, es, de, it, nl, pt]"
+"langue": "[code ISO 639-1, ex: fr, en, es, de, it, nl, pt]",
+"motif_contact": "[motif Salesforce le plus pertinent, ex: TRA-Retard livraison, CDE-Annulation commande, CPTE-Newsletter]"
 }

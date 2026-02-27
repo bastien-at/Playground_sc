@@ -27,17 +27,18 @@ L'agent ne peut PAS :
 
 ## 🗂️ Structure des Playbooks
 
-| Fichier              | Thématique                           | Nb Playbooks |
-| -------------------- | ------------------------------------ | ------------ |
-| `01-LIVRAISON.md`    | Livraison                            | 6            |
-| `02-RETOURS.md`      | Retours et Remboursements            | 7            |
-| `03-COMMANDES.md`    | Commandes                            | 5            |
-| `04-PAIEMENT.md`     | Paiement                             | 6            |
-| `05-PROMO-AVOIRS.md` | Codes Promo, Avoirs, Chèques Cadeaux | 4            |
-| `06-COMPTE.md`       | Compte Client                        | 4            |
-| `07-PRODUITS.md`     | Produits, Conseils, Garantie         | 4            |
-| `08-ALLTRICKS+.md`   | Programme Alltricks+                 | 1            |
-| `09-PROS-CLUBS.md`   | Pros & Clubs                         | 3            |
+| Fichier                           | Thématique                           | Nb Playbooks |
+| --------------------------------- | ------------------------------------ | ------------ |
+| `01-LIVRAISON.md`                 | Livraison                            | 6            |
+| `02-RETOURS.md`                   | Retours et Remboursements            | 7            |
+| `03-COMMANDES.md`                 | Commandes                            | 5            |
+| `04-PAIEMENT.md`                  | Paiement                             | 6            |
+| `05-PROMO-AVOIRS.md`              | Codes Promo, Avoirs, Chèques Cadeaux | 4            |
+| `06-COMPTE.md`                    | Compte Client                        | 4            |
+| `07-PRODUITS.md`                  | Produits, Conseils, Garantie         | 4            |
+| `08-ALLTRICKS+.md`                | Programme Alltricks+                 | 1            |
+| `09-PROS-CLUBS.md`                | Pros & Clubs                         | 3            |
+| `10-MARKETPLACE-INTERNATIONAL.md` | Marketplace & International          | 2            |
 
 ---
 
@@ -127,6 +128,13 @@ L'agent ne peut PAS :
 | PLB-PRC-037 | Demande Pros & Clubs (tarifs / devis / partenariat) | P2       |
 | PLB-CLB-001 | Informations & inscription programme club           | P2       |
 | PLB-B2B-038 | CGV & Conditions Générales Professionnels           | P2       |
+
+### 10. MARKETPLACE & INTERNATIONAL (MKT/INT)
+
+| ID          | Titre                                                | Priorité |
+| ----------- | ---------------------------------------------------- | -------- |
+| PLB-MKT-001 | Marketplace vs Alltricks (différences et procédures) | P2       |
+| PLB-INT-001 | Livraison Internationale (zones, délais, douanes)    | P2       |
 
 ---
 
