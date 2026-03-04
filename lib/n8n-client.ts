@@ -5,6 +5,24 @@ type ExecuteOptions = {
   timeoutMs?: number;
 };
 
+function parsePositiveInt(v: string | undefined): number | null {
+  if (!v) return null;
+  const n = Number(v);
+  if (!Number.isFinite(n)) return null;
+  const i = Math.trunc(n);
+  return i > 0 ? i : null;
+}
+
+function formatDurationMs(ms: number) {
+  if (!Number.isFinite(ms) || ms <= 0) return `${ms}ms`;
+  const s = ms / 1000;
+  return Number.isInteger(s) ? `${s}s` : `${s.toFixed(1)}s`;
+}
+
+function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 function isRetriableStatus(status: number) {
   return status >= 500 && status <= 599;
 }
@@ -41,7 +59,8 @@ export async function executeN8nWorkflow(
     };
   }
 
-  const timeoutMs = opts.timeoutMs ?? 30_000;
+  const timeoutFromEnv = parsePositiveInt(process.env.N8N_TIMEOUT_MS);
+  const timeoutMs = opts.timeoutMs ?? timeoutFromEnv ?? 30_000;
   const headers: Record<string, string> = {
     "content-type": "application/json",
   };
@@ -79,7 +98,8 @@ export async function executeN8nWorkflow(
 
   let lastError: { message: string; status?: number; code?: string } | null = null;
 
-  for (let attempt = 0; attempt < 2; attempt++) {
+  const maxAttempts = 2;
+  for (let attempt = 0; attempt < maxAttempts; attempt++) {
     try {
       const res = await fetchWithTimeout(
         url,
@@ -123,7 +143,10 @@ export async function executeN8nWorkflow(
         };
         lastError = err;
 
-        if (isRetriableStatus(res.status) && attempt === 0) continue;
+        if (isRetriableStatus(res.status) && attempt < maxAttempts - 1) {
+          await sleep(300 * (attempt + 1));
+          continue;
+        }
         return { ok: false, error: err };
       }
 
@@ -144,10 +167,15 @@ export async function executeN8nWorkflow(
         : "";
       lastError = {
         message: isAbort
-          ? `Timeout: n8n n'a pas répondu sous 30s.${technical}`
+          ? `Timeout: n8n n'a pas répondu sous ${formatDurationMs(timeoutMs)}.${technical}`
           : `Erreur réseau lors de l'appel à n8n.${technical}`,
         code: isAbort ? "TIMEOUT" : "NETWORK_ERROR",
       };
+
+      if (attempt < maxAttempts - 1) {
+        await sleep(300 * (attempt + 1));
+        continue;
+      }
 
       return { ok: false, error: lastError };
     }
