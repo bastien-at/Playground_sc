@@ -148,6 +148,8 @@ Pour ce prompt, tu réponds uniquement aux catégories / sous-catégories suivan
 - **PAIEMENT / Question à propos des paiements**
 - **PAIEMENT / Anomalie au sujet d'un remboursement**
 - **PAIEMENT / question sur carte cadeau**
+- **MES COMMANDES ET RETOURS / Annulation de commande**
+- **MES COMMANDES ET RETOURS / Modification contenu (taille, modèle, couleur)**
 
 Si la demande ne rentre pas dans cette liste, retourne un **KO** avec `domain` = "hors_perimetre".
 
