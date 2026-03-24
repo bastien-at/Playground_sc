@@ -118,7 +118,7 @@ Utilise EXACTEMENT ces valeurs, caractère par caractère.
 - AV-Taille produit
 
 **CDE : Commande**
-- CDE-Annulation commande
+- CDE-Annulation cde/chgmt avis
 - CDE-Commande suspecte
 - CDE-Demande de modif cde
 - CDE-Demande facture
