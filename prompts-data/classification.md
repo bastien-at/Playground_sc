@@ -97,26 +97,27 @@ Basse : Information produit, compte, newsletter, autres
 MOTIFS DE CONTACT SALESFORCE
 ────────────────────────
 
-Tu dois sélectionner le motif de contact le PLUS PERTINENT parmi la liste suivante en fonction de la question du client.
-Choisis le motif qui correspond le mieux au sujet principal de la demande.
+────────────────────────
+MOTIFS DE CONTACT SALESFORCE
+────────────────────────
+
+Tu dois sélectionner le motif de contact le PLUS PERTINENT parmi la liste suivante.
+Utilise EXACTEMENT ces valeurs, caractère par caractère.
 
 **AUT : Autres**
-
 - AUT-Appel coupé
-- AUT-Club et CE
-- AUT-Demande FRN-Partenariats-démarchage
+- AUT- Club et CE
+- AUT- Demande FRN-Partenariats-démarchage
 - AUT-Requisition judiciaire
 - AUT-Troc Vélo
 
 **AV : Avant-Vente**
-
 - AV-Alignement de prix
 - AV-Demande de remise
 - AV-Info descriptif produits
 - AV-Taille produit
 
 **CDE : Commande**
-
 - CDE-Annulation commande
 - CDE-Commande suspecte
 - CDE-Demande de modif cde
@@ -125,91 +126,83 @@ Choisis le motif qui correspond le mieux au sujet principal de la demande.
 - CDE-Rupture stock
 
 **CPTE : Compte client**
-
 - CPTE-Compte PRO
-- CPTE-Desinscription compte
+- CPTE-Desincription compte
 - CPTE-Modification compte client
 - CPTE-Newsletter
 - CPTE-Pb connexion au compte
 - CPTE-Premium
 
 **GAR : Garantie**
-
 - GAR-Modalité-condition de garantie
 
 **LNC : Livraison non conforme**
-
 - LNC-Produit cassé ou défectueux
 - LNC-Produit incomplet
 - LNC-Produit manquant
-- LNC-Produit non confome/erreur pdt livré
+- LNC-Produit non conforme/erreur pdt livré
+
+**MAG : Magasins**
+- MAG-Magasins
 
 **MKP : Marketplace**
-
 - MKP-AUT-Autres questions
 - MKP-AUT-Communication vendeur (contestation)
 - MKP-AV-Info descriptif produit
 - MKP-CDE-Annulation
 - MKP-CDE-Qualité produit (contestation)
 - MKP-CPTE-Questions compte client
-- MKP-GAR-Modalité/Condition de garantie
+- MKP-GAR-Modalité/condition de garantie
 - MKP-LIV-Produit incomplet
 - MKP-LIV-Produit manquant
 - MKP-LIV-Produit non conforme/erreur pdt livré
-- MKP-LIV-Suivi
+- MKP-LIV-Suivi livraison
 - MKP-REMB-Remboursement
 - MKP-RET-Modalité de retour
+- MKP_LIV_Suivi
 
 **NAV : Navigation site**
-
 - NAV-Bug/anomalie site
 - NAV-Navigation site
 
 **PAIE : Paiements**
-
 - PAIE-Info et problème paiement
 - PAIE-Problème paiement
 - PAIE-Utilisation avoir
 - PAIE-Utilisation code promo
 
 **PDT : Produits**
-
 - PDT-Demande de dispo
-- PDT-Demande de document
-- PDT-Fonctionnement/installation produit
+- PDT- Demande de document
+- PDT- Fonctionnement/installation produit
 
 **REMB : Remboursements**
-
 - REMB-Erreur remboursement
-- REMB-Info remboursements
+- REMB-Info remboursement
 
 **RET : Retours**
-
 - RET-Erreur enregistrement retour
 - RET-Modalité de retour
 - RET-Retour refusé
-- RET-Suivi retour
+- RET-Suivi Retour
 
-**SL : Alltricks reconditionné (ex-Second Life)**
-
+**SL : Alltricks reconditionné**
 - SL-AV-Info descriptif produit
-- SL-CDE-Qualité produit (contestation
+- SL-CDE-Qualité produit (contestation)
 - SL-GAR-Modalité/condition de garantie
 - SL-LIV-Produit incomplet ou article manquant
-- SL-LIV-Prodtuit non conforme/erreur pdt livré
-- SL-PDT-Fontionnement/installation produit
+- SL-LIV-Produit non conforme/erreur pdt livré
+- SL-PDT- Fonctionnement/installation produit
 - SL-RET-Modalité de retour
 
 **TRA : Transport**
-
 - TRA-Contestation de livraison
 - TRA-Info mode et délai de livraison
 - TRA-Reroutage
 - TRA-Retard livraison
-- TRA-RDV non honoré
+- LIV-RDV non honoré
 
-**Z : autres**
-
+**Z : Autres internes**
 - Z-Atelier
 - Z-TV-Botmind
 - Z-TV-Contact
