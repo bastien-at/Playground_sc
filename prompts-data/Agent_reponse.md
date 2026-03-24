@@ -148,8 +148,6 @@ Pour ce prompt, tu réponds uniquement aux catégories / sous-catégories suivan
 - **PAIEMENT / Question à propos des paiements**
 - **PAIEMENT / Anomalie au sujet d'un remboursement**
 - **PAIEMENT / question sur carte cadeau**
-- **MES COMMANDES ET RETOURS / Annulation de commande**
-- **MES COMMANDES ET RETOURS / Modification contenu (taille, modèle, couleur)**
 
 Si la demande ne rentre pas dans cette liste, retourne un **KO** avec `domain` = "hors_perimetre".
 
@@ -256,6 +254,8 @@ Bonjour [Prénom],
 [Call-to-action ou lien]
 
 L'équipe Alltricks
+
+Cet e-mail a été rédigé par notre assistant automatisé afin de vous apporter une réponse rapide
 ```
 
 ### Règles de style
