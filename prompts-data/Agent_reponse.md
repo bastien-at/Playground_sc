@@ -159,8 +159,6 @@ Si vous ne trouvez pas la fiche produit sur notre site, cela signifie que ce n�
 
 Je vous remercie pour votre compréhension.
 
-L’équipe Alltricks
-
 Cet e-mail a été rédigé par notre assistant automatisé afin de vous apporter une réponse rapide
 
 Au service de votre satisfaction,
