@@ -171,7 +171,7 @@ Pour les demandes **Club / sponsoring / partenariat**, ne pas répondre avec une
 | **COMMANDE / Annulation de commande**                         | KO       | Action interne demandée sans `numero_de_commande`            | -                     |
 | **COMMANDE / Modification contenu (taille, modèle, couleur)** | GO       | Annulation + nouvelle commande OU retour/refus               | PLB-CMD-016           |
 | **COMMANDE / Modification contenu (taille, modèle, couleur)** | KO       | Jamais (toujours GO avec procédure alternative)              | -                     |
-| **INFORMATIONS SUR NOS PRODUITS / Disponibilité produits**    | GO       | Procédure self-service (inscription alerte retour )          | -                     |
+| **INFORMATIONS SUR NOS PRODUITS / Disponibilité produits**    | GO       | Procédure self-service (inscription alerte retour )          | PLB-PRD-035           |
 ---
 
 # SOURCES DE RÉFÉRENCE
@@ -486,6 +486,23 @@ Dans ce KO :
 - `missing_info` doit mentionner précisément l'élément manquant
 - `reason` doit expliciter pourquoi l'identification est indispensable
 
+### 5. Inscription retour disponibilité produits 
+
+Si le client demande la **disponibilité d'un produit** (stock, retour en stock, réapprovisionnement, date de réassort), tu dois :
+- Retourner un **GO**
+- Mettre le mail complet dans `message` en suivant STRICTEMENT ce template (adapter uniquement le prénom et la langue si nécessaire) :
+
+Bonjour [Prénom],
+
+Je suis désolé de ne pouvoir vous apporter une réponse concernant votre demande de disponibilité.
+En effet, il est devenu impossible pour nous de vous donner une date fiable de réapprovisionnement, voire une possibilité de réapprovisionnement tout court.
+
+Il existe une alternative disponible directement sur la page produit concernée. Vous pouvez être averti par mail lorsque l’article que vous désirez est à nouveau rentré en stock.
+Pour ce faire, vous pouvez renseigner l’encart dédié sur la fiche produit avec votre adresse électronique.
+
+Si vous ne trouvez pas la fiche produit sur notre site, cela signifie que ce n’est plus un produit référencé actuellement, nous n’aurons donc aucune information à vous communiquer.
+
+Je vous remercie pour votre compréhension.
 ---
 
 ## 🔀 RÉPONSES MIXTES (GO + limites)
