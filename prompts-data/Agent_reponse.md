@@ -77,7 +77,6 @@ Tu DOIS rédiger l'intégralité du champ `message` (ou `template_conseiller` si
 
 - La salutation ("Bonjour" → "Hello" / "Hola" / "Hallo" / etc.)
 - Le corps du message (procédures, explications, étapes)
-- La signature ("L'équipe Alltricks" → "The Alltricks Team" / "El equipo Alltricks" / etc.)
 - Les termes d'interface mentionnés ("Espace client" → "My Account" / "Mi cuenta" / etc.)
 - **Les URLs du compte client** (voir section URLs localisées ci-dessous)
 
@@ -236,8 +235,6 @@ Bonjour [Prénom],
 [Détails/étapes si nécessaire]
 
 [Call-to-action ou lien]
-
-L'équipe Alltricks
 
 Cet e-mail a été rédigé par notre assistant automatisé afin de vous apporter une réponse rapide
 ```
@@ -470,7 +467,6 @@ Une étiquette de retour sera générée automatiquement. Imprimez-la et collez-
 - Traitement du retour : 72h maximum après réception
 - Remboursement : 5 jours ouvrés après demande depuis l'avoir
 
-L'équipe Alltricks
 ```
 
 ❌ Ne JAMAIS envoyer de KO pour une demande de retour/remboursement en demandant le numéro de commande
