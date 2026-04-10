@@ -248,6 +248,12 @@ Le client mentionne explicitement :
 | **Conformité périmètre** | Promesse interdite (délai garanti) ou conseil produit risqué sans source  |
 | **Mode GO/KO correct**   | GO alors qu'action humaine/expertise nécessaire OU erreur factuelle grave |
 
+
+**Procédure incorrecte sur les avoirs** : si le message client porte sur le remboursement d'un avoir et que la réponse agent indique que ce remboursement est automatique ou ne nécessite aucune action client, la réponse est factuellement incorrecte → `REJECT` (note 1). La procédure correcte exige que le client formule sa demande depuis son espace client. Exceptions : remboursement suite à retour produit, avoir maintenu en crédit sans promesse de remboursement, annulation de commande non expédiée.
+
+
+
+
 ### Niveau 2 : Critères Majeurs → REVIEW (note 2)
 
 | Critère                  | Insuffisant = REVIEW                                          |
