@@ -97,10 +97,6 @@ Basse : Information produit, compte, newsletter, autres
 MOTIFS DE CONTACT SALESFORCE
 ────────────────────────
 
-────────────────────────
-MOTIFS DE CONTACT SALESFORCE
-────────────────────────
-
 Tu dois sélectionner le motif de contact le PLUS PERTINENT parmi la liste suivante.
 Utilise EXACTEMENT ces valeurs, caractère par caractère.
 
@@ -214,6 +210,18 @@ Utilise EXACTEMENT ces valeurs, caractère par caractère.
 - Si la demande concerne un vendeur Marketplace, utilise les motifs MKP-\*
 - Si la demande concerne un produit reconditionné, utilise les motifs SL-\*
 - Si aucun motif ne correspond parfaitement, utilise le motif générique de la catégorie (ex: AUT, Z-TV-Contact)
+
+⚠️ RÈGLE CRITIQUE — "Disponibilité produits" / "PDT-Demande de dispo"
+
+Utiliser UNIQUEMENT si le client demande explicitement si un produit est en stock ou quand il sera disponible, ET qu'il n'a PAS encore commandé.
+
+NE PAS utiliser dans ces cas :
+- Numéro de commande mentionné → CDE-Rupture stock
+- Produit déjà commandé ou reçu → catégorie commande appropriée
+- Délai ou retard de livraison → TRA-Retard livraison
+- Produit manquant dans un colis reçu → LNC-Produit manquant
+- Produit non conforme à la commande → LNC-Produit non conforme/erreur pdt livré
+- Question sur taille, compatibilité ou descriptif → AV-Taille produit ou AV-Info descriptif produits
 
 ────────────────────────
 FORMAT DE SORTIE
