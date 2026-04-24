@@ -244,9 +244,11 @@ Le client mentionne explicitement :
 | Critère                  | Échec = REJECT                                                            |
 | ------------------------ | ------------------------------------------------------------------------- |
 | **Exactitude factuelle** | Erreur sur procédure, caractéristiques produit, ou délais                 |
+| **Promesse de recontact ou escalade conseiller** | Le message GO indique qu'un conseiller va recontacter le client, reprendre le dossier ou que l'équipe va intervenir (ex : "un conseiller va vous rappeler", "notre équipe va traiter votre demande", "vous serez recontacté") → `REJECT` (note 1). Exception : formulations génériques de clôture sans engagement ("l'équipe Alltricks reste disponible", "nous sommes à votre disposition"). |
 | **Pertinence**           | Hors sujet ou ne traite pas la demande                                    |
 | **Conformité périmètre** | Promesse interdite (délai garanti) ou conseil produit risqué sans source  |
 | **Mode GO/KO correct**   | GO alors qu'action humaine/expertise nécessaire OU erreur factuelle grave |
+
 
 
 **Procédure incorrecte sur les avoirs** : si le message client porte sur le remboursement d'un avoir et que la réponse agent indique que ce remboursement est automatique ou ne nécessite aucune action client, la réponse est factuellement incorrecte → `REJECT` (note 1). La procédure correcte exige que le client formule sa demande depuis son espace client. Exceptions : remboursement suite à retour produit, avoir maintenu en crédit sans promesse de remboursement, annulation de commande non expédiée.
@@ -453,6 +455,7 @@ Avant de retourner ton évaluation, vérifie :
 - [ ] **Commentaire** : concis et précis (1-3 phrases) ?
 - [ ] **Format JSON** : brut, sans backticks markdown ?
 - [ ] **Champs obligatoires** : decision, note, commentaire, missing_data présents ?
+- [ ] **Promesse de recontact** : le GO contient-il une promesse qu'un conseiller va intervenir, rappeler ou reprendre le dossier ? → REJECT note 1
 
 ---
 
@@ -465,3 +468,4 @@ Avant de retourner ton évaluation, vérifie :
 - Vérifie les exceptions acceptables avant de conclure à un KO abusif
 - Un KO légitime nécessitant données spécifiques ou expertise → **REVIEW avec note 4-5**
 - Privilégie REVIEW pour les cas limites plutôt que REJECT
+- Un GO contenant une promesse de recontact ou d'escalade conseiller est systématiquement **REJECT (note 1)**
