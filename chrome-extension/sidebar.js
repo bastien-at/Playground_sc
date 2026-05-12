@@ -2,6 +2,7 @@ const state = {
   context: null,
   config: null,
   generationStart: null,
+  pendingGeneration: false,
 };
 
 function el(id) {
@@ -116,6 +117,11 @@ function requestContext() {
   window.parent.postMessage({ source: 'sf-advisor-sidebar', type: 'requestContext' }, '*');
 }
 
+// ---- Capture email text from Salesforce page ----
+function requestEmailCapture() {
+  window.parent.postMessage({ source: 'sf-advisor-sidebar', type: 'requestEmailText' }, '*');
+}
+
 // ---- Judge banner HTML builder ----
 const ICON_CHECK = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"/></svg>`;
 const ICON_ALERT = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l10 18H2L12 3z"/><path d="M12 10v5M12 18v.5"/></svg>`;
@@ -213,7 +219,12 @@ function updateFooterTime(seconds) {
 // ---- Apply response to the UI ----
 function applySuggestionResponse(response, elapsed) {
   // Response text
-  el('n8nSuggestion').value = response?.suggestion || '';
+  const suggestion = response?.suggestion || '';
+  el('n8nSuggestion').value = suggestion;
+
+  if (!suggestion) {
+    setStatus('mailbotStatus', 'Réponse reçue mais vide — essayez de régénérer.', 'error');
+  }
 
   // Subtitle
   if (elapsed) {
@@ -315,6 +326,31 @@ function triggerGeneration(fromResponse = false) {
     return;
   }
 
+  const emailText = (el('emailText')?.value || '').trim();
+
+  // If textarea is empty, try to auto-capture from the page first
+  if (!emailText && !fromResponse) {
+    setStatus(statusId, 'Capture de l\'email en cours…', 'info');
+    state.pendingGeneration = true;
+    requestEmailCapture();
+    // Proceed after 700ms regardless (data-mailbot may still return the message)
+    setTimeout(() => {
+      if (state.pendingGeneration) {
+        state.pendingGeneration = false;
+        doGenerate(fromResponse);
+      }
+    }, 700);
+    return;
+  }
+
+  doGenerate(fromResponse);
+}
+
+function doGenerate(fromResponse = false) {
+  state.pendingGeneration = false;
+  const ticketId = state.context?.recordId || '';
+  const statusId = fromResponse ? 'mailbotStatus' : 'homeStatus';
+
   const genBtnId = fromResponse ? 'regenerateBtnAlt' : 'generateBtn';
   setLoading(genBtnId, true);
   if (fromResponse) setLoading('regenerateBtn', true);
@@ -398,6 +434,14 @@ window.addEventListener('message', (event) => {
     if (el('emailText')) el('emailText').value = text;
 
     const src = data?.payload?.source;
+
+    // If capture was triggered by auto-capture before generation, proceed immediately
+    if (state.pendingGeneration) {
+      state.pendingGeneration = false;
+      doGenerate(false);
+      return;
+    }
+
     if (text) {
       setStatus('homeStatus', `Email capturé (${src === 'selection' ? 'sélection' : 'page'})`, 'success');
     } else {
@@ -416,6 +460,12 @@ async function main() {
   // Close drawer
   el('closeDrawer').addEventListener('click', () => {
     window.parent.postMessage({ source: 'sf-advisor-sidebar', type: 'closeDrawer' }, '*');
+  });
+
+  // Capture email button
+  el('captureEmailBtn').addEventListener('click', () => {
+    setStatus('homeStatus', 'Capture en cours…', 'info');
+    requestEmailCapture();
   });
 
   // Generate

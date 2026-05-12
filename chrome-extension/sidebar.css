@@ -612,6 +612,7 @@ button {
   line-height: 1.2;
 }
 .mb-btn svg { flex-shrink: 0; }
+.mb-btn--sm { font-size: 12px; padding: 6px 10px; }
 
 .mb-btn--primary {
   background: var(--brand-700);

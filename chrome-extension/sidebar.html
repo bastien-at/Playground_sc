@@ -51,6 +51,8 @@
 
   <main class="mb-main">
 
+    <div class="mb-status" id="homeStatus"></div>
+
     <div class="mb-section-row">
       <span class="mb-section-label">Que veux-tu faire ?</span>
       <span class="mb-ai-pill">
@@ -133,6 +135,12 @@
         Contexte du message
       </summary>
       <div class="mb-context-body">
+        <button class="mb-btn mb-btn--secondary mb-btn--sm" id="captureEmailBtn" type="button" style="width:100%;margin-bottom:6px;">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M3 7l9 6 9-6"/><rect x="3" y="5" width="18" height="14" rx="2"/>
+          </svg>
+          Capturer l'email depuis la page
+        </button>
         <textarea
           class="mb-textarea"
           id="emailText"
@@ -151,8 +159,6 @@
         </div>
       </div>
     </details>
-
-    <div class="mb-status" id="homeStatus"></div>
 
   </main>
 
