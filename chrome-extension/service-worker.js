@@ -50,12 +50,26 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
         }
 
         const item = Array.isArray(json) ? json[0] : json;
-        const motif = item?.motif;
-        const reponse = item?.reponse;
-        const judge = reponse?.judge ?? item?.judge ?? null;
 
+        // Support both FR field names (reponse) and EN nested format (response.gemini)
+        const reponse = item?.reponse;
+        const gemini = item?.response?.gemini;
+
+        // Agent status: GO / KO
+        const status = reponse?.status ?? gemini?.status ?? null;
+
+        // Judge: check both format locations
+        const judge = reponse?.judge ?? gemini?.judge ?? item?.judge ?? null;
+
+        // Suggestion text:
+        //   - GO:  reponse.message  OR  gemini.response
+        //   - KO:  reponse.template_conseiller  OR  reponse.reason
         const suggestion =
           reponse?.message ??
+          gemini?.response ??
+          gemini?.message ??
+          reponse?.template_conseiller ??
+          reponse?.reason ??
           item?.suggestion ??
           item?.reply ??
           item?.answer ??
@@ -66,16 +80,21 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
           json?.text ??
           (typeof json === 'string' ? json : JSON.stringify(json, null, 2));
 
+        // Categorization: motif_details > motif (object) > gemini metadata
+        const motifRaw = item?.motif;
+        const motifObj = motifRaw && typeof motifRaw === 'object' ? motifRaw : null;
+        const motifDetails = item?.motif_details ?? motifObj ?? null;
+
         return {
           suggestion,
-          status: reponse?.status ?? null,
+          status,
           judgeDecision: judge?.decision ?? null,
           judgeNote: typeof judge?.note === 'number' ? judge.note : null,
           judgeCommentaire: judge?.commentaire ?? null,
-          categorie: motif?.categorie ?? null,
-          sousCategorie: motif?.sous_categorie ?? null,
-          priorite: motif?.priorite ?? null,
-          actionRecommandee: motif?.action_recommandee ?? null,
+          categorie: motifDetails?.categorie ?? null,
+          sousCategorie: motifDetails?.sous_categorie ?? null,
+          priorite: motifDetails?.priorite ?? null,
+          actionRecommandee: motifDetails?.action_recommandee ?? null,
           raw: json,
         };
       };
@@ -128,16 +147,22 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
         });
 
         const json1 = await res1.json().catch(() => null);
+
+        // If data-mailbot fails but the user already provided their own message,
+        // we can still proceed without blocking the whole flow.
         if (!res1.ok || !json1) {
-          sendResponse({
-            ok: false,
-            error: `DATA_MAILBOT_HTTP_${res1.status}`,
-            details: json1 ?? null,
-          });
-          return;
+          if (!userMessage) {
+            sendResponse({
+              ok: false,
+              error: `DATA_MAILBOT_HTTP_${res1.status}`,
+              details: json1 ?? null,
+            });
+            return;
+          }
+          // Fall through with empty ticket data — userMessage takes priority below
         }
 
-        const item1 = Array.isArray(json1) ? json1[0] : json1;
+        const item1 = json1 ? (Array.isArray(json1) ? json1[0] : json1) : {};
         const finalMessage = firstString(
           userMessage,
           item1?.message,

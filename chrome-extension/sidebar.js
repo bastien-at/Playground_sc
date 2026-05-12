@@ -146,10 +146,20 @@ const VERDICT_MAP = {
 };
 
 function resolveVerdict(agentStatus, judgeDecision) {
-  const s = String(agentStatus || judgeDecision || '').toUpperCase();
-  if (['GO', 'OK', 'ACCEPT', 'SEND'].includes(s)) return 'SEND';
-  if (s === 'REVIEW') return 'REVIEW';
-  if (['KO', 'REJECT'].includes(s)) return 'REJECT';
+  // Judge decision always takes precedence over agent status
+  if (judgeDecision) {
+    const jd = String(judgeDecision).toUpperCase();
+    if (['SEND', 'ACCEPT', 'GO'].includes(jd)) return 'SEND';
+    if (jd === 'REVIEW') return 'REVIEW';
+    if (['REJECT', 'KO'].includes(jd)) return 'REJECT';
+  }
+  // Fallback: derive verdict from agent status when there is no judge
+  if (agentStatus) {
+    const as = String(agentStatus).toUpperCase();
+    if (['GO', 'OK', 'ACCEPT'].includes(as)) return 'SEND';
+    if (as === 'REVIEW') return 'REVIEW';
+    if (['KO', 'REJECT'].includes(as)) return 'REJECT';
+  }
   return null;
 }
 
@@ -337,7 +347,21 @@ function triggerGeneration(fromResponse = false) {
       }
 
       if (!response?.ok) {
-        setStatus(statusId, `Erreur Mailbot : ${response?.error || 'UNKNOWN'}`, 'error');
+        const errCode = response?.error || 'UNKNOWN';
+        let errMsg = `Erreur Mailbot : ${errCode}`;
+
+        if (errCode === 'MAILBOT_MESSAGE_MISSING') {
+          errMsg = "Email client introuvable — colle le texte dans le champ ci-dessous et réessaie.";
+          // Open context section so the user sees the textarea immediately
+          const details = el('contextDetails');
+          if (details) details.open = true;
+          if (!fromResponse) showView('viewHome');
+          setTimeout(() => el('emailText')?.focus(), 150);
+        } else if (errCode.startsWith('DATA_MAILBOT_HTTP_')) {
+          errMsg = `Webhook data-mailbot inaccessible (${errCode}). Vérifie que le workflow n8n est actif.`;
+        }
+
+        setStatus(statusId, errMsg, 'error');
         setButtonState(genBtnId, 'error', 2000);
         const details =
           response?.details || response?.debug
