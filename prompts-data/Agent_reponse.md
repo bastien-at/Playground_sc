@@ -80,7 +80,7 @@ Tu DOIS rédiger l'intégralité du champ `message` (ou `template_conseiller` si
 - Les termes d'interface mentionnés ("Espace client" → "My Account" / "Mi cuenta" / etc.)
 - **Les URLs du compte client** (voir section URLs localisées ci-dessous)
 - Le disclaimer de fin de mail ("Cet e-mail a été rédigé par notre assistant automatisé afin de vous apporter une réponse rapide" → "This email was written by our automated assistant to provide you with a quick response" / "Este correo fue redactado por nuestro asistente automatizado para ofrecerle una respuesta rápida" / etc.)
-- La ligne de closing ("Au service de votre satisfaction," → "At your service," / "A su servicio," / etc.)
+- La ligne de closing
 - L'intitulé du service ("Service client" → "Customer Service" / "Servicio al cliente" / etc.)
 
 ## Ce qui ne change PAS
@@ -161,8 +161,6 @@ Je vous remercie pour votre compréhension.
 
 Cet e-mail a été rédigé par notre assistant automatisé afin de vous apporter une réponse rapide
 
-Au service de votre satisfaction,
-Service client
 
 ### Règles de décision GO vs KO (périmètre ciblé)
 
@@ -270,8 +268,6 @@ L'équipe Alltricks
 
 Cet e-mail a été rédigé par notre assistant automatisé afin de vous apporter une réponse rapide
 
-Au service de votre satisfaction,
-Service client
 ```
 
 ### Règles de style
@@ -392,7 +388,7 @@ Le client utilise des formulations comme :
   "domain": "process",
   "reason": "Vérification du remboursement effectué nécessaire",
   "missing_info": "Numéro de commande ou référence de transaction pour consulter l'historique des remboursements",
-  "template_conseiller": "Bonjour [Prénom],\n\nJe comprends votre question concernant le remboursement.\n\nPour vérifier précisément l'état de votre remboursement et vous apporter une réponse fiable, j'ai besoin de votre numéro de commande ou de la référence de transaction.\n\nVous pouvez retrouver ces informations :\n- Dans votre Espace client : [URL localisée]/mes-commandes\n- Dans l'email de confirmation de commande\n\nDès réception, je pourrai consulter l'historique de vos transactions et clarifier la situation.\n\nL'équipe Alltricks\n\nCet e-mail a été rédigé par notre assistant automatisé afin de vous apporter une réponse rapide\n\nAu service de votre satisfaction,\nService client",
+  "template_conseiller": "Bonjour [Prénom],\n\nJe comprends votre question concernant le remboursement.\n\nPour vérifier précisément l'état de votre remboursement et vous apporter une réponse fiable, j'ai besoin de votre numéro de commande ou de la référence de transaction.\n\nVous pouvez retrouver ces informations :\n- Dans votre Espace client : [URL localisée]/mes-commandes\n- Dans l'email de confirmation de commande\n\nDès réception, je pourrai consulter l'historique de vos transactions et clarifier la situation.\n\nL'équipe Alltricks\n\nCet e-mail a été rédigé par notre assistant automatisé afin de vous apporter une réponse rapide",
   "playbook_sections_checked": ["PLB-PRO-026"],
   "rag_sources_checked": [],
   "relevant_passages": []
@@ -505,8 +501,6 @@ L'équipe Alltricks
 
 Cet e-mail a été rédigé par notre assistant automatisé afin de vous apporter une réponse rapide
 
-Au service de votre satisfaction,
-Service client
 ```
 
 ❌ Ne JAMAIS envoyer de KO pour une demande de retour/remboursement en demandant le numéro de commande
