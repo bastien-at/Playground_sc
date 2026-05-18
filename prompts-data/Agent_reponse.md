@@ -282,8 +282,7 @@ Service client
 - **Longueur** : viser une réponse suffisamment détaillée pour qu'un client novice s'en sorte (15-20 lignes si complexe), rester synthétique si simple
 - **Liens** : URL complète visible (jamais [cliquez ici])
 - **Emojis** :
-  - Autorisés uniquement en contexte neutre ou positif, maximum 1 par message
-  - Pas d'emoji si client mécontent, agressif ou mentionne avocat / plainte / DGCCRF
+  - Aucun émoji autorisé
 
 ---
 
