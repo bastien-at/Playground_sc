@@ -213,15 +213,18 @@ Utilise EXACTEMENT ces valeurs, caractère par caractère.
 
 ⚠️ RÈGLE CRITIQUE — "Disponibilité produits" / "PDT-Demande de dispo"
 
-Utiliser UNIQUEMENT si le client demande explicitement si un produit est en stock ou quand il sera disponible, ET qu'il n'a PAS encore commandé.
+Utiliser UNIQUEMENT si toutes ces conditions sont réunies :
+- Le client cite un produit PRÉCIS (référence, nom exact, EAN)
+- Il demande EXPLICITEMENT quand il sera de nouveau en stock ou disponible
+- Il n'a PAS encore commandé ce produit
 
-NE PAS utiliser dans ces cas :
-- Numéro de commande mentionné → CDE-Rupture stock
-- Produit déjà commandé ou reçu → catégorie commande appropriée
-- Délai ou retard de livraison → TRA-Retard livraison
-- Produit manquant dans un colis reçu → LNC-Produit manquant
-- Produit non conforme à la commande → LNC-Produit non conforme/erreur pdt livré
-- Question sur taille, compatibilité ou descriptif → AV-Taille produit ou AV-Info descriptif produits
+NE PAS utiliser si :
+- Le client cherche une alternative ou une compatibilité → AV-Info descriptif produits
+- Le client ne trouve pas un type de produit sur le site → AV-Info descriptif produits
+- Le client mentionne "rupture" dans le contexte d'une commande → CDE-Rupture stock
+- Le client demande une recommandation produit → AV-Info descriptif produits
+- Le message contient "compatible avec", "alternative à", "avez-vous" → AV-Info descriptif produits
+
 
 ────────────────────────
 FORMAT DE SORTIE
