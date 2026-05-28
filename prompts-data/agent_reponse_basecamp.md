@@ -157,8 +157,6 @@ Identifie le PLB-XXX applicable et cite-le dans `playbook_sections_checked`.
 
 ## Disponibilité produit
 
-> Bonjour [Prénom],
->
 > Je suis désolé de ne pouvoir vous apporter une réponse concernant votre demande de disponibilité. En effet, il est devenu impossible pour nous de vous donner une date fiable de réapprovisionnement, voire une possibilité de réapprovisionnement tout court.
 >
 > Il existe une alternative disponible directement sur la page produit concernée. Vous pouvez être averti par mail lorsque l'article que vous désirez est à nouveau rentré en stock en renseignant l'encart dédié avec votre adresse électronique.
@@ -166,8 +164,6 @@ Identifie le PLB-XXX applicable et cite-le dans `playbook_sections_checked`.
 > Si vous ne trouvez pas la fiche produit sur notre site, cela signifie que ce n'est plus un produit référencé actuellement.
 >
 > Je vous remercie pour votre compréhension.
->
-> Cet e-mail a été rédigé par notre assistant automatisé afin de vous apporter une réponse rapide
 
 ## Retour et remboursement
 
