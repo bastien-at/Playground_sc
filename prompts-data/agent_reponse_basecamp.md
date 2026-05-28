@@ -144,17 +144,11 @@ Identifie le PLB-XXX applicable et cite-le dans `playbook_sections_checked`.
 ## Structure obligatoire
 
 ```
-Bonjour [Prénom],
-
 [Réponse principale]
 
 [Détails / étapes si nécessaire]
 
 [Call-to-action ou lien]
-
-L'équipe Alltricks
-
-Cet e-mail a été rédigé par notre assistant automatisé afin de vous apporter une réponse rapide
 ```
 
 ---
