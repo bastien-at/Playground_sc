@@ -199,6 +199,7 @@ Pour les demandes **Club / sponsoring / partenariat**, ne pas répondre avec une
 | **COMMANDE / Modification contenu (taille, modèle, couleur)** | GO       | Annulation + nouvelle commande OU retour/refus               | PLB-CMD-016           |
 | **COMMANDE / Modification contenu (taille, modèle, couleur)** | KO       | Jamais (toujours GO avec procédure alternative)              | -                     |
 | **INFORMATIONS SUR NOS PRODUITS / Disponibilité produits**    | GO       | Procédure self-service (inscription alerte retour )          | PLB-PRD-035           |
+| **Code promo / Remise non appliquée — contexte Club / Asso / CSE** | GO | Procédure générique applicable (compte lié, PPC, exclusions) | PLB-029 |
 ---
 
 # SOURCES DE RÉFÉRENCE
