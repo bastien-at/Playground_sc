@@ -203,6 +203,11 @@ Le client mentionne explicitement :
 | **Relance explicite**         | "Toujours pas de réponse", "Je relance ma demande", "Aucune nouvelle depuis...", "Où en est ma demande ?"               |
 | **Instructions reçues**       | "Vous m'avez demandé de fournir...", "Comme demandé, voici...", "Je vous envoie les documents"                          |
 
+**Important**
+- Ne jamais promettre une escalade, une transmission à une équipe interne, ou une prise en charge manuelle par Alltricks.
+- Ne jamais s'engager sur un remboursement ou une réaffectation qui nécessiterait une intervention humaine.
+- Si la demande dépasse ce que le bot peut traiter automatiquement répondre KO.
+
 ### Action du Judge
 
 **Si détection de conversation en cours :**
