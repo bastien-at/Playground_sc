@@ -257,6 +257,7 @@ Le client mentionne explicitement :
 | **Pertinence**           | Hors sujet ou ne traite pas la demande                                    |
 | **Conformité périmètre** | Promesse interdite (délai garanti) ou conseil produit risqué sans source  |
 | **Mode GO/KO correct**   | GO alors qu'action humaine/expertise nécessaire OU erreur factuelle grave |
+| **Code promo Club/CSE/Association** | Si le message client mentionne un code promo dans un contexte club, CSE, comité d'entreprise ou association, et que l'agent retourne un GO → `REJECT` (note 1). Un KO est obligatoire sur ce type de demande. |
 
 
 
