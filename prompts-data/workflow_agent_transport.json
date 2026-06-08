@@ -124,7 +124,7 @@
     {
       "parameters": {
         "mode": "runOnceForEachItem",
-        "jsCode": "const ctx = $('Extraire référence commande').item.json;\nconst wtOrder = $('WT — Order Details').item.json;\nconst wtTracking = $('WT — Tracking').item.json;\n\nreturn {\n  json: {\n    ...ctx,\n    wt_order: wtOrder,\n    wt_tracking: wtTracking\n  }\n};"
+        "jsCode": "const ctx = $('Extraire référence commande').item.json;\n\n// Le MCP retourne content[1].resource.text comme JSON string — on le parse\nfunction parseMcpOutput(mcpJson) {\n  try {\n    const content = mcpJson.content || [];\n    const resource = content.find(c => c.type === 'resource');\n    if (resource?.resource?.text) {\n      return JSON.parse(resource.resource.text);\n    }\n    // Fallback : retourner le json brut si pas de resource\n    return mcpJson;\n  } catch(e) {\n    console.error('parseMcpOutput failed:', e.message);\n    return null;\n  }\n}\n\nconst wtOrder = parseMcpOutput($('WT — Order Details').item.json);\nconst wtTracking = parseMcpOutput($('WT — Tracking').item.json);\n\nreturn {\n  json: {\n    ...ctx,\n    wt_order: wtOrder,\n    wt_tracking: wtTracking\n  }\n};"
       },
       "id": "code-merge",
       "name": "Contexte complet",
