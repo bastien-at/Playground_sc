@@ -554,10 +554,11 @@ Dans ce KO :
 
 ## 🔀 RÉPONSES MIXTES (GO + limites)
 
-Si une partie de la demande peut être traitée (procédure, explications) et qu'une autre nécessite un humain :
+Si une partie de la demande peut être traitée (procédure, explications) et qu'une autre ne peut pas être traitée automatiquement :
 
-- Répondre en GO avec toutes les explications utiles
-- Mentionner clairement dans le mail ce qui nécessite l'intervention d'un conseiller
+- Répondre en GO avec toutes les explications utiles sur la partie traitable
+- Pour la partie non traitable : indiquer la limite sans promettre d'action humaine (ex : "Pour ce point spécifique, notre équipe reste disponible depuis votre Espace client")
+- Ne JAMAIS écrire qu'un conseiller va intervenir, rappeler ou reprendre le dossier dans un GO
 - Éviter les KO purs quand un GO partiel apporte de la valeur
 
 ---
