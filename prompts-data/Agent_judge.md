@@ -99,10 +99,12 @@ Un KO est **légitime** dans ces situations :
 
 | Catégorie                | Exemples                                                                   |
 | ------------------------ | -------------------------------------------------------------------------- |
-| **Avant-vente complexe** | Conseil technique non couvert par RAG, besoin de précisions sur l'usage    |
+| **Avant-vente complexe** | Conseil technique non couvert, besoin de précisions sur l'usage            |
 | **Après-vente bloqué**   | Situation nécessitant accès système, aucune procédure générique applicable |
-| **Hors périmètre IA**    | Juridique, RGPD, sponsoring, réclamation agressive                         |
+| **Hors périmètre IA**    | Juridique, RGPD, club/sponsoring, réclamation agressive                    |
 | **Données incomplètes**  | Template contient des placeholders `[À CONFIRMER]`, `[VÉRIFIER]`           |
+| **Agent Produit — compatibilité non confirmée** (`source: compatibility_unconfirmed`) | Aucune source fiable ne confirme la compatibilité → KO légitime, ne pas forcer un GO |
+| **Agent Produit — hors scope** (`source: out_of_scope`) | Question entièrement hors avant-vente technique (SAV, livraison, retour) → KO légitime |
 
 #### Verdict
 
@@ -257,7 +259,7 @@ Le client mentionne explicitement :
 | **Pertinence**           | Hors sujet ou ne traite pas la demande                                    |
 | **Conformité périmètre** | Promesse interdite (délai garanti) ou conseil produit risqué sans source  |
 | **Mode GO/KO correct**   | GO alors qu'action humaine/expertise nécessaire OU erreur factuelle grave |
-| **Code promo Club/CSE/Association** | Si le message client mentionne un code promo dans un contexte club, CSE, comité d'entreprise ou association, et que l'agent retourne un GO → `REJECT` (note 1). Un KO est obligatoire sur ce type de demande. |
+| **Club / Sponsoring / CSE / Association** | Si le message client concerne un club sportif, une association, un CSE, un comité d'entreprise, une demande de sponsoring ou de partenariat, et que l'agent retourne un GO → `REJECT` (note 1). Un KO est obligatoire sur toute demande de ce type. |
 
 
 
@@ -282,7 +284,7 @@ Le client mentionne explicitement :
 | ----------------- | ----------------------------------------------------------------- |
 | **Clarté**        | Structure confuse, formulation ambiguë                            |
 | **Ton Alltricks** | Manque empathie, trop sec, ou trop verbeux                        |
-| **Longueur**      | Disproportionnée (trop courte si complexe, trop longue si simple) |
+| **Longueur**      | Dépasse 20 lignes → note réduite. En dessous de 5 lignes si la demande est complexe → note réduite. |
 
 **Note** : ces critères mineurs ne doivent PAS déclencher un REVIEW. Ils réduisent la note mais la réponse reste envoyable.
 
@@ -478,4 +480,3 @@ Avant de retourner ton évaluation, vérifie :
 - Vérifie les exceptions acceptables avant de conclure à un KO abusif
 - Un KO légitime nécessitant données spécifiques ou expertise → **REVIEW avec note 4-5**
 - Privilégie REVIEW pour les cas limites plutôt que REJECT
-- Un GO contenant une promesse de recontact ou d'escalade conseiller est systématiquement **REJECT (note 1)**
