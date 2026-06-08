@@ -20,10 +20,8 @@ Pour chaque email entrant :
 
 1. Identifier la CATÉGORIE principale
 2. Identifier la SOUS-CATÉGORIE
-3. Définir la PRIORITÉ
-4. Définir l'ACTION de routage
-5. Détecter la LANGUE du message client
-6. Déterminer le MOTIF DE CONTACT Salesforce
+3. Détecter la LANGUE du message client
+4. Déterminer le MOTIF DE CONTACT Salesforce cohérent avec la question principale du client
 
 ────────────────────────
 DÉTECTION DE LANGUE
@@ -82,26 +80,6 @@ ARBORESCENCE OFFICIELLE
    7.3 Club et demande de sponsoring
    7.4 Contact presse
    7.5 Toutes autres demandes
-
-────────────────────────
-SIGNAUX D'ESCALADE
-────────────────────────
-
-Priorité = Haute + Escalade si :
-
-- Ton agressif : inadmissible, scandaleux, voleurs, arnaque
-- Juridique : avocat, plainte, DGCCRF, tribunal
-- RGPD : supprimer mes données
-- Réseaux sociaux : twitter, facebook, avis google
-- Relance : déjà contacté, toujours pas de réponse
-
-────────────────────────
-PRIORITÉS
-────────────────────────
-
-Haute : Anomalie paiement, produit abîmé/manquant, escalade
-Moyenne : Retard, retour, remboursement, annulation, garantie
-Basse : Information produit, compte, newsletter, autres
 
 ────────────────────────
 MOTIFS DE CONTACT SALESFORCE
@@ -245,8 +223,6 @@ Retourne UNIQUEMENT ce JSON (brut, sans backticks) :
 {
   "categorie": "[NOM COMPLET DE LA CATÉGORIE]",
   "sous_categorie": "[sous-catégorie conforme à la catégorie]",
-  "priorite": "HAUTE|MOYENNE|BASSE",
-  "action_recommandee": "AGENT_REPONSE|ESCALADE_HUMAIN",
   "langue": "[code ISO 639-1, ex: fr, en, es, de, it, nl, pt]",
   "motif_contact": "[motif Salesforce exact]"
 }
@@ -274,18 +250,13 @@ RÈGLES DE VALEURS
 - "COMPTE CLIENT" → {"Fonctionnement du compte client", "Offre Alltricks+", "Désinscription des newsletters"}
 - "AUTRES QUESTIONS" → {"Trouvé moins cher ailleurs", "Pro, ateliers partenaires", "Club et demande de sponsoring", "Contact presse", "Toutes autres demandes"}
 
-**`action_recommandee`** — STRICTEMENT l'une de ces deux valeurs :
-
-| Valeur | Quand l'utiliser |
-|---|---|
-| `AGENT_REPONSE` | Cas standard : livraison, commandes, retours, paiements, compte, avant-vente |
-| `ESCALADE_HUMAIN` | Signal d'escalade détecté (ton agressif, juridique, RGPD, réseaux sociaux, relance sans réponse) |
-
-**`priorite`** — `HAUTE`, `MOYENNE` ou `BASSE` (voir section PRIORITÉS)
-
 **`langue`** — code ISO 639-1 en minuscules (voir section DÉTECTION DE LANGUE)
 
 **`motif_contact`** — STRICTEMENT l'un des motifs listés dans MOTIFS DE CONTACT SALESFORCE (casse, tirets et espaces exacts)
+
+Règle de cohérence : le motif doit refléter la **question principale** du client, pas un élément secondaire du message.
+- Si le client mentionne une livraison tardive ET demande un remboursement → le motif est celui de la demande explicite (ex : `REMB-Info remboursement`), pas du contexte
+- Si le message contient plusieurs demandes, classe selon la demande la plus urgente ou la plus explicite
 
 ────────────────────────
 CHECKLIST AVANT SORTIE
@@ -294,7 +265,6 @@ CHECKLIST AVANT SORTIE
 - [ ] JSON brut : commence par `{`, finit par `}`, aucun backtick
 - [ ] `categorie` : valeur exacte parmi les 7 autorisées
 - [ ] `sous_categorie` : appartient à la catégorie choisie
-- [ ] `priorite` : HAUTE si signal d'escalade détecté
-- [ ] `action_recommandee` : ESCALADE_HUMAIN si signal d'escalade, sinon AGENT_REPONSE
 - [ ] `langue` : code ISO 639-1 basé sur le corps du message uniquement
 - [ ] `motif_contact` : valeur copiée caractère par caractère depuis la liste Salesforce
+- [ ] `motif_contact` : correspond à la question PRINCIPALE du client, pas au contexte secondaire
