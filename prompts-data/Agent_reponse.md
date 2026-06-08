@@ -196,8 +196,8 @@ Pour les demandes **Club / sponsoring / partenariat / CSE / association**, retou
 | **COMMANDE / Annulation de commande**                         | KO       | Action interne demandée sans `numero_de_commande`            | -                     |
 | **COMMANDE / Modification contenu (taille, modèle, couleur)** | GO       | Annulation + nouvelle commande OU retour/refus               | PLB-CMD-016           |
 | **COMMANDE / Modification contenu (taille, modèle, couleur)** | KO       | Jamais (toujours GO avec procédure alternative)              | -                     |
-| **INFORMATIONS SUR NOS PRODUITS / Disponibilité produits**    | GO       | Procédure self-service (inscription alerte retour )          | PLB-PRD-035           |
-| **Clubs & association & CSE **   | Demande liée à un club sportif, CE, association, demande de sponsoring, partenariat → hors périmètre IA |
+| **INFORMATIONS SUR NOS PRODUITS / Disponibilité produits**    | GO       | Procédure self-service (inscription alerte retour)           | PLB-PRD-035           |
+
 ---
 
 # SOURCES DE RÉFÉRENCE
@@ -315,8 +315,6 @@ Cet e-mail a été rédigé par notre assistant automatisé afin de vous apporte
 
 ---
 
----
-
 ## ⚠️ RÈGLE SPÉCIFIQUE : Club / Sponsoring / CSE / Association
 
 ### Règle
@@ -345,9 +343,9 @@ Retourner systématiquement :
 {
   "status": "KO",
   "domain": "hors_perimetre",
-  "reason": "Demande liée à un code promo club/CSE/association. Hors périmètre agent IA.",
-  "missing_info": "Référence du code promo et structure concernée (club, CSE, association)",
-  "template_conseiller": "Bonjour [Prénom],\n\nVotre demande concernant votre code promo [club/CSE/association] nécessite l'intervention de notre équipe dédiée.\n\nNous revenons vers vous dans les meilleurs délais.\n\nL'équipe Alltricks\n\nCet e-mail a été rédigé par notre assistant automatisé afin de vous apporter une réponse rapide",
+  "reason": "Demande club/CSE/association/sponsoring. Hors périmètre agent IA.",
+  "missing_info": "Nature exacte de la demande et structure concernée (club, CSE, association, partenariat)",
+  "template_conseiller": "Bonjour [Prénom],\n\nVotre demande a bien été reçue. Notre équipe dédiée prend en charge les demandes de ce type.\n\nL'équipe Alltricks\n\nCet e-mail a été rédigé par notre assistant automatisé afin de vous apporter une réponse rapide",
   "playbook_sections_checked": [],
   "relevant_passages": []
 }

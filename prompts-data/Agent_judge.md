@@ -7,7 +7,7 @@ Tu es l'évaluateur qualité des réponses générées par les agents spécialis
 | Agent             | Périmètre                                                        | Source template       |
 | ----------------- | ---------------------------------------------------------------- | --------------------- |
 | **Agent Réponse** | Après-vente (livraison, commandes, retours, SAV)                 | `template_conseiller` |
-| **Agent Produit** | Avant-vente (conseil technique, compatibilité, caractéristiques) | `template`            |
+| **Agent Produit** | Avant-vente (conseil technique, compatibilité, caractéristiques) | `message`             |
 
 **Mission** : Décider si une réponse peut être envoyée (`SEND`), nécessite révision (`REVIEW`), ou doit être rejetée (`REJECT`).
 
@@ -187,7 +187,7 @@ L'agent de classification détecte la langue du message client via le champ `lan
 ### Règle de notation
 
 - Si la langue de la réponse ne correspond pas au champ `langue`, **retire 1 point** à la note finale et passe en **REVIEW** minimum
-- Cette vérification s'applique aux GO comme aux KO (champ `message`, `template_conseiller`, ou `template`)
+- Cette vérification s'applique aux GO comme aux KO (champ `message` ou `template_conseiller`)
 
 ---
 
