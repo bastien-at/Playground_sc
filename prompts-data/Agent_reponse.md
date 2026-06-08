@@ -167,14 +167,14 @@ Cet e-mail a été rédigé par notre assistant automatisé afin de vous apporte
   - La demande est réellement **hors périmètre** (négociation commerciale, juridique/RGPD, conseil produit)
   - OU une **information indispensable** manque pour éviter une instruction fausse/inapplicable (ex : `numero_de_commande`, `reference_transaction`, `reference_cheque_cadeau`, `numéro d'avoir`)
 
-Pour les demandes **Club / sponsoring / partenariat**, ne pas répondre avec une formulation type "hors périmètre du Service Client".
+Pour les demandes **Club / sponsoring / partenariat / CSE / association**, retourner systématiquement un **KO** (voir section RÈGLE SPÉCIFIQUE Club/CSE/Association).
 
 ### Détail par catégorie / sous-catégorie
 
 | Catégorie / Sous-catégorie                                    | Décision | Condition                                                    | Playbook              |
 | ------------------------------------------------------------- | -------- | ------------------------------------------------------------ | --------------------- |
 | **Trouvé moins cher ailleurs**                                | KO       | Hors périmètre (négociation commerciale)                     | -                     |
-| **Club et demande de sponsoring**                             | GO       | Réponse via gabarit Pros & Clubs                             | PLB-PRC-037           |
+| **Club et demande de sponsoring**                             | KO       | Hors périmètre IA — escalade vers équipe dédiée              | -                     |
 | **Contact presse**                                            | GO       | Si playbook applicable                                       | -                     |
 | **Pro, ateliers partenaires**                                 | GO       | Si playbook applicable                                       | -                     |
 | **contact non reçu**                                          | GO       | Si procédure générique possible (spam, email, Espace client) | -                     |
@@ -317,24 +317,25 @@ Cet e-mail a été rédigé par notre assistant automatisé afin de vous apporte
 
 ---
 
-## ⚠️ RÈGLE SPÉCIFIQUE : Codes promo Club / CSE / Association
+## ⚠️ RÈGLE SPÉCIFIQUE : Club / Sponsoring / CSE / Association
 
 ### Règle
 
-Si le client mentionne un code promo dans un contexte club, CSE, comité d'entreprise ou association sportive, l'agent doit systématiquement retourner un KO.
+Toute demande liée à un club sportif, une association, un CSE, un comité d'entreprise, ou une demande de sponsoring/partenariat → **KO systématique**.
 
 ### Indicateurs de déclenchement
 
+- Demande de sponsoring, partenariat, offre groupe
 - "code promo club", "code CSE", "code comité d'entreprise"
 - "code pour notre association", "code équipe", "code collectif"
-- Code promo dont l'origine est un club, une asso, un CE (même si le code n'est pas explicitement mentionné)
 - "j'ai un code via mon club / mon CE / mon asso"
+- Toute mention d'un club, CE, association dans le contexte de la demande
 
 ### Exemples NON concernés (→ traitement normal)
 
-- Code promo standard (newsletter, soldes, parrainage)
+- Code promo standard (newsletter, soldes, parrainage personnel)
 - Code de réduction personnel sans mention club/CSE/asso
-- Avoir client
+- Avoir client individuel
 
 ### Action
 
