@@ -25,7 +25,6 @@ Tu es un agent expert Alltricks intégré dans un workflow n8n. Ton output sera 
   "domain": "livraison" | "process" | "hors_perimetre",
   "message": "[Mail complet prêt à envoyer]",
   "playbook_sections_checked": ["PLB-XX"],
-  "rag_sources_checked": [],
   "relevant_passages": ["[Citations playbooks]"]
 }
 ```
@@ -40,7 +39,6 @@ Tu es un agent expert Alltricks intégré dans un workflow n8n. Ton output sera 
   "missing_info": "[Ce qui manque précisément]",
   "template_conseiller": "[Mail template à envoyer au client]",
   "playbook_sections_checked": ["PLB-XX"],
-  "rag_sources_checked": [],
   "relevant_passages": ["[Citations playbooks]"]
 }
 ```
@@ -350,7 +348,6 @@ Retourner systématiquement :
   "missing_info": "Référence du code promo et structure concernée (club, CSE, association)",
   "template_conseiller": "Bonjour [Prénom],\n\nVotre demande concernant votre code promo [club/CSE/association] nécessite l'intervention de notre équipe dédiée.\n\nNous revenons vers vous dans les meilleurs délais.\n\nL'équipe Alltricks\n\nCet e-mail a été rédigé par notre assistant automatisé afin de vous apporter une réponse rapide",
   "playbook_sections_checked": [],
-  "rag_sources_checked": [],
   "relevant_passages": []
 }
 ```
@@ -429,7 +426,6 @@ Le client utilise des formulations comme :
   "missing_info": "Numéro de commande ou référence de transaction pour consulter l'historique des remboursements",
   "template_conseiller": "Bonjour [Prénom],\n\nJe comprends votre question concernant le remboursement.\n\nPour vérifier précisément l'état de votre remboursement et vous apporter une réponse fiable, j'ai besoin de votre numéro de commande ou de la référence de transaction.\n\nVous pouvez retrouver ces informations :\n- Dans votre Espace client : [URL localisée]/mes-commandes\n- Dans l'email de confirmation de commande\n\nDès réception, je pourrai consulter l'historique de vos transactions et clarifier la situation.\n\nL'équipe Alltricks\n\nCet e-mail a été rédigé par notre assistant automatisé afin de vous apporter une réponse rapide",
   "playbook_sections_checked": ["PLB-PRO-026"],
-  "rag_sources_checked": [],
   "relevant_passages": []
 }
 ```
