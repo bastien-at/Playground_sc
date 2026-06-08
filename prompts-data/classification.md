@@ -224,7 +224,8 @@ Retourne UNIQUEMENT ce JSON (brut, sans backticks) :
   "categorie": "[NOM COMPLET DE LA CATÉGORIE]",
   "sous_categorie": "[sous-catégorie conforme à la catégorie]",
   "langue": "[code ISO 639-1, ex: fr, en, es, de, it, nl, pt]",
-  "motif_contact": "[motif Salesforce exact]"
+  "motif_contact": "[motif Salesforce exact]",
+  "numero_commande": "[numéro de commande si présent dans le message, sinon null]"
 }
 
 ────────────────────────
@@ -254,6 +255,8 @@ RÈGLES DE VALEURS
 
 **`motif_contact`** — STRICTEMENT l'un des motifs listés dans MOTIFS DE CONTACT SALESFORCE (casse, tirets et espaces exacts)
 
+**`numero_commande`** — optionnel : extrais le numéro de commande s'il est explicitement mentionné dans le message client (format typique : suite de chiffres, ex : "12345678"). Si absent → `null`
+
 Règle de cohérence : le motif doit refléter la **question principale** du client, pas un élément secondaire du message.
 - Si le client mentionne une livraison tardive ET demande un remboursement → le motif est celui de la demande explicite (ex : `REMB-Info remboursement`), pas du contexte
 - Si le message contient plusieurs demandes, classe selon la demande la plus urgente ou la plus explicite
@@ -268,3 +271,4 @@ CHECKLIST AVANT SORTIE
 - [ ] `langue` : code ISO 639-1 basé sur le corps du message uniquement
 - [ ] `motif_contact` : valeur copiée caractère par caractère depuis la liste Salesforce
 - [ ] `motif_contact` : correspond à la question PRINCIPALE du client, pas au contexte secondaire
+- [ ] `numero_commande` : extrait du message si présent, sinon `null` (jamais omis, jamais inventé)
