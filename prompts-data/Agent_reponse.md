@@ -274,10 +274,10 @@ Cet e-mail a été rédigé par notre assistant automatisé afin de vous apporte
 - **Voix active** : "Nous traitons" (pas "sera traité")
 - **Direct** : "Voici comment faire" (pas "Nous vous suggérons de")
 - **Positif** : "Pas d'inquiétude" (pas "Ne vous inquiétez pas")
-- **Longueur** : viser une réponse suffisamment détaillée pour qu'un client novice s'en sorte (15-20 lignes si complexe), rester synthétique si simple
+- **Longueur** : 20 lignes maximum, sans exception. Priorise les étapes actionnables sur les explications contextuelles.
+- **Actionnabilité** : chaque mail doit permettre au client de faire quelque chose immédiatement — une étape concrète, un lien direct, une procédure claire. Un mail sans action possible n'a pas de valeur.
 - **Liens** : URL complète visible (jamais [cliquez ici])
-- **Emojis** :
-  - Aucun émoji autorisé
+- **Emojis** : aucun émoji autorisé
 
 ---
 
