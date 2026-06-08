@@ -1,0 +1,264 @@
+{
+  "name": "WF — Agent Transport",
+  "nodes": [
+    {
+      "id": "wh-01",
+      "name": "Ticket Transport entrant",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [0, 300],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "agent-transport",
+        "responseMode": "onReceived"
+      }
+    },
+    {
+      "id": "if-canal",
+      "name": "Vente en magasin ?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [240, 300],
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict", "version": 2 },
+          "conditions": [
+            {
+              "id": "c-canal",
+              "leftValue": "={{ $json.canal }}",
+              "operator": { "type": "string", "operation": "equals" },
+              "rightValue": "magasin"
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "code-extract",
+      "name": "Extraire référence commande",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [480, 420],
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "// Cherche d'abord un numéro de commande dans le message client\n// Format Alltricks : 260507T074339522 ou 260507T074339522A\nconst msg = $json.dernier_message || '';\nconst sfRef = $json.name || '';\nconst match = msg.match(/\\b(\\d{6}[A-Z]\\d{12}[A-Z]?)\\b/);\nconst order_ref = match ? match[1] : sfRef;\n\nreturn {\n  json: {\n    order_ref,\n    contact_email: $json.contact_email || '',\n    case_id: $json.case_id || '',\n    contact_firstname: $json.contact_firstname || '',\n    langue: $json.langue || 'fr',\n    dernier_message: $json.dernier_message || '',\n    site: $json.site_de_la_commande || 'Alltricks',\n    motif_contact: $json.motif_contact || '',\n    montant_ttc: $json.montant_ttc || 0,\n  }\n};"
+      }
+    },
+    {
+      "id": "http-wt-order",
+      "name": "WT — Order Details",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [720, 300],
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $('Extraire référence commande').item.json.order_ref ? 'https://welcometrack.com/api/orders/' + $('Extraire référence commande').item.json.order_ref : 'https://welcometrack.com/api/orders/not-found' }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "httpHeaderAuth",
+        "options": {
+          "response": {
+            "response": { "neverError": true }
+          }
+        }
+      }
+    },
+    {
+      "id": "http-wt-track",
+      "name": "WT — Tracking",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [720, 540],
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $('Extraire référence commande').item.json.order_ref ? 'https://welcometrack.com/api/tracking/' + $('Extraire référence commande').item.json.order_ref : 'https://welcometrack.com/api/tracking/not-found' }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "httpHeaderAuth",
+        "options": {
+          "response": {
+            "response": { "neverError": true }
+          }
+        }
+      }
+    },
+    {
+      "id": "code-merge",
+      "name": "Contexte complet",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [960, 420],
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const ctx = $('Extraire référence commande').item.json;\nconst wtOrder = $('WT — Order Details').item.json;\nconst wtTracking = $('WT — Tracking').item.json;\n\nreturn {\n  json: {\n    ...ctx,\n    wt_order: wtOrder,\n    wt_tracking: wtTracking,\n  }\n};"
+      }
+    },
+    {
+      "id": "ai-agent",
+      "name": "Claude — Analyse et email",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [1200, 420],
+      "parameters": {
+        "promptType": "define",
+        "text": "=TICKET :\n- Référence commande : {{ $json.order_ref }}\n- Message client : {{ $json.dernier_message }}\n- Prénom : {{ $json.contact_firstname }}\n- Langue : {{ $json.langue }}\n- Site : {{ $json.site }}\n- Motif contact : {{ $json.motif_contact }}\n- Montant TTC : {{ $json.montant_ttc }} €\n\nWELCOME TRACK - Détail commande :\n{{ JSON.stringify($json.wt_order) }}\n\nWELCOME TRACK - Tracking :\n{{ JSON.stringify($json.wt_tracking) }}\n\nGénère la réponse JSON demandée.",
+        "options": {
+          "systemMessage": "Tu es un agent spécialisé dans la gestion des tickets transport pour Alltricks et Troc Vélo.\n\nTa mission : analyser les données Welcome Track et générer une réponse email adaptée.\n\n## Catégories de situation\n- PREPARATION : colis en cours de préparation en entrepôt\n- EN_TRANSIT : colis en acheminement vers le client\n- LIVRE : colis livré (statut livré/remis/mis à disposition)\n- ANOMALIE : incident détecté (retour expéditeur, blocage, adresse incorrecte)\n- RETARD : date promiseDate dépassée de plus de 2 jours ET non livré\n- ANNULE : commande annulée (packages[].canceled = 1)\n- RETOUR_EN_TRANSIT : retour en cours (packages[].return = 1, colis en transit)\n- RETOUR_RECU : retour réceptionné en entrepôt, remboursement en attente\n- RETOUR_REMBOURSE : remboursement effectué\n- RETOUR_INTROUVABLE : return=1 mais aucune donnée de suivi disponible\n- PAS_DE_TRACKING : données WT vides, null, ou erreur API\n\n## Champs Welcome Track à analyser\n- packages[].situation.message : statut lisible du colis\n- packages[].promiseDate : date de livraison promise\n- packages[].canceled : 1 si annulé, 0 sinon\n- packages[].return : 1 si retour, 0 sinon\n- packages[].deliveries : historique des tentatives de livraison\n- tracking.carrier_name : nom du transporteur (Colissimo, Chronopost, Mondial Relay...)\n- tracking.tracking_number : numéro de suivi transporteur\n- tracking.tracking_url : lien de suivi direct\n- tracking.carrier_expected_delivery_date : date estimée par le transporteur\n- tracking.milestones : étapes clés du parcours\n\n## Règles de rédaction\n- Réponds TOUJOURS dans la langue du client (fr=français, de=allemand, en=anglais, nl=néerlandais)\n- Inclure le numéro de commande dans l'email\n- Ton professionnel, chaleureux, direct\n- Email HTML simple avec balises <p> et <br>\n- Si tracking_number disponible : inclure dans l'email avec un lien si tracking_url présent\n\n## Règles d'escalade (needs_human = true)\n- Anomalie grave (colis perdu depuis plus de 7 jours, retour expéditeur non résolu)\n- Client utilise des mots : scandaleux, honte, inacceptable, avocat, litige, tribunal, juridique\n- Situation ambiguë ne pouvant pas être résolue automatiquement\n- Données WT contradictoires\n\n## Délais à communiquer\n- Remboursement après retour reçu : 5 à 7 jours ouvrés\n- Enquête transporteur (colis bloqué) : 5 à 10 jours ouvrés\n\nRetourne UNIQUEMENT ce JSON valide, sans markdown, sans texte autour :\n{\n  \"out_of_scope\": false,\n  \"needs_human\": false,\n  \"order_reference\": \"numéro de commande ou null\",\n  \"tracking_number\": \"numéro suivi ou null\",\n  \"situation_category\": \"une des catégories ci-dessus\",\n  \"situation_detail\": \"résumé en 1 phrase de ce que WT indique\",\n  \"email_subject\": \"objet de l'email\",\n  \"email_body\": \"<p>corps HTML de l'email</p>\",\n  \"language\": \"fr\"\n}",
+          "maxIterations": 3
+        }
+      }
+    },
+    {
+      "id": "lm-claude",
+      "name": "Claude Sonnet",
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.3,
+      "position": [1200, 600],
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "claude-sonnet-4-5-20250929",
+          "cachedResultName": "Claude Sonnet 4.5"
+        },
+        "options": {
+          "maxTokensToSample": 2048,
+          "temperature": 0.3
+        }
+      }
+    },
+    {
+      "id": "code-parse",
+      "name": "Parser JSON réponse",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1440, 420],
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const raw = ($json.output || '').trim();\nlet result = {\n  out_of_scope: false,\n  needs_human: true,\n  order_reference: null,\n  tracking_number: null,\n  situation_category: 'PAS_DE_TRACKING',\n  situation_detail: 'Erreur de parsing de la réponse IA',\n  email_subject: '',\n  email_body: '',\n  language: 'fr'\n};\n\ntry {\n  const match = raw.match(/\\{[\\s\\S]*\\}/);\n  if (match) {\n    const parsed = JSON.parse(match[0]);\n    result = {\n      out_of_scope: parsed.out_of_scope || false,\n      needs_human: parsed.needs_human || false,\n      order_reference: parsed.order_reference || null,\n      tracking_number: parsed.tracking_number || null,\n      situation_category: parsed.situation_category || 'PAS_DE_TRACKING',\n      situation_detail: parsed.situation_detail || '',\n      email_subject: parsed.email_subject || '',\n      email_body: parsed.email_body || '',\n      language: parsed.language || 'fr',\n    };\n  }\n} catch(e) {\n  console.error('Parsing JSON échoué:', e.message);\n}\n\nreturn {\n  json: {\n    ...result,\n    contact_email: $('Extraire référence commande').item.json.contact_email,\n    case_id: $('Extraire référence commande').item.json.case_id,\n  }\n};"
+      }
+    },
+    {
+      "id": "if-human",
+      "name": "Escalade humaine ?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [1680, 420],
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict", "version": 2 },
+          "conditions": [
+            {
+              "id": "c-human",
+              "leftValue": "={{ $json.needs_human }}",
+              "operator": { "type": "boolean", "operation": "true" },
+              "rightValue": ""
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "http-send",
+      "name": "Envoyer via WF3",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [1920, 540],
+      "parameters": {
+        "method": "POST",
+        "url": "https://n8n.srv1094459.hstgr.cloud/webhook/wf3-send-email",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ case_id: $json.case_id, contact_email: $json.contact_email, sf_subject: $json.email_subject, sf_html_body: $json.email_body, situation_category: $json.situation_category }) }}",
+        "options": {
+          "response": { "response": { "neverError": true } }
+        }
+      }
+    },
+    {
+      "id": "http-sf-escalate",
+      "name": "SF — Escalade",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [1920, 300],
+      "parameters": {
+        "method": "PATCH",
+        "url": "=https://alltricks.my.salesforce.com/services/data/v59.0/sobjects/Case/{{ $json.case_id }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "salesforceOAuth2Api",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ AI_Management_Status__c: 'Transport - Escalade : ' + $json.situation_category + ' | ' + $json.situation_detail }) }}",
+        "options": {}
+      }
+    },
+    {
+      "id": "http-sf-close",
+      "name": "SF — Marquer traité",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [2160, 540],
+      "parameters": {
+        "method": "PATCH",
+        "url": "=https://alltricks.my.salesforce.com/services/data/v59.0/sobjects/Case/{{ $json.case_id }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "salesforceOAuth2Api",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ AI_Management_Status__c: 'Transport - Traité : ' + $json.situation_category, Nombre_de_messages_envoyes__c: 1 }) }}",
+        "options": {}
+      }
+    }
+  ],
+  "connections": {
+    "Ticket Transport entrant": {
+      "main": [[{ "node": "Vente en magasin ?", "type": "main", "index": 0 }]]
+    },
+    "Vente en magasin ?": {
+      "main": [
+        [],
+        [{ "node": "Extraire référence commande", "type": "main", "index": 0 }]
+      ]
+    },
+    "Extraire référence commande": {
+      "main": [
+        [
+          { "node": "WT — Order Details", "type": "main", "index": 0 },
+          { "node": "WT — Tracking", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "WT — Order Details": {
+      "main": [[{ "node": "Contexte complet", "type": "main", "index": 0 }]]
+    },
+    "WT — Tracking": {
+      "main": [[{ "node": "Contexte complet", "type": "main", "index": 0 }]]
+    },
+    "Contexte complet": {
+      "main": [[{ "node": "Claude — Analyse et email", "type": "main", "index": 0 }]]
+    },
+    "Claude Sonnet": {
+      "ai_languageModel": [[{ "node": "Claude — Analyse et email", "type": "ai_languageModel", "index": 0 }]]
+    },
+    "Claude — Analyse et email": {
+      "main": [[{ "node": "Parser JSON réponse", "type": "main", "index": 0 }]]
+    },
+    "Parser JSON réponse": {
+      "main": [[{ "node": "Escalade humaine ?", "type": "main", "index": 0 }]]
+    },
+    "Escalade humaine ?": {
+      "main": [
+        [{ "node": "SF — Escalade", "type": "main", "index": 0 }],
+        [{ "node": "Envoyer via WF3", "type": "main", "index": 0 }]
+      ]
+    },
+    "Envoyer via WF3": {
+      "main": [[{ "node": "SF — Marquer traité", "type": "main", "index": 0 }]]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}
