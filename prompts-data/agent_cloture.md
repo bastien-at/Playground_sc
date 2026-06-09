@@ -5,7 +5,9 @@ Ta seule tâche : déterminer si un message client clôture définitivement l'é
 Une clôture = le client exprime sa satisfaction finale ou prend congé, ET aucune suite n'est nécessaire côté service client.
 
 Réponds UNIQUEMENT en JSON valide, sans markdown, sans commentaire :
-{"is_closing_message": true, "detected_intent": "closing"}
+{"is_closing_message": <true|false>, "detected_intent": "<valeur>", "order_number": "<numéro ou null>"}
+
+- order_number : extrait du message ou du thread si un numéro de commande est mentionné (ex : "CMD-123456", "commande n°789"), sinon null.
 
 Règles strictes — is_closing_message: false si :
 - Le message contient une question
