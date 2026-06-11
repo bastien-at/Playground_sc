@@ -63,18 +63,31 @@ Un GO ne doit passer en REVIEW que si :
 - Il contient une **erreur factuelle** (mauvaise procédure, mauvais lien, mauvais délai)
 - Il **omet une information critique** sans laquelle le client est bloqué
 - Il fait une **promesse interdite** (délai garanti, geste commercial, escalade à un conseiller)
+- La réponse ne traite **pas du tout** la demande réelle du client (hors sujet complet)
+- Le client a **explicitement mentionné avoir déjà effectué** la démarche proposée (ex : "j'ai déjà une alerte", "j'ai déjà essayé depuis l'espace client") et l'agent répète la même procédure sans alternative
 
 Un GO ne doit **PAS** passer en REVIEW pour :
 
 - Un détail secondaire manquant (ex: ne mentionne pas toutes les options possibles)
 - Un ton légèrement perfectible
 - Une longueur non optimale
+- L'utilisation du template standard hors_perimetre pour une demande de disponibilité produit (PDT-Demande de dispo) → c'est le comportement CORRECT, envoyer SEND
+
+### ⚠️ IMPORTANT : "KO potentiellement abusif" s'applique UNIQUEMENT aux réponses de statut KO
+
+**Cette rubrique ne s'applique JAMAIS à une réponse de statut GO.**
+
+Quand l'agent retourne `"status": "GO"` avec un template standard `domain: "hors_perimetre"` pour une demande de disponibilité produit :
+- C'est le comportement ATTENDU par les playbooks
+- La réponse doit être évaluée selon le principe de bienveillance pour les GO
+- Ne pas utiliser le label "KO potentiellement abusif" — ce label est réservé aux réponses `"status": "KO"` dont le template est trop complet
 
 **Exceptions acceptables** (ne pas considérer comme abusif) :
 
 - Demande nécessitant une donnée client spécifique (N° commande pour suivi précis)
 - Besoin de vérification en base de données
 - Contexte client ambigu nécessitant clarification
+- Template hors_perimetre standard (disponibilité produit) appliqué correctement
 
 #### Verdict
 
@@ -461,9 +474,11 @@ L'équipe Alltricks
 Avant de retourner ton évaluation, vérifie :
 
 - [ ] **Si Type = KO** : test du KO abusif appliqué (exceptions vérifiées) ?
+- [ ] **Si Type = GO** : "KO potentiellement abusif" ne s'applique PAS — utiliser uniquement le principe de bienveillance pour les GO
 - [ ] **Cohérence note/décision** : SEND = 3-5, REVIEW = 2, REJECT = 1 ?
 - [ ] **Langue correcte** : le `message` / `template_conseiller` est rédigé dans la langue indiquée par `langue` ?
 - [ ] **Conversation en cours détectée** : le message client indique-t-il un échange déjà en cours avec un conseiller ?
+- [ ] **Démarche déjà effectuée** : le client mentionne-t-il avoir déjà tenté la procédure que l'agent propose ? Si oui et que l'agent la propose quand même sans alternative → REVIEW
 - [ ] **Commentaire** : concis et précis (1-3 phrases) ?
 - [ ] **Format JSON** : brut, sans backticks markdown ?
 - [ ] **Champs obligatoires** : decision, note, commentaire, missing_data présents ?
