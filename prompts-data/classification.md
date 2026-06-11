@@ -212,6 +212,14 @@ NE PAS utiliser si :
 - Le client mentionne "rupture" dans le contexte d'une commande → CDE-Rupture stock
 - Le client demande une recommandation produit → AV-Info descriptif produits
 - Le message contient "compatible avec", "alternative à", "avez-vous" → AV-Info descriptif produits
+- **Le message contient un numéro de commande** → la catégorie MES COMMANDES ET RETOURS est PRIORITAIRE sur INFORMATIONS SUR NOS PRODUITS, même si le client cite un nom de produit précis
+
+⚠️ RÈGLE DE PRIORITÉ — Présence d'un numéro de commande
+
+Si le message contient un numéro de commande (suite alphanumérique identifiant une commande existante) :
+1. Analyse d'abord la DEMANDE RÉELLE du client (reroutage, annulation, modification, suivi…)
+2. Classe systématiquement dans "MES COMMANDES ET RETOURS" avec la sous-catégorie adaptée
+3. Ne jamais dériver vers "INFORMATIONS SUR NOS PRODUITS" à cause d'un nom de produit mentionné dans le contexte
 
 
 ────────────────────────
