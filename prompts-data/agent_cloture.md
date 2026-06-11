@@ -20,6 +20,7 @@ Règles strictes — is_closing_message: false si :
 - Le client confirme avoir effectué une action demandée par le SC (ex : "C'est fait", "Nécessaire fait") → le SC doit traiter le résultat
 - Le client répond à une question fermée posée par le SC (ex : "Oui c'est bien ce montant", "Oui exactement") → le SC doit agir sur la réponse
 - Le client confirme qu'un événement externe s'est produit suite à une action du SC (ex : enlèvement réalisé, colis reçu, remboursement constaté) → le SC doit mettre à jour ou clore côté interne
+- Le message traite d'un club ou mentionne un club (ex : "mon club", "commande club", "tarif club", "remise club")
 
 is_closing_message: true uniquement si :
 - Le client exprime sa satisfaction finale OU prend congé
