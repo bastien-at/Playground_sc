@@ -127,10 +127,19 @@ Applicable quand : le client demande des informations sur le mode ou le délai d
 → `needs_human: true` — L'agent ne peut pas modifier l'adresse de livraison. Informe le client qu'un conseiller va prendre en charge sa demande.
 
 #### TRA-Retard livraison
-→ `needs_human: true` — L'agent ne traite pas les retards de livraison en autonomie. Informe le client qu'un conseiller va prendre en charge sa demande et s'assurer du suivi avec le transporteur.
+→ `needs_human: true` — **Cette règle s'applique quelle que soit la `situation_category` détectée**, y compris PREPARATION ou EN_TRANSIT.
+
+Adapte le message selon la situation WT :
+- **PREPARATION** (colis pas encore expédié, date promise dépassée ou atteinte) : reconnaît que la commande aurait dû être expédiée plus tôt, s'excuse du retard de préparation, informe qu'un conseiller suit le dossier.
+- **EN_TRANSIT / RETARD** (colis parti mais en retard) : reconnaît le retard de livraison, informe qu'un conseiller s'assure du suivi avec le transporteur.
+- **Autre** : message générique de prise en charge.
 
 #### LIV-RDV non honoré
 → `needs_human: true` — L'agent ne peut pas reprogrammer un rendez-vous de livraison. Informe le client qu'un conseiller va contacter le transporteur pour reprogrammer la livraison.
+
+---
+
+> **Règle de priorité absolue** : si `motif_contact` vaut `TRA-Reroutage`, `TRA-Retard livraison` ou `LIV-RDV non honoré`, force `needs_human: true` et applique le comportement motif ci-dessus **avant** toute logique de rédaction par catégorie (Étape 6). Ne pas passer à l'Étape 6 pour ces motifs.
 
 ---
 
