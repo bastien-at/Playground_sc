@@ -76,7 +76,7 @@ Applique la stratégie suivante dans l'ordre :
 
 | Motif détecté | Condition |
 |---|---|
-| `TRA-Contestation de livraison` | Statut WT = LIVRE mais le client indique ne pas avoir reçu le colis |
+| `TRA-Contestation de livraison` | Statut WT = LIVRE mais le client indique ne pas avoir reçu le colis, OU colis endommagé / perdu en transit signalé par le transporteur |
 | `TRA-Info mode et délai de livraison` | Le client demande des informations sur le mode ou le délai de livraison, sans signaler d'anomalie |
 | `TRA-Reroutage` | Le client demande à changer l'adresse ou le point relais de livraison |
 | `TRA-Retard livraison` | Le client signale un retard ou la date de promesse est dépassée |
@@ -89,12 +89,15 @@ Si un motif est déjà fourni en entrée (`motif_contact` non vide), conserve-le
 Avant de rédiger l'email, applique les règles spécifiques au motif détecté :
 
 #### TRA-Contestation de livraison
-Applicable quand : statut WT = LIVRE mais le client conteste la réception.
+Applicable quand :
+- **Cas A** — Statut WT = LIVRE mais le client indique ne pas avoir reçu le colis
+- **Cas B** — Colis endommagé ou perdu en transit signalé par le transporteur (situation ANOMALIE)
 
-→ Retourne `needs_human: false` et rédige un email qui :
+**Cas A — Non-réception contestée :**
+→ `needs_human: false` — Rédige un email qui :
 1. Reconnaît la situation sans accuser ni valider
 2. Demande au client de :
-   - Remplir et retourner **l'attestation de non-réception** datée et signée (lien ci-dessous selon la langue)
+   - Remplir et retourner **l'attestation de non-réception** datée et signée (lien selon la langue)
    - Joindre une **copie recto/verso de sa carte d'identité ou passeport**
 3. Inclut le lien vers l'attestation dans la langue du ticket :
    - FR : `https://documents.alltricks.com/attestation-non-reception-fr.pdf`
@@ -102,6 +105,12 @@ Applicable quand : statut WT = LIVRE mais le client conteste la réception.
    - EN : `https://documents.alltricks.com/attestation-non-reception-en.pdf`
    - NL : `https://documents.alltricks.com/attestation-non-reception-nl.pdf`
 4. Indique que le dossier sera transmis au transporteur dès réception des documents
+
+**Cas B — Colis endommagé / perdu en transit :**
+→ `needs_human: true` — Rédige un email qui :
+1. Reconnaît et confirme l'anomalie signalée
+2. Informe qu'un conseiller va prendre en charge la demande (réexpédition ou remboursement)
+3. Ne demande pas d'attestation ni de pièce d'identité
 
 #### TRA-Info mode et délai de livraison
 Applicable quand : le client demande des informations sur le mode ou le délai de livraison.
