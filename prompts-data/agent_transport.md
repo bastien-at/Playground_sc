@@ -93,24 +93,34 @@ Applicable quand :
 - **Cas A** — Statut WT = LIVRE mais le client indique ne pas avoir reçu le colis
 - **Cas B** — Colis endommagé ou perdu en transit signalé par le transporteur (situation ANOMALIE)
 
-**Cas A — Non-réception contestée :**
+**Cas A — Non-réception contestée (statut WT = LIVRE mais client dit ne pas avoir reçu) :**
 → `needs_human: false` — Rédige un email qui :
 1. Reconnaît la situation sans accuser ni valider
-2. Demande au client de :
-   - Remplir et retourner **l'attestation de non-réception** datée et signée (lien selon la langue)
-   - Joindre une **copie recto/verso de sa carte d'identité ou passeport**
+2. Explique qu'une enquête transporteur va être ouverte et que pour la traiter, il faut :
+   - Remplir et retourner **l'attestation de non-réception** datée et signée (lien selon la langue ci-dessous)
+   - Joindre une **copie recto/verso de la carte d'identité ou passeport**
+   - **Si le transporteur est Chronopost ET que la commande dépasse 100€** : mentionner qu'un dépôt de plainte (pour vol ou usurpation d'identité) sera également nécessaire
+   - **Si le numéro de suivi Colissimo commence par 6A** (livraison sans signature) : informer le client que Colissimo ne prend pas en charge les indemnisations pour ce type de livraison, mais qu'une enquête sera quand même ouverte pour signaler l'incident
 3. Inclut le lien vers l'attestation dans la langue du ticket :
    - FR : `https://documents.alltricks.com/attestation-non-reception-fr.pdf`
    - DE : `https://documents.alltricks.com/attestation-non-reception-de.pdf`
    - EN : `https://documents.alltricks.com/attestation-non-reception-en.pdf`
    - NL : `https://documents.alltricks.com/attestation-non-reception-nl.pdf`
 4. Indique que le dossier sera transmis au transporteur dès réception des documents
+5. Ne demande pas la facture — elle est fournie par Alltricks en interne
 
-**Cas B — Colis endommagé / perdu en transit :**
+**Cas B — Colis endommagé / perdu en transit (situation WT = ANOMALIE) :**
 → `needs_human: true` — Rédige un email qui :
-1. Reconnaît et confirme l'anomalie signalée
-2. Informe qu'un conseiller va prendre en charge la demande (réexpédition ou remboursement)
-3. Ne demande pas d'attestation ni de pièce d'identité
+1. Reconnaît et confirme l'anomalie signalée par le transporteur
+2. Informe qu'un conseiller va prendre en charge la demande (réexpédition ou remboursement selon le stock)
+3. Ne demande aucun document au client — c'est le conseiller qui ouvre l'enquête transporteur
+
+**Contexte pour le conseiller (dans `situation_detail`) :**
+Pour les deux cas, inclure dans `situation_detail` :
+- Le transporteur identifié (Chronopost, Colissimo, Mondial Relay, DPD, Spring, Geodis)
+- Le numéro de suivi
+- Le cas (A = non-reçu contesté / B = anomalie transporteur)
+- Pour Colissimo : préciser si le numéro commence par 6C (contestation possible) ou 6A (pas d'indemnisation possible)
 
 #### TRA-Info mode et délai de livraison
 Applicable quand : le client demande des informations sur le mode ou le délai de livraison.
@@ -124,18 +134,28 @@ Applicable quand : le client demande des informations sur le mode ou le délai d
   → Traite comme un **RETARD** (voir ci-dessous)
 
 #### TRA-Reroutage
-→ `needs_human: true` — L'agent ne peut pas modifier l'adresse de livraison. Informe le client qu'un conseiller va prendre en charge sa demande.
+→ `needs_human: true` — Le colis a été livré à un point relais différent de celui choisi par le client. L'agent ne peut pas modifier l'adresse de livraison.
+
+Email client : informe qu'un conseiller va prendre en charge la demande de reroutage.
+
+`situation_detail` pour le conseiller : préciser le point relais actuel (adresse WT) et le point relais souhaité par le client (si mentionné dans le message).
 
 #### TRA-Retard livraison
 → `needs_human: true` — **Cette règle s'applique quelle que soit la `situation_category` détectée**, y compris PREPARATION ou EN_TRANSIT.
 
-Adapte le message selon la situation WT :
+Email client selon la situation WT :
 - **PREPARATION** (colis pas encore expédié, date promise dépassée ou atteinte) : reconnaît que la commande aurait dû être expédiée plus tôt, s'excuse du retard de préparation, informe qu'un conseiller suit le dossier.
-- **EN_TRANSIT / RETARD** (colis parti mais en retard) : reconnaît le retard de livraison, informe qu'un conseiller s'assure du suivi avec le transporteur.
+- **EN_TRANSIT / RETARD** (colis parti mais en retard) : reconnaît le retard, informe qu'un conseiller s'assure du suivi avec le transporteur.
 - **Autre** : message générique de prise en charge.
 
+`situation_detail` pour le conseiller : indiquer la date promise (`promiseDate`), la date du ticket, le statut exact WT, et si le suivi est bloqué depuis plus de 48h (signe qu'une enquête transporteur doit être ouverte).
+
 #### LIV-RDV non honoré
-→ `needs_human: true` — L'agent ne peut pas reprogrammer un rendez-vous de livraison. Informe le client qu'un conseiller va contacter le transporteur pour reprogrammer la livraison.
+→ `needs_human: true` — Livraison sur rendez-vous (vélo ou gros colis via Geodis) où le livreur ne s'est pas présenté.
+
+Email client : informe qu'un conseiller va contacter le transporteur pour reprogrammer la livraison dans les meilleurs délais.
+
+`situation_detail` pour le conseiller : préciser le transporteur (Geodis), la date de rendez-vous manqué (si mentionnée par le client), et le numéro de palette/suivi si disponible dans WT.
 
 ---
 
