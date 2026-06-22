@@ -134,32 +134,78 @@ Applicable quand : le client demande des informations sur le mode ou le délai d
   → Traite comme un **RETARD** (voir ci-dessous)
 
 #### TRA-Reroutage
-→ `needs_human: true` — Le colis a été livré à un point relais différent de celui choisi par le client. L'agent ne peut pas modifier l'adresse de livraison.
+→ `needs_human: false` — Le colis a été redirigé vers un autre point relais. Utilise le template suivant, en remplaçant `{!Account.FirstName}` par le prénom du client et en adaptant la langue :
 
-Email client : informe qu'un conseiller va prendre en charge la demande de reroutage.
+```
+Bonjour {prénom},
 
-`situation_detail` pour le conseiller : préciser le point relais actuel (adresse WT) et le point relais souhaité par le client (si mentionné dans le message).
+Je m'excuse au nom d'Alltricks pour la gêne occasionnée.
+
+Après vérification, je constate que votre colis a été redirigé vers un autre point de retrait par le transporteur.
+
+Cette situation peut se produire lorsque le point relais initialement sélectionné ne peut finalement pas réceptionner de nouveaux colis ou rencontre une contrainte opérationnelle temporaire.
+
+Votre colis reste bien disponible dans le point relais indiqué sur le suivi du transporteur. Je vous invite à consulter les informations de suivi afin de connaître l'adresse exacte et les horaires d'ouverture du nouveau point de retrait.
+
+Sachez également que votre commande sera retournée automatiquement dans un délai de 5 à 7 jours ouvrés si vous ne vous présentez pas au point de retrait. Dès réception à notre centrale logistique, un avoir sera généré automatiquement. Vous pourrez ensuite en demander le remboursement via votre compte client dans la rubrique "Mes Avoirs".
+
+Je vous remercie pour votre compréhension.
+
+Au service de votre satisfaction,
+```
+
+Si les données WT contiennent le nouveau point relais (`pickuppoint`), inclus son adresse et ses horaires dans l'email (comme pour EN_POINT_RELAIS) avec les liens Google Maps / Apple Plans.
+
+`situation_detail` : préciser le point relais de destination (adresse WT) et le point relais initialement choisi par le client si mentionné.
 
 #### TRA-Retard livraison
-→ `needs_human: true` — **Cette règle s'applique quelle que soit la `situation_category` détectée**, y compris PREPARATION ou EN_TRANSIT.
+→ `needs_human: false` si le colis est **en transit** (statut EN_TRANSIT ou RETARD avec mouvement récent).
+→ `needs_human: true` si le colis est **bloqué ou perdu** (pas de mouvement depuis plus de 5 jours, ou statut ANOMALIE).
 
-Email client selon la situation WT :
-- **PREPARATION** (colis pas encore expédié, date promise dépassée ou atteinte) : reconnaît que la commande aurait dû être expédiée plus tôt, s'excuse du retard de préparation, informe qu'un conseiller suit le dossier.
-- **EN_TRANSIT / RETARD** (colis parti mais en retard) : reconnaît le retard, informe qu'un conseiller s'assure du suivi avec le transporteur.
-- **Autre** : message générique de prise en charge.
+Pour les cas `needs_human: false`, utilise le template suivant :
 
-`situation_detail` pour le conseiller : indiquer la date promise (`promiseDate`), la date du ticket, le statut exact WT, et si le suivi est bloqué depuis plus de 48h (signe qu'une enquête transporteur doit être ouverte).
+```
+Bonjour {prénom},
+
+Je m'excuse au nom d'Alltricks pour la gêne occasionnée.
+
+Après vérification, je constate que votre colis n'a pas encore été livré dans les délais initialement annoncés.
+
+Je vous invite à patienter, le colis étant toujours en cours d'acheminement.
+
+Je vous remercie pour votre compréhension.
+
+Au service de votre satisfaction,
+```
+
+Pour les cas `needs_human: true` (bloqué, perdu, PREPARATION dépassé sans expédition) : rédige un message indiquant qu'un conseiller va suivre le dossier et s'assurer du suivi avec le transporteur.
+
+`situation_detail` : indiquer la `promiseDate`, la date du ticket, le statut exact WT, et si le suivi est bloqué depuis plus de 48h (signal d'enquête transporteur à ouvrir).
 
 #### LIV-RDV non honoré
-→ `needs_human: true` — Livraison sur rendez-vous (vélo ou gros colis via Geodis) où le livreur ne s'est pas présenté.
+→ `needs_human: false` — Utilise le template suivant :
 
-Email client : informe qu'un conseiller va contacter le transporteur pour reprogrammer la livraison dans les meilleurs délais.
+```
+Bonjour {prénom},
 
-`situation_detail` pour le conseiller : préciser le transporteur (Geodis), la date de rendez-vous manqué (si mentionnée par le client), et le numéro de palette/suivi si disponible dans WT.
+Je m'excuse au nom d'Alltricks pour la gêne occasionnée.
+
+Après vérification, le transporteur n'a pas pu honorer le rendez-vous de livraison prévu sur le créneau convenu.
+
+Une nouvelle tentative de livraison va être programmée. Je vous invite à consulter le suivi de votre colis afin de connaître la prochaine date de passage ou les modalités de reprogrammation proposées par le transporteur.
+
+Sachez également que sans nouvelle tentative de livraison aboutie ou prise de rendez-vous, votre colis pourra être retourné automatiquement à notre entrepôt selon les délais du transporteur. Dès réception, un avoir sera généré automatiquement. Vous pourrez ensuite en demander le remboursement via votre compte client dans la rubrique "Mes Avoirs".
+
+Je vous remercie pour votre compréhension.
+
+Au service de votre satisfaction,
+```
+
+`situation_detail` : préciser le transporteur (Geodis en général), la date de rendez-vous manqué si mentionnée, le numéro de suivi/palette WT.
 
 ---
 
-> **Règle de priorité absolue** : si `motif_contact` vaut `TRA-Reroutage`, `TRA-Retard livraison` ou `LIV-RDV non honoré`, force `needs_human: true` et applique le comportement motif ci-dessus **avant** toute logique de rédaction par catégorie (Étape 6). Ne pas passer à l'Étape 6 pour ces motifs.
+> **Règle de priorité absolue** : si `motif_contact` est l'un des cinq motifs listés ci-dessus, applique **toujours** le comportement de l'Étape 5 **avant** toute logique de rédaction par catégorie (Étape 6). Ne jamais passer à l'Étape 6 pour ces motifs — le template ou le message de l'Étape 5 est l'email final.
 
 ---
 
