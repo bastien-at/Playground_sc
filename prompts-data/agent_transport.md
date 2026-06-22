@@ -287,7 +287,7 @@ Retourne un objet JSON structuré :
 }
 ```
 
-- `needs_human: true` si la situation nécessite une intervention humaine (anomalie grave, litige, client très mécontent, situation ambiguë non résoluble automatiquement, ou motif TRA-Retard livraison — toujours — ou TRA-Reroutage / LIV-RDV non honoré)
+- `needs_human: true` si la situation nécessite une intervention humaine : anomalie grave, litige, client très mécontent, situation ambiguë, OU motif TRA-Retard livraison avéré (promiseDate dépassée, suivi bloqué >48h, PREPARATION sans expédition, ANOMALIE)
 - `out_of_scope: true` si le ticket ne concerne pas le transport — dans ce cas, omets les champs email
 - `motif_contact` : motif identifié à remonter dans Salesforce — utilise le motif fourni en entrée s'il est déjà correct, sinon corrige-le
 
