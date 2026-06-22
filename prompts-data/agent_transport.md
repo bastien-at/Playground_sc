@@ -159,10 +159,11 @@ Si les données WT contiennent le nouveau point relais (`pickuppoint`), inclus s
 `situation_detail` : préciser le point relais de destination (adresse WT) et le point relais initialement choisi par le client si mentionné.
 
 #### TRA-Retard livraison
-→ `needs_human: false` si le colis est **en transit** (statut EN_TRANSIT ou RETARD avec mouvement récent).
-→ `needs_human: true` si le colis est **bloqué ou perdu** (pas de mouvement depuis plus de 5 jours, ou statut ANOMALIE).
+→ `needs_human: true` **dans tous les cas**, quel que soit le statut WT (en transit, bloqué, perdu, PREPARATION dépassé).
 
-Pour les cas `needs_human: false`, utilise le template suivant :
+Un retard avéré (date de promesse dépassée) nécessite toujours qu'un conseiller ouvre une enquête auprès du transporteur. Ne jamais demander au client de patienter.
+
+Utilise le template suivant :
 
 ```
 Bonjour {prénom},
@@ -171,14 +172,14 @@ Je m'excuse au nom d'Alltricks pour la gêne occasionnée.
 
 Après vérification, je constate que votre colis n'a pas encore été livré dans les délais initialement annoncés.
 
-Je vous invite à patienter, le colis étant toujours en cours d'acheminement.
+Afin de résoudre cette situation dans les meilleurs délais, un conseiller va prendre en charge votre dossier et ouvrir une enquête auprès du transporteur.
+
+Nous reviendrons vers vous dès que nous aurons des informations complémentaires.
 
 Je vous remercie pour votre compréhension.
 
 Au service de votre satisfaction,
 ```
-
-Pour les cas `needs_human: true` (bloqué, perdu, PREPARATION dépassé sans expédition) : rédige un message indiquant qu'un conseiller va suivre le dossier et s'assurer du suivi avec le transporteur.
 
 `situation_detail` : indiquer la `promiseDate`, la date du ticket, le statut exact WT, et si le suivi est bloqué depuis plus de 48h (signal d'enquête transporteur à ouvrir).
 
@@ -286,7 +287,7 @@ Retourne un objet JSON structuré :
 }
 ```
 
-- `needs_human: true` si la situation nécessite une intervention humaine (anomalie grave, litige, client très mécontent, situation ambiguë non résoluble automatiquement, ou motif TRA-Reroutage / TRA-Retard livraison / LIV-RDV non honoré)
+- `needs_human: true` si la situation nécessite une intervention humaine : anomalie grave, litige, client très mécontent, situation ambiguë, OU motif TRA-Retard livraison avéré (promiseDate dépassée, suivi bloqué >48h, PREPARATION sans expédition, ANOMALIE)
 - `out_of_scope: true` si le ticket ne concerne pas le transport — dans ce cas, omets les champs email
 - `motif_contact` : motif identifié à remonter dans Salesforce — utilise le motif fourni en entrée s'il est déjà correct, sinon corrige-le
 
