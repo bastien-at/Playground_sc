@@ -269,6 +269,15 @@ Règle de cohérence : le motif doit refléter la **question principale** du cli
 - Si le client mentionne une livraison tardive ET demande un remboursement → le motif est celui de la demande explicite (ex : `REMB-Info remboursement`), pas du contexte
 - Si le message contient plusieurs demandes, classe selon la demande la plus urgente ou la plus explicite
 
+⚠️ RÈGLE CRITIQUE — Retour pour défaut vs retour standard
+
+Si le client mentionne un **problème, panne, défaut ou dysfonctionnement** sur le produit ET souhaite faire un retour :
+- → Catégorie : **GARANTIE / RÉPARATION** / sous-catégorie : **Nouvelle demande de garantie/réparation**
+- → Motif : **GAR-Modalité-condition de garantie**
+- Le mot "retour" dans le message ne suffit PAS à classer en RET si la cause est un défaut produit
+
+Utiliser `RET-Modalité de retour` UNIQUEMENT si le client veut retourner un produit **sans signaler de défaut** (ex : changement d'avis, mauvaise taille, produit non désiré).
+
 ────────────────────────
 CHECKLIST AVANT SORTIE
 ────────────────────────
