@@ -244,7 +244,9 @@ Rédige un email de réponse selon la catégorie interne identifiée. Respecte l
   <a href="https://maps.apple.com/?daddr=21+Rue+Raymond+paten%C3%B4tre+78120+RAMBOUILLET">🗺️ Apple Plans</a>
   ```
 
-- **LIVRE** → Confirme la livraison. Si le client dit ne pas avoir reçu le colis malgré un statut "livré", demande de vérifier auprès du voisinage/point relais et propose d'ouvrir une enquête transporteur.
+- **LIVRE** → Deux sous-cas selon le message client :
+  - Client dit **ne pas avoir reçu** malgré statut livré → motif `TRA-Contestation de livraison`, traiter selon Étape 5 (Cas A)
+  - Client dit avoir reçu le colis mais **un article manque** dans le colis → `out_of_scope: true` (problème de préparation de commande, hors périmètre transport)
 
 - **ANOMALIE** → Informe le client de l'anomalie détectée. Prends en charge proactivement : propose une solution (réexpédition ou remboursement selon le contexte). Escalade si nécessaire (`needs_human: true`).
 
