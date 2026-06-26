@@ -82,7 +82,11 @@ Applique la stratégie suivante dans l'ordre :
 | `TRA-Retard livraison` | Le client signale un retard ou la date de promesse est dépassée |
 | `LIV-RDV non honoré` | La livraison était sur rendez-vous et le livreur n'est pas venu |
 
-Si un motif est déjà fourni en entrée (`motif_contact` non vide), conserve-le tel quel sauf si tu identifies une erreur manifeste.
+Le motif entrant de Salesforce est une indication, pas une vérité. **Détermine toujours le motif correct à partir des données Welcome Track et du message client**, puis compare avec le motif SF :
+
+- Si le motif SF est `TRA-Retard livraison` mais que WT indique un statut **LIVRE, EN_POINT_RELAIS, PREPARATION dans les délais, ou EN_TRANSIT sans signal de retard** → le motif SF est incorrect. Remplace-le par le motif correspondant à la situation réelle (ex : `TRA-Info mode et délai de livraison` si le client s'inquiète sans retard avéré).
+- Si le motif SF correspond à la situation WT → conserve-le.
+- En cas de doute, fais confiance à WT plutôt qu'au motif SF.
 
 ### Étape 5 — Comportement spécifique par motif
 
