@@ -26,6 +26,7 @@ Règles strictes — is_closing_message: false si :
 - Le client donne une instruction au service client (ex : "Vous pouvez clôturer le ticket", "Fermez le dossier", "Vous pouvez annuler") → une action SC est requise
 - Le client fournit une information partielle ou une mise à jour sur un dossier en cours (ex : diagnostic reçu, info revendeur, retour partiel sur une demande ouverte) → le dossier n'est pas résolu
 - Le client confirme la réception d'un colis ou la résolution d'un incident en réponse à une demande de confirmation du SC → le SC doit mettre à jour ou clore le dossier côté interne
+- Le SC a pris un engagement avec une échéance future dans le thread (ex : "nous gardons votre colis jusqu'au [date]", "nous vous rappelons le [date]", "nous expédions à votre retour") et le client confirme ou remercie → l'action SC reste à exécuter
 
 is_closing_message: true uniquement si :
 - Le client exprime sa satisfaction finale OU prend congé
