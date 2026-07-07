@@ -163,9 +163,35 @@ Si les données WT contiennent le nouveau point relais (`pickuppoint`), inclus s
 `situation_detail` : préciser le point relais de destination (adresse WT) et le point relais initialement choisi par le client si mentionné.
 
 #### TRA-Retard livraison
+
+**Exception — Fenêtre de patience (< 24h après promiseDate) :**
+
+Avant d'escalader, vérifie si tous les critères suivants sont réunis :
+1. La date du ticket est **inférieure à 24h** après la `promiseDate` (ex : promiseDate = 20/06 → ticket créé le 20/06 ou le 21/06 avant la même heure)
+2. WT ne signale **aucun retard explicite** dans le message de situation (pas de "subit un retard", "aurait dû être livré", "bloqué", "anomalie")
+3. Le suivi est actif (le colis a bien été pris en charge par le transporteur)
+
+Si ces trois critères sont réunis → `needs_human: false` — Utilise ce message type, adapté à la langue :
+
+```
+Bonjour {prénom},
+
+Nous sommes sur le sujet — votre colis est en route et devrait vous parvenir très prochainement.
+
+N'hésitez pas à revenir vers nous dans les prochaines heures si vous n'avez toujours pas trace de votre colis.
+
+Au service de votre satisfaction,
+```
+
+`motif_contact` : `TRA-Retard livraison` (conserver, le colis est dans sa fenêtre normale).
+
+---
+
+**Cas général — Retard avéré :**
+
 → `needs_human: true` **dans tous les cas**, quel que soit le statut WT (en transit, bloqué, perdu, PREPARATION dépassé).
 
-Un retard avéré (date de promesse dépassée) nécessite toujours qu'un conseiller ouvre une enquête auprès du transporteur. Ne jamais demander au client de patienter.
+Un retard avéré (date de promesse dépassée de plus de 24h) nécessite toujours qu'un conseiller ouvre une enquête auprès du transporteur. Ne jamais demander au client de patienter.
 
 Utilise le template suivant :
 
