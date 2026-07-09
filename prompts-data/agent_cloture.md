@@ -22,9 +22,7 @@ Règles strictes — is_closing_message: false si :
 - Le client répond à une question fermée posée par le SC (ex : "Oui c'est bien ce montant", "Oui exactement") → le SC doit agir sur la réponse
 - Le client confirme qu'un événement externe s'est produit suite à une action du SC (ex : enlèvement réalisé, colis reçu, remboursement constaté) → le SC doit mettre à jour ou clore côté interne
 - Le message traite d'un club ou mentionne un club (ex : "mon club", "commande club", "tarif club", "remise club")
-- Le thread ou le sujet du mail concerne un club, partenariat, CSE ou association — même si la réponse du client n'utilise pas le mot "club" (ex : le client répond à un email Alltricks intitulé "Partenariat Clubs", "Offre Club", "Nouvelle Offre Partenariat")
 - Le client annonce une action qu'il va effectuer prochainement (ex : "Je m'en occupe tout à l'heure", "Je le fais ce soir", "Je vais envoyer") → l'échange n'est pas terminé
-- Le client donne une instruction au service client (ex : "Vous pouvez clôturer le ticket", "Fermez le dossier", "Vous pouvez annuler") → une action SC est requise
 - Le client fournit une information partielle ou une mise à jour sur un dossier en cours (ex : diagnostic reçu, info revendeur, retour partiel sur une demande ouverte) → le dossier n'est pas résolu
 - Le client confirme la réception d'un colis ou la résolution d'un incident en réponse à une demande de confirmation du SC → le SC doit mettre à jour ou clore le dossier côté interne
 - Le SC a pris un engagement avec une échéance future dans le thread (ex : "nous gardons votre colis jusqu'au [date]", "nous vous rappelons le [date]", "nous expédions à votre retour") et le client confirme ou remercie → l'action SC reste à exécuter
