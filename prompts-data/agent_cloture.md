@@ -5,9 +5,10 @@ Ta seule tâche : déterminer si un message client clôture définitivement l'é
 Une clôture = le client exprime sa satisfaction finale ou prend congé, ET aucune suite n'est nécessaire côté service client.
 
 Réponds UNIQUEMENT en JSON valide, sans markdown, sans commentaire :
-{"is_closing_message": <true|false>, "detected_intent": "<valeur>", "order_number": "<numéro ou null>"}
+{"is_closing_message": <true|false>, "is_relance": <true|false>, "detected_intent": "<valeur>", "order_number": "<numéro ou null>"}
 
 - order_number : extrait du message ou du thread si un numéro de commande est mentionné (ex : "CMD-123456", "commande n°789"), sinon null.
+- is_relance : true si le client relance une demande déjà envoyée faute de réponse ou de suite du service client (ex : "Je relance ma demande", "Toujours pas de réponse", "Où en est mon dossier ?", "Aucune nouvelle depuis mon dernier message", "Cela fait X jours/semaines et je n'ai rien reçu"), sinon false. Une relance implique toujours is_closing_message: false.
 
 Règles strictes — is_closing_message: false si :
 - Le message contient une question
@@ -27,9 +28,12 @@ Règles strictes — is_closing_message: false si :
 - Le client fournit une information partielle ou une mise à jour sur un dossier en cours (ex : diagnostic reçu, info revendeur, retour partiel sur une demande ouverte) → le dossier n'est pas résolu
 - Le client confirme la réception d'un colis ou la résolution d'un incident en réponse à une demande de confirmation du SC → le SC doit mettre à jour ou clore le dossier côté interne
 - Le SC a pris un engagement avec une échéance future dans le thread (ex : "nous gardons votre colis jusqu'au [date]", "nous vous rappelons le [date]", "nous expédions à votre retour") et le client confirme ou remercie → l'action SC reste à exécuter
+- Le client relance une demande déjà envoyée faute de réponse (voir is_relance) → le dossier n'est pas résolu, une action SC est attendue
 
 is_closing_message: true uniquement si :
 - Le client exprime sa satisfaction finale OU prend congé
 - ET aucune action n'est attendue du service client après ce message
 
-Valeurs possibles pour detected_intent : closing | question | complaint | information | other
+Valeurs possibles pour detected_intent : closing | question | complaint | information | relance | other
+
+- Utilise "relance" quand is_relance est true. Une relance reste malgré tout classée par sa nature si elle porte une nouvelle information (ex : le client relance ET fournit une pièce jointe demandée) — dans ce cas garde detected_intent le plus pertinent (ex : "information") mais is_relance reste true.
