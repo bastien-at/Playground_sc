@@ -374,7 +374,9 @@ L'agent doit s'activer si le client ne trouve pas sa commande PayPal.
 
 ## 5. 💬 Gabarits de Réponse
 
-### 5.1. Réponse Standard
+### 5.1. Message GO — commande retrouvable via l'email PayPal
+
+À utiliser uniquement si le client n'affirme pas avoir été débité sans retrouver de commande (cas OK de la table ci-dessous).
 
 ```
 Bonjour [Prénom],
@@ -391,12 +393,19 @@ Votre commande apparaît sur ce nouveau compte.
 4. Créez votre mot de passe via le lien reçu par email
 5. Connectez-vous pour retrouver votre commande
 
-**📧 Si vous avez bien été débité / si le paiement est confirmé mais que vous ne retrouvez aucune commande :**
-Une vérification dans nos outils est nécessaire.
+L'équipe Alltricks
+```
 
-Je transmets donc votre demande à un conseiller qui va prendre le relais.
+### 5.2. Template conseiller (statut KO uniquement) — débit confirmé sans commande retrouvée
 
-** Informations à fournir :**
+À utiliser en `template_conseiller` seulement, jamais dans un `message` GO (voir cas KO de la table ci-dessous).
+
+```
+Bonjour [Prénom],
+
+Vous indiquez avoir été débité mais ne retrouvez aucune commande, même après vérification de l'adresse email PayPal. Une vérification dans nos outils est nécessaire. Notre Service Client va prendre en charge votre dossier en priorité.
+
+**📋 Informations à fournir :**
 - Date du paiement
 - Montant
 - Numéro de transaction PayPal
@@ -411,8 +420,8 @@ L'équipe Alltricks
 
 | Situation constatée                                                                                                                   | Décision | Suite à donner                                                                          |
 | ------------------------------------------------------------------------------------------------------------------------------------- | -------- | --------------------------------------------------------------------------------------- |
-| Paiement PayPal Express effectué, commande non visible car l'adresse e-mail PayPal diffère de l'adresse du compte Alltricks habituel  | **OK**   | Expliquer l'accès via l'e-mail PayPal (parcours "Mot de passe oublié")                  |
-| Client indique un débit / paiement confirmé mais ne retrouve aucune commande / aucune confirmation (quelle que soit l'adresse e-mail) | **KO**   | **Handoff vers un conseiller** (vérification interne commande + paiement indispensable) |
+| Paiement PayPal Express effectué, commande non visible car l'adresse e-mail PayPal diffère de l'adresse du compte Alltricks habituel  | **OK**   | Expliquer l'accès via l'e-mail PayPal (parcours "Mot de passe oublié") — utiliser le template 5.1 en `message` GO |
+| Client indique un débit / paiement confirmé mais ne retrouve aucune commande / aucune confirmation (quelle que soit l'adresse e-mail) | **KO**   | **Handoff vers un conseiller** (vérification interne commande + paiement indispensable) — utiliser le template 5.2 en `template_conseiller`, jamais en `message` GO |
 
 | Situation                 | Action                                            |
 | ------------------------- | ------------------------------------------------- |

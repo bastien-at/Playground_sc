@@ -288,16 +288,16 @@ L'agent doit s'activer si le client signale un débit sans commande.
 
 ## 5. 💬 Gabarits de Réponse
 
-### 5.1. Réponse Standard
+**⚠️ Ce playbook est KO systématique** (voir règles ci-dessous) : une vérification interne est toujours indispensable. Ne jamais utiliser ce contenu pour produire un GO.
+
+### 5.1. Template conseiller (statut KO uniquement)
 
 ```
 Bonjour [Prénom],
 
 Je comprends votre inquiétude.
 
-Pour vous confirmer précisément si une commande a bien été créée et à quel statut elle se trouve, une vérification dans nos outils est nécessaire.
-
-Je transmets donc votre demande à un conseiller qui va prendre le relais.
+Pour vous confirmer précisément si une commande a bien été créée et à quel statut elle se trouve, une vérification dans nos outils est nécessaire. Notre Service Client va prendre en charge votre dossier en priorité.
 
 **📋 Informations à fournir :**
 - Date exacte du débit
@@ -312,8 +312,6 @@ Si possible, ajoutez aussi :
 
 Nous identifierons le paiement et procéderons à la validation ou à la création d'un avoir remboursable.
 
-Traitement prioritaire garanti.
-
 L'équipe Alltricks
 ```
 
@@ -321,7 +319,7 @@ L'équipe Alltricks
 
 | Situation constatée                                                          | Décision | Suite à donner                                                                          |
 | ---------------------------------------------------------------------------- | -------- | --------------------------------------------------------------------------------------- |
-| Client indique un débit et ne retrouve aucune commande / aucune confirmation | **KO**   | **Handoff vers un conseiller** (vérification interne commande + paiement indispensable) |
+| Client indique un débit et ne retrouve aucune commande / aucune confirmation | **KO**   | **Handoff vers un conseiller** (vérification interne commande + paiement indispensable) — utiliser le template 5.1 en `template_conseiller`, jamais en `message` GO |
 
 **Points clés FAQ :**
 
