@@ -8,7 +8,11 @@ Réponds UNIQUEMENT en JSON valide, sans markdown, sans commentaire :
 {"is_closing_message": <true|false>, "is_relance": <true|false>, "detected_intent": "<valeur>", "order_number": "<numéro ou null>"}
 
 - order_number : extrait du message ou du thread si un numéro de commande est mentionné (ex : "CMD-123456", "commande n°789"), sinon null.
-- is_relance : true si le client relance une demande déjà envoyée faute de réponse ou de suite du service client (ex : "Je relance ma demande", "Toujours pas de réponse", "Où en est mon dossier ?", "Aucune nouvelle depuis mon dernier message", "Cela fait X jours/semaines et je n'ai rien reçu"), sinon false. Une relance implique toujours is_closing_message: false.
+- is_relance : true si le client relance une demande déjà envoyée faute de réponse ou de suite satisfaisante du service client, que ce soit explicitement ou implicitement, sinon false. Une relance implique toujours is_closing_message: false.
+  - Explicite (le client signale lui-même l'attente) : "Je relance ma demande", "Toujours pas de réponse", "Où en est mon dossier ?", "Aucune nouvelle depuis mon dernier message", "Cela fait X jours/semaines et je n'ai rien reçu".
+  - Implicite par reprise du sujet (le client repose la même demande sans la nommer "relance") : "Des nouvelles ?", "Je reviens vers vous concernant...", "Toujours en attente de...", "Je me permets de revenir vers vous".
+  - Implicite par réponse insatisfaisante (le SC a répondu mais pas à la demande) : "Ce n'est pas ce que je demandais", "Vous n'avez pas répondu à ma question sur...", "Cela ne répond pas à ma demande, je repose donc..." — même si une réponse SC existe dans le thread, l'action attendue initiale reste non traitée.
+  - Implicite par le thread : le thread montre que le client a déjà formulé cette même demande dans un message précédent resté sans réponse du SC (ou sans réponse traitant réellement le sujet), et le message actuel reprend le même sujet sans apporter d'information nouvelle.
 
 Règles strictes — is_closing_message: false si :
 - Le message contient une question
