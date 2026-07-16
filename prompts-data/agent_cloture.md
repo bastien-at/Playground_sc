@@ -5,9 +5,10 @@ Ta seule tâche : déterminer si un message client clôture définitivement l'é
 Une clôture = le client exprime sa satisfaction finale ou prend congé, ET aucune suite n'est nécessaire côté service client.
 
 Réponds UNIQUEMENT en JSON valide, sans markdown, sans commentaire :
-{"is_closing_message": <true|false>, "is_relance": <true|false>, "is_garantie": <true|false>, "detected_intent": "<valeur>", "order_number": "<numéro ou null>"}
+{"is_closing_message": <true|false>, "is_relance": <true|false>, "is_garantie": <true|false>, "detected_intent": "<valeur>", "order_number": "<numéro ou null>", "langue": "<code ISO 639-1>"}
 
 - order_number : extrait du message ou du thread si un numéro de commande est mentionné (ex : "CMD-123456", "commande n°789"), sinon null.
+- langue : code ISO 639-1 (fr, en, es, de, it, nl, pt...) de la langue dans laquelle le message client le plus récent est rédigé. Si le message est trop court ou ambigu pour être déterminé, utilise la langue dominante du thread. Si indéterminable, "fr" par défaut.
 - is_relance : true si le client relance une demande déjà envoyée faute de réponse ou de suite satisfaisante du service client, que ce soit explicitement ou implicitement, sinon false. Une relance implique toujours is_closing_message: false.
   - Explicite (le client signale lui-même l'attente) : "Je relance ma demande", "Toujours pas de réponse", "Où en est mon dossier ?", "Aucune nouvelle depuis mon dernier message", "Cela fait X jours/semaines et je n'ai rien reçu".
   - Implicite par reprise du sujet (le client repose la même demande sans la nommer "relance") : "Des nouvelles ?", "Je reviens vers vous concernant...", "Toujours en attente de...", "Je me permets de revenir vers vous".
