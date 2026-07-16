@@ -1,0 +1,267 @@
+{
+  "name": "WF — Agent Garantie",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "agent-garantie",
+        "options": {}
+      },
+      "id": "b1a2c3d4-1111-4222-8333-944455556666",
+      "name": "Ticket Garantie entrant",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [32, -128],
+      "webhookId": "f2b3c4d5-2222-4333-9444-055566667777"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "return {\n  json: {\n    case_id: $json.case_id || '',\n    contact_email: $json.contact_email || '',\n    contact_firstname: $json.contact_firstname || '',\n    langue: $json.langue || 'fr',\n    dernier_message: $json.dernier_message || '',\n    motif_contact: $json.motif_contact || ''\n  }\n};"
+      },
+      "id": "c2b3d4e5-3333-4444-a555-166677778888",
+      "name": "Extraire contexte ticket",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [272, -128]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "=https://alltricks.my.salesforce.com/services/data/v59.0/query?q={{ encodeURIComponent(\"SELECT ContentDocument.Title, ContentDocument.FileType FROM ContentDocumentLink WHERE LinkedEntityId = '\" + $json.case_id + \"'\") }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "salesforceOAuth2Api",
+        "options": { "response": { "response": { "neverError": true } } }
+      },
+      "id": "b3c4d5e6-4444-4555-a666-277788889999",
+      "name": "SF — Query Pièces jointes",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [512, -128]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const ticket = $('Extraire contexte ticket').item.json;\nconst records = ($json.records || []);\n\nconst pieces_jointes = records.map(r => {\n  const cd = r.ContentDocument || {};\n  return cd.FileType ? `${cd.Title || 'fichier'}.${cd.FileType}` : (cd.Title || 'fichier');\n});\n\nreturn {\n  json: {\n    ...ticket,\n    pieces_jointes,\n    pieces_jointes_count: pieces_jointes.length\n  }\n};"
+      },
+      "id": "c4d5e6f7-5555-4666-b777-388899990000",
+      "name": "Extraire pièces jointes",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [752, -128]
+    },
+    {
+      "parameters": {
+        "url": "https://raw.githubusercontent.com/bastien-at/Playground_sc/refs/heads/main/prompts-data/agent_garantie.md",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "githubApi",
+        "options": {}
+      },
+      "id": "d3c4e5f6-4444-4555-b666-277788889999",
+      "name": "Get Agent Prompt",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [272, -320]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=TICKET :\n- Case ID : {{ $json.case_id }}\n- Message client : {{ $json.dernier_message }}\n- Prénom : {{ $json.contact_firstname }}\n- Langue : {{ $json.langue }}\n- Motif contact (entrant) : {{ $json.motif_contact }}\n- Pièces jointes déjà présentes sur le Case : {{ $json.pieces_jointes_count }} ({{ JSON.stringify($json.pieces_jointes) }})\n\nGénère la réponse JSON demandée.",
+        "options": {
+          "systemMessage": "={{ $('Get Agent Prompt').item.json.data }}",
+          "maxIterations": 3
+        }
+      },
+      "id": "e4d5f6a7-5555-4666-c777-388899990000",
+      "name": "Claude — Analyse et email",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [992, -128]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "claude-sonnet-4-5-20250929",
+          "cachedResultName": "Claude Sonnet 4.5"
+        },
+        "options": {
+          "maxTokensToSample": 2048,
+          "temperature": 0.3
+        }
+      },
+      "id": "f5e6a7b8-6666-4777-d888-499900001111",
+      "name": "Claude Sonnet",
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.3,
+      "position": [992, 64]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const raw = ($json.output || '').trim();\nlet result = {\n  out_of_scope: false,\n  needs_human: true,\n  categorie_produit: 'indetermine',\n  nom_produit_detecte: null,\n  elements_fournis: [],\n  elements_manquants: [],\n  template_complete: false,\n  motif_contact: 'GAR-Modalité-condition de garantie',\n  email_subject: '',\n  email_body: '',\n  language: 'fr'\n};\n\ntry {\n  const match = raw.match(/\\{[\\s\\S]*\\}/);\n  if (match) {\n    const parsed = JSON.parse(match[0]);\n    result = {\n      out_of_scope: parsed.out_of_scope || false,\n      needs_human: parsed.out_of_scope ? true : (parsed.needs_human || false),\n      categorie_produit: parsed.categorie_produit || result.categorie_produit,\n      nom_produit_detecte: parsed.nom_produit_detecte || null,\n      elements_fournis: parsed.elements_fournis || [],\n      elements_manquants: parsed.elements_manquants || [],\n      template_complete: parsed.template_complete || false,\n      motif_contact: parsed.motif_contact || result.motif_contact,\n      email_subject: parsed.email_subject || '',\n      email_body: parsed.email_body || '',\n      language: parsed.language || 'fr'\n    };\n  }\n} catch(e) {\n  console.error('Parsing JSON échoué:', e.message);\n}\n\n// Filet de sécurité : si le modèle a oublié de résoudre le placeholder, on le fait ici\nif (result.email_body.includes('[NOM_PRODUIT]')) {\n  if (result.nom_produit_detecte) {\n    result.email_body = result.email_body.split('[NOM_PRODUIT]').join(result.nom_produit_detecte);\n  } else {\n    result.email_body = result.email_body.split(' [NOM_PRODUIT]').join('').split('[NOM_PRODUIT]').join('');\n  }\n}\n\nconst pj = $('Extraire pièces jointes').item.json;\n\nreturn {\n  json: {\n    ...result,\n    contact_email: pj.contact_email,\n    case_id: pj.case_id,\n    pieces_jointes_count: pj.pieces_jointes_count || 0\n  }\n};"
+      },
+      "id": "a6b7c8d9-7777-4888-e999-500011112222",
+      "name": "Parser JSON réponse",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1232, -128]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const item = $json;\n\nconst lignes = [\n  'Analyse Agent Garantie (IA) — dossier de nouvelle demande',\n  `Catégorie produit : ${item.categorie_produit || 'indetermine'}`,\n  `Nom produit détecté : ${item.nom_produit_detecte || 'non détecté'}`,\n  `Pièces jointes déjà sur le dossier : ${item.pieces_jointes_count ?? 0}`,\n  `Dossier complet : ${item.template_complete ? 'oui' : 'non'}`,\n  `Éléments fournis : ${(item.elements_fournis || []).join(', ') || 'aucun'}`,\n  `Éléments manquants : ${(item.elements_manquants || []).join(', ') || 'aucun'}`,\n  `Motif contact : ${item.motif_contact || ''}`,\n  `Escalade humaine : ${item.needs_human ? 'oui' : 'non'}`,\n  `Hors périmètre : ${item.out_of_scope ? 'oui' : 'non'}`\n];\n\nreturn {\n  json: {\n    ...item,\n    internal_comment: lignes.join('\\n')\n  }\n};"
+      },
+      "id": "f1a2b3c4-2222-4333-e444-055566667777",
+      "name": "Construire commentaire interne",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1472, -128]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://alltricks.my.salesforce.com/services/data/v59.0/sobjects/CaseComment",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "salesforceOAuth2Api",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ ParentId: $json.case_id, CommentBody: $json.internal_comment, IsPublished: false }) }}",
+        "options": { "response": { "response": { "neverError": true } } }
+      },
+      "id": "a2b3c4d5-3333-4444-f555-166677778888",
+      "name": "SF — Commentaire interne",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [1712, -128]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict", "version": 2 },
+          "conditions": [
+            {
+              "id": "c-human",
+              "leftValue": "={{ $json.needs_human }}",
+              "operator": { "type": "boolean", "operation": "true" },
+              "rightValue": ""
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "b7c8d9e0-8888-4999-a000-611122223333",
+      "name": "Escalade humaine ?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [1952, -128]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://n8n.srv1094459.hstgr.cloud/webhook/wf3-send-email",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ case_id: $json.case_id, contact_email: $json.contact_email, sf_subject: $json.email_subject, sf_html_body: $json.email_body, situation_category: $json.categorie_produit }) }}",
+        "options": { "response": { "response": { "neverError": true } } }
+      },
+      "id": "c8d9e0f1-9999-4000-b111-722233334444",
+      "name": "Envoyer via WF3",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [2192, 64]
+    },
+    {
+      "parameters": {
+        "method": "PATCH",
+        "url": "=https://alltricks.my.salesforce.com/services/data/v59.0/sobjects/Case/{{ $json.case_id }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "salesforceOAuth2Api",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ AI_Management_Status__c: 'Garantie - Escalade : ' + $json.categorie_produit + ' | manquants: ' + (($json.elements_manquants || []).join(', ') || 'n/a') }) }}",
+        "options": {}
+      },
+      "id": "d9e0f1a2-0000-4111-c222-833344445555",
+      "name": "SF — Escalade",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [2192, -256]
+    },
+    {
+      "parameters": {
+        "method": "PATCH",
+        "url": "=https://alltricks.my.salesforce.com/services/data/v59.0/sobjects/Case/{{ $json.case_id }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "salesforceOAuth2Api",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ AI_Management_Status__c: 'Garantie - Traité : ' + $json.categorie_produit + (($json.template_complete) ? ' (dossier complet)' : ' (demande de complément)'), Nombre_de_messages_envoyes__c: 1 }) }}",
+        "options": {}
+      },
+      "id": "e0f1a2b3-1111-4222-d333-944455556666",
+      "name": "SF — Marquer traité",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [2432, 64]
+    }
+  ],
+  "connections": {
+    "Ticket Garantie entrant": {
+      "main": [[{ "node": "Extraire contexte ticket", "type": "main", "index": 0 }]]
+    },
+    "Extraire contexte ticket": {
+      "main": [[{ "node": "SF — Query Pièces jointes", "type": "main", "index": 0 }]]
+    },
+    "SF — Query Pièces jointes": {
+      "main": [[{ "node": "Extraire pièces jointes", "type": "main", "index": 0 }]]
+    },
+    "Extraire pièces jointes": {
+      "main": [[{ "node": "Claude — Analyse et email", "type": "main", "index": 0 }]]
+    },
+    "Get Agent Prompt": {
+      "main": [[{ "node": "Claude — Analyse et email", "type": "main", "index": 0 }]]
+    },
+    "Claude Sonnet": {
+      "ai_languageModel": [[{ "node": "Claude — Analyse et email", "type": "ai_languageModel", "index": 0 }]]
+    },
+    "Claude — Analyse et email": {
+      "main": [[{ "node": "Parser JSON réponse", "type": "main", "index": 0 }]]
+    },
+    "Parser JSON réponse": {
+      "main": [[{ "node": "Construire commentaire interne", "type": "main", "index": 0 }]]
+    },
+    "Construire commentaire interne": {
+      "main": [[{ "node": "SF — Commentaire interne", "type": "main", "index": 0 }]]
+    },
+    "SF — Commentaire interne": {
+      "main": [[{ "node": "Escalade humaine ?", "type": "main", "index": 0 }]]
+    },
+    "Escalade humaine ?": {
+      "main": [
+        [{ "node": "SF — Escalade", "type": "main", "index": 0 }],
+        [{ "node": "Envoyer via WF3", "type": "main", "index": 0 }]
+      ]
+    },
+    "Envoyer via WF3": {
+      "main": [[{ "node": "SF — Marquer traité", "type": "main", "index": 0 }]]
+    }
+  },
+  "pinData": {
+    "Ticket Garantie entrant": [
+      {
+        "case_id": "500Aa00000f3N8XIAU",
+        "contact_email": "bastien.lecalvez@alltricks.com",
+        "contact_firstname": "Bastien",
+        "langue": "fr",
+        "dernier_message": "Bonjour, mon vélo VTT Trek Marlin 7 a le dérailleur cassé après une chute il y a 2 jours, je souhaite faire une demande de garantie.",
+        "motif_contact": "GAR-Modalité-condition de garantie"
+      }
+    ]
+  },
+  "meta": {
+    "instanceId": "cfa4c4825e62d727c59bd7bb806b083eccbbe7b269b75605352630bfa09236d0"
+  }
+}

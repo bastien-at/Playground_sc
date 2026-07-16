@@ -1,0 +1,638 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "url": "https://raw.githubusercontent.com/bastien-at/Playground_sc/refs/heads/main/prompts-data/classification.md",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "githubApi",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [-4896, 2816],
+      "id": "a90e61ab-2b98-407e-8f16-9adebdf3e526",
+      "name": "Get Classification Prompt",
+      "credentials": {
+        "githubApi": { "id": "5iTWtODvJWX5cdlt", "name": "GitHub account BLC" }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "case",
+        "operation": "getAll",
+        "returnAll": true,
+        "options": {
+          "conditionsUi": {
+            "conditionValues": [
+              { "field": "Status", "value": "Nouveau" },
+              { "field": "Nombre_de_messages_envoyes__c", "value": "0" },
+              { "field": "CreatedDate", "operation": ">=", "value": "={{ $now.minus({hours: 3}).toISO() }}" }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.salesforce",
+      "typeVersion": 1,
+      "position": [-4016, 2816],
+      "id": "30ec6291-1249-4b92-89d9-72f0b621fa65",
+      "name": "Get case from SF",
+      "credentials": {
+        "salesforceOAuth2Api": { "id": "bK9CYRGee7aHk9a4", "name": "Salesforce account" }
+      }
+    },
+    {
+      "parameters": { "batchSize": 5, "options": {} },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [-3808, 2816],
+      "id": "bc38ed04-cba4-4625-96dd-c4ee35ee9d0f",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [-3104, 2640],
+      "id": "31fda9dc-1d82-4712-b2b0-40c995c4001c",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": { "resource": "case", "operation": "get", "caseId": "={{ $json.Id }}" },
+      "type": "n8n-nodes-base.salesforce",
+      "typeVersion": 1,
+      "position": [-3536, 2832],
+      "id": "8032fe16-71fe-45d7-a72a-c70f74d20134",
+      "name": "Get detail of a case",
+      "credentials": {
+        "salesforceOAuth2Api": { "id": "bK9CYRGee7aHk9a4", "name": "Salesforce account" }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const caseId = $input.first().json.Id;\nconst staticData = $getWorkflowStaticData('global');\n\n// Lit depuis la mémoire — zéro appel API\nconst loggedIds = new Set(staticData.loggedIds || []);\nconst alreadyLogged = loggedIds.has(caseId);\n\nconsole.log('🔍 Case:', caseId, '| Already logged:', alreadyLogged);\n\nreturn [{\n  json: {\n    ...$input.first().json,\n    already_logged: alreadyLogged\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [-3088, 2832],
+      "id": "ac545f2a-e712-48cf-97ff-96b8ecf03f58",
+      "name": "Already Check ?"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict", "version": 2 },
+          "conditions": [
+            {
+              "id": "check-already-logged",
+              "leftValue": "={{ $json.already_logged }}",
+              "rightValue": true,
+              "operator": { "type": "boolean", "operation": "equals" }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [-2880, 2832],
+      "id": "9ab8c48b-b643-4ce2-ab67-43a544e028d4",
+      "name": "already logged"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [-2384, 2432],
+      "id": "ea7b1ddc-1cc0-43d0-99b7-e3850153ae2d",
+      "name": "No Operation, do nothing4"
+    },
+    {
+      "parameters": { "resource": "contact", "operation": "get", "contactId": "={{ $json.ContactId }}" },
+      "type": "n8n-nodes-base.salesforce",
+      "typeVersion": 1,
+      "position": [-1744, 2704],
+      "id": "9006566f-e009-4898-8fc0-b42c94f11011",
+      "name": "Get detail of contact",
+      "credentials": {
+        "salesforceOAuth2Api": { "id": "bK9CYRGee7aHk9a4", "name": "Salesforce account" }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=## MESSAGE CLIENT\nMessage : {{ $('Get detail of a case').item.json.Dernier_message__c }}\n\nRéponds UNIQUEMENT avec le JSON de classification, sans texte autour.",
+        "options": {
+          "systemMessage": "={{ $('Get Classification Prompt').item.json.data }}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [-1456, 2832],
+      "id": "5c8ccda8-7a94-4d30-9e1e-9564fc4bb84c",
+      "name": "AI Agent - Classification"
+    },
+    {
+      "parameters": { "model": "anthropic/claude-haiku-4.5", "options": {} },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [-1424, 3024],
+      "id": "c1642e68-5e75-4c2f-b93c-4f6a2c02a1c8",
+      "name": "OpenRouter Chat Model",
+      "credentials": {
+        "openRouterApi": { "id": "JTSw1NijD0tyRB1b", "name": "MailBot - Openrouter" }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const raw = $input.item.json.output || '';\nconst caseDetail = $('Get detail of a case').item.json;\n\nlet contact = {};\ntry {\n  contact = $('Get detail of contact').item?.json || {};\n} catch(e) {\n  contact = {};\n}\n\nlet classification = {\n  categorie: 'AUTRES QUESTIONS',\n  sous_categorie: 'Toutes autres demandes',\n  langue: 'fr',\n  motif_contact: 'AUT-Appel coupé'\n};\n\ntry {\n  const match = raw.match(/\\{[\\s\\S]*\\}/);\n  if (match) {\n    const parsed = JSON.parse(match[0]);\n    classification = {\n      categorie: parsed.categorie || classification.categorie,\n      sous_categorie: parsed.sous_categorie || classification.sous_categorie,\n      priorite: parsed.priorite || classification.priorite,\n      action_recommandee: parsed.action_recommandee || classification.action_recommandee,\n      langue: parsed.langue || classification.langue,\n      motif_contact: parsed.motif_contact || classification.motif_contact\n    };\n  }\n} catch(e) {\n  console.error('❌ Parsing classification échoué:', e);\n}\n\nreturn {\n  json: {\n    case_id: caseDetail.Id,\nfrom_address: caseDetail.SuppliedEmail || caseDetail.Email__c || '',    subject: caseDetail.Subject,\n    dernier_message: caseDetail.Dernier_message__c,\n    origine: caseDetail.Origin,\n    created_date: caseDetail.CreatedDate,\n    contact_firstname: contact.FirstName || '',\n    contact_lastname: contact.LastName || '',\ncontact_email: contact.Email || caseDetail.SuppliedEmail || caseDetail.Email__c || '',\n    classification\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [-960, 2832],
+      "id": "74bf3b19-b4c3-405d-92b6-10cc205ed55c",
+      "name": "Clean JSON"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [256, 3072],
+      "id": "8ca34f29-1b62-4444-b64c-049f2344a3b2",
+      "name": "No Op - Autres catégories"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://n8n.srv1094459.hstgr.cloud/webhook/1d128800-49ef-47cb-976c-aa378583703d",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json) }}",
+        "options": { "response": { "response": { "neverError": true, "responseFormat": "text" } } }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [1056, 3072],
+      "id": "e9ddc91b-e14b-4ec8-a3e9-4a9cd9c5ee3e",
+      "name": "Forward to Workflow - Annulation/Modif"
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.item.json;\nconst c = item.classification || {};\nconst now = new Date().toISOString();\n\nreturn [{\n  json: {\n    timestamp: now,\n    date: now.slice(0, 10),\n    case_id: item.case_id || '',\n    from_address: item.from_address || '',\n    subject: item.subject || '',\n    origine: item.origine || '',\n    created_date: item.created_date || '',\n    contact_firstname: item.contact_firstname || '',\n    contact_lastname: item.contact_lastname || '',\n    contact_email: item.contact_email || '',\n    dernier_message: (item.dernier_message || '').replace(/\\r?\\n/g, ' ').slice(0, 500),\n    categorie: c.categorie || '',\n    sous_categorie: c.sous_categorie || '',\n    langue: c.langue || '',\n    motif_contact: c.motif_contact || ''\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [-464, 2432],
+      "id": "a44a4c0e-4f6b-46ed-a67c-ab0d019ab342",
+      "name": "Write log file"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1qLTuxrmgfDr31ciEd645x3odFYPLb-6GHIrVbDuFf8A",
+          "mode": "list",
+          "cachedResultName": "Mailbot suivi"
+        },
+        "sheetName": { "__rl": true, "value": "gid=0", "mode": "list", "cachedResultName": "Classification" },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "timestamp": "={{ $json.timestamp }}",
+            "date": "={{ $json.date }}",
+            "case_id": "={{ $json.case_id }}",
+            "subject": "={{ $json.subject }}",
+            "origine": "={{ $json.origine }}",
+            "created_date": "={{ $json.created_date }}",
+            "contact_firstname": "={{ $json.contact_firstname }}",
+            "contact_lastname": "={{ $json.contact_lastname }}",
+            "contact_email": "={{ $json.contact_email }}",
+            "dernier_message": "={{ $json.dernier_message }}",
+            "categorie": "={{ $json.categorie }}",
+            "sous_categorie": "={{ $json.sous_categorie }}",
+            "langue": "={{ $json.langue }}",
+            "motif_contact": "={{ $json.motif_contact }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            { "id": "timestamp", "displayName": "timestamp", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true },
+            { "id": "date", "displayName": "date", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true },
+            { "id": "case_id", "displayName": "case_id", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true },
+            { "id": "subject", "displayName": "subject", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true },
+            { "id": "origine", "displayName": "origine", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true },
+            { "id": "created_date", "displayName": "created_date", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true },
+            { "id": "contact_firstname", "displayName": "contact_firstname", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true },
+            { "id": "contact_lastname", "displayName": "contact_lastname", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true },
+            { "id": "contact_email", "displayName": "contact_email", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true },
+            { "id": "dernier_message", "displayName": "dernier_message", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true },
+            { "id": "categorie", "displayName": "categorie", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true },
+            { "id": "sous_categorie", "displayName": "sous_categorie", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true },
+            { "id": "priorite", "displayName": "priorite", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true, "removed": true },
+            { "id": "action_recommandee", "displayName": "action_recommandee", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true, "removed": true },
+            { "id": "langue", "displayName": "langue", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true },
+            { "id": "motif_contact", "displayName": "motif_contact", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [-192, 2432],
+      "id": "815e2c5b-f130-4648-b9d5-4f43e78aa532",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": { "id": "cXxWYmSQqxUCnh78", "name": "Google Sheets account BLC" }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const c = $input.first().json;\n\n// Exclure les cases déjà traités\nif (c.Nombre_de_messages_envoyes__c > 0) {\n  return []; // stoppe le traitement pour ce case\n}\n\nif (c.Status !== 'Nouveau') {\n  return [];\n}\n\nreturn [{ json: c }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [-3328, 2832],
+      "id": "bdeee9ac-bd35-4d0a-a9ae-1cb4dbe5274e",
+      "name": "Code in JavaScript",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "3CXLbJ1oxVw5OM3p",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/3CXLbJ1oxVw5OM3p",
+          "cachedResultName": "LOG COSTS - LLM Usage Tracker"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "execution_id": "={{ $execution.id }}",
+            "openrouter_label": "={{ [\"OpenRouter Chat Model\"] }}",
+            "workflow_id": "={{ $workflow.id }}",
+            "is_agent_mandatory": false
+          },
+          "matchingColumns": ["execution_id"],
+          "schema": [
+            { "id": "execution_id", "displayName": "execution_id", "required": false, "defaultMatch": false, "display": true, "canBeUsedToMatch": true, "removed": false },
+            { "id": "workflow_id", "displayName": "workflow_id", "required": false, "defaultMatch": false, "display": true, "canBeUsedToMatch": true, "removed": false },
+            { "id": "openrouter_label", "displayName": "openrouter_label", "required": false, "defaultMatch": false, "display": true, "canBeUsedToMatch": true, "type": "array", "removed": false },
+            { "id": "is_agent_mandatory", "displayName": "is_agent_mandatory", "required": false, "defaultMatch": false, "display": true, "canBeUsedToMatch": true, "type": "boolean", "removed": false }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "mode": "each",
+        "options": { "waitForSubWorkflow": false }
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [-4672, 2816],
+      "id": "034d8335-3edd-40e9-b97b-b55ee8fcebc6",
+      "name": "Log LLM Usage"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict", "version": 2 },
+          "conditions": [
+            {
+              "id": "3bd18559-b01f-4e9e-abea-63f1c4cceec5",
+              "leftValue": "={{ $json.send_to_wf2 }}",
+              "rightValue": true,
+              "operator": { "type": "boolean", "operation": "equals" }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [-496, 2832],
+      "id": "7493d1a2-307d-4399-b598-6a1728a423a0",
+      "name": "Filtre modif => WF2"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict", "version": 2 },
+          "conditions": [
+            {
+              "id": "9bd92fd1",
+              "leftValue": "={{ $json.ContactId }}",
+              "rightValue": "",
+              "operator": { "type": "string", "operation": "notEmpty", "singleValue": true }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [-2000, 2816],
+      "id": "08994959-4830-4087-9e81-2bc7a402690c",
+      "name": "get contact detail"
+    },
+    {
+      "parameters": {
+        "jsCode": "const MOTIFS_WF2 = [\n  \"CDE-Annulation cde/chgmt avis\",\n  \"CDE-Demande de modif cde\",\n  \"CDE-Demande facture\",\n  \"CPTE-Premium\",\n  \"CPTE-Modification compte client\",\n  \"CPTE-Pb connexion au compte\",\n  \"PAIE-Problème paiement\",\n  \"PAIE-Info et problème paiement\",\n  \"PDT-Demande de dispo\",\n  \"RET-Modalité de retour\",\n  \"RET-Suivi Retour\"\n];\n\nconst item = $input.first().json;\nconst motif = item.classification?.motif_contact || '';\nconst sendToWF2 = MOTIFS_WF2.some(m => motif.includes(m));\n\nreturn [{\n  json: {\n    ...item,\n    send_to_wf2: sendToWF2\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [-704, 2832],
+      "id": "e8a680cf-cb2e-4d72-ba76-9d2970e62cfa",
+      "name": "Check motif => WF2"
+    },
+    {
+      "parameters": { "rule": { "interval": [{ "field": "minutes" }] } },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [-5232, 2816],
+      "id": "f35eaf6c-3cbb-4cb9-bf9e-ab917f5451b8",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1qLTuxrmgfDr31ciEd645x3odFYPLb-6GHIrVbDuFf8A",
+          "mode": "list",
+          "cachedResultName": "Mailbot suivi"
+        },
+        "sheetName": { "__rl": true, "value": "gid=0", "mode": "list", "cachedResultName": "Classification" },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [-4432, 2816],
+      "id": "e87fbc2a-7896-4078-9292-8efd4d4662ca",
+      "name": "Read all logged case_ids",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": { "id": "cXxWYmSQqxUCnh78", "name": "Google Sheets account BLC" }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Stocke les IDs loggués depuis le Sheets (1 appel déjà fait)\nconst rows = $input.all();\nconst staticData = $getWorkflowStaticData('global');\n\nstaticData.loggedIds = rows\n  .map(r => r.json.case_id)\n  .filter(Boolean);\n\nconsole.log('✅ IDs loggués chargés en mémoire:', staticData.loggedIds.length);\n\n// Passe un item vide pour continuer vers SF\nreturn [{ json: {} }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [-4224, 2816],
+      "id": "7838d867-ef70-4d17-a5a5-2c5010af8091",
+      "name": "Store IDs in memory"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict", "version": 3 },
+          "conditions": [
+            {
+              "id": "899278d3-0fa8-4ef5-8902-8a6e8a83807f",
+              "leftValue": "={{ $json.Bot_Scope__c }}",
+              "rightValue": "true",
+              "operator": { "type": "boolean", "operation": "true", "singleValue": true }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [-2384, 2848],
+      "id": "25a8d1a6-d489-43d4-b4b7-5517e1431f8b",
+      "name": "IF Bot_Scope__c"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://n8n.srv1094459.hstgr.cloud/webhook/agent-transport",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json) }}",
+        "options": { "response": { "response": { "neverError": true, "responseFormat": "text" } } }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [448, 2448],
+      "id": "1a58714a-e45f-4374-b8ec-813a01e864b2",
+      "name": "Forward to Workflow - Agent Transport"
+    },
+    {
+      "parameters": {
+        "method": "PATCH",
+        "url": "=https://alltricks.my.salesforce.com/services/data/v59.0/sobjects/Case/{{ $json.case_id }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "salesforceOAuth2Api",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={ \"AI_Management_Status__c\": \"Alltricks Bot could not respond\" }",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [-320, 3056],
+      "id": "f0563846-d6fb-4e6d-b2a0-001157b9ba46",
+      "name": "AI_Management_Status",
+      "credentials": {
+        "salesforceOAuth2Api": { "id": "bK9CYRGee7aHk9a4", "name": "Salesforce account" }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict", "version": 3 },
+          "conditions": [
+            {
+              "id": "f0a00c37-b927-46b8-a9ad-75c72e4ba29d",
+              "leftValue": "={{ $json.subject }}",
+              "rightValue": "Suivi Colis :",
+              "operator": { "type": "string", "operation": "contains" }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [64, 2432],
+      "id": "721c1359-fddd-457f-8d54-1714c1b47a32",
+      "name": "Motif transport"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict", "version": 3 },
+          "conditions": [
+            {
+              "id": "9f1b2c3d-4e5f-4a6b-8c7d-1e2f3a4b5c6d",
+              "leftValue": "={{ $json.motif_contact }}",
+              "rightValue": "GAR-",
+              "operator": { "type": "string", "operation": "contains" }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [304, 2560],
+      "id": "6a5b4c3d-2e1f-4a9b-8c7d-6f5e4d3c2b1a",
+      "name": "Motif garantie"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://n8n.srv1094459.hstgr.cloud/webhook/agent-garantie",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json) }}",
+        "options": { "response": { "response": { "neverError": true, "responseFormat": "text" } } }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [688, 2560],
+      "id": "1b2c3d4e-5f6a-4b7c-8d9e-0f1a2b3c4d5e",
+      "name": "Forward to Workflow - Agent Garantie"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [-5232, 2640],
+      "id": "1ae07be6-1d95-4c06-bec2-ae2d9b8e6eca",
+      "name": "When clicking ‘Execute workflow’"
+    }
+  ],
+  "connections": {
+    "Get Classification Prompt": {
+      "main": [[{ "node": "Log LLM Usage", "type": "main", "index": 0 }]]
+    },
+    "Get case from SF": {
+      "main": [[{ "node": "Loop Over Items", "type": "main", "index": 0 }]]
+    },
+    "Loop Over Items": {
+      "main": [
+        [{ "node": "No Operation, do nothing", "type": "main", "index": 0 }],
+        [{ "node": "Get detail of a case", "type": "main", "index": 0 }]
+      ]
+    },
+    "Get detail of a case": {
+      "main": [[{ "node": "Code in JavaScript", "type": "main", "index": 0 }]]
+    },
+    "Already Check ?": {
+      "main": [[{ "node": "already logged", "type": "main", "index": 0 }]]
+    },
+    "already logged": {
+      "main": [
+        [{ "node": "No Operation, do nothing4", "type": "main", "index": 0 }],
+        [{ "node": "IF Bot_Scope__c", "type": "main", "index": 0 }]
+      ]
+    },
+    "No Operation, do nothing4": {
+      "main": [[{ "node": "Loop Over Items", "type": "main", "index": 0 }]]
+    },
+    "Get detail of contact": {
+      "main": [[{ "node": "AI Agent - Classification", "type": "main", "index": 0 }]]
+    },
+    "AI Agent - Classification": {
+      "main": [[{ "node": "Clean JSON", "type": "main", "index": 0 }]]
+    },
+    "OpenRouter Chat Model": {
+      "ai_languageModel": [[{ "node": "AI Agent - Classification", "type": "ai_languageModel", "index": 0 }]]
+    },
+    "Clean JSON": {
+      "main": [
+        [
+          { "node": "Write log file", "type": "main", "index": 0 },
+          { "node": "Check motif => WF2", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "No Op - Autres catégories": {
+      "main": [[{ "node": "Loop Over Items", "type": "main", "index": 0 }]]
+    },
+    "Forward to Workflow - Annulation/Modif": {
+      "main": [[{ "node": "Loop Over Items", "type": "main", "index": 0 }]]
+    },
+    "Write log file": {
+      "main": [[{ "node": "Append row in sheet", "type": "main", "index": 0 }]]
+    },
+    "Append row in sheet": {
+      "main": [[{ "node": "Motif transport", "type": "main", "index": 0 }]]
+    },
+    "Code in JavaScript": {
+      "main": [[{ "node": "Already Check ?", "type": "main", "index": 0 }]]
+    },
+    "Log LLM Usage": {
+      "main": [[{ "node": "Read all logged case_ids", "type": "main", "index": 0 }]]
+    },
+    "Filtre modif => WF2": {
+      "main": [
+        [{ "node": "Forward to Workflow - Annulation/Modif", "type": "main", "index": 0 }],
+        [{ "node": "AI_Management_Status", "type": "main", "index": 0 }]
+      ]
+    },
+    "get contact detail": {
+      "main": [
+        [{ "node": "Get detail of contact", "type": "main", "index": 0 }],
+        [{ "node": "AI Agent - Classification", "type": "main", "index": 0 }]
+      ]
+    },
+    "Check motif => WF2": {
+      "main": [[{ "node": "Filtre modif => WF2", "type": "main", "index": 0 }]]
+    },
+    "Schedule Trigger": {
+      "main": [[{ "node": "Get Classification Prompt", "type": "main", "index": 0 }]]
+    },
+    "Read all logged case_ids": {
+      "main": [[{ "node": "Store IDs in memory", "type": "main", "index": 0 }]]
+    },
+    "Store IDs in memory": {
+      "main": [[{ "node": "Get case from SF", "type": "main", "index": 0 }]]
+    },
+    "IF Bot_Scope__c": {
+      "main": [
+        [{ "node": "get contact detail", "type": "main", "index": 0 }],
+        [{ "node": "Loop Over Items", "type": "main", "index": 0 }]
+      ]
+    },
+    "Forward to Workflow - Agent Transport": {
+      "main": [[{ "node": "Loop Over Items", "type": "main", "index": 0 }]]
+    },
+    "AI_Management_Status": {
+      "main": [[{ "node": "No Op - Autres catégories", "type": "main", "index": 0 }]]
+    },
+    "Motif transport": {
+      "main": [
+        [{ "node": "Forward to Workflow - Agent Transport", "type": "main", "index": 0 }],
+        [{ "node": "Motif garantie", "type": "main", "index": 0 }]
+      ]
+    },
+    "Motif garantie": {
+      "main": [
+        [{ "node": "Forward to Workflow - Agent Garantie", "type": "main", "index": 0 }],
+        [{ "node": "Loop Over Items", "type": "main", "index": 0 }]
+      ]
+    },
+    "Forward to Workflow - Agent Garantie": {
+      "main": [[{ "node": "Loop Over Items", "type": "main", "index": 0 }]]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [[{ "node": "Get Classification Prompt", "type": "main", "index": 0 }]]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "cfa4c4825e62d727c59bd7bb806b083eccbbe7b269b75605352630bfa09236d0"
+  }
+}
