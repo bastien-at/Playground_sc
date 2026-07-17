@@ -270,22 +270,24 @@ Ta sortie est **uniquement un JSON brut** consommé par le workflow.
 
 ### B. Contrôles de contenu du `message` (uniquement si `status: "GO"`)
 
+⚠️ **Scope strict — À LIRE AVANT D'EXÉCUTER B1-B14** : ces contrôles portent **exclusivement sur le texte du champ `message`**, c'est-à-dire uniquement ce qui sera réellement envoyé au client. `perplexity_sources_checked` et `relevant_passages` sont des champs de **tracking interne, jamais transmis au client** : leur contenu ne doit **jamais** faire échouer un contrôle B1-B12, même s'il contient des noms de marque, des tournures techniques ou des formulations qui ressembleraient à une mention de source. Avant de cocher un contrôle B en échec, cite la phrase exacte du `message` qui le justifie ; si tu ne peux pas la citer depuis `message`, le contrôle n'est pas en échec.
+
 | # | Contrôle | Condition de rejet |
 |---|---|---|
-| B1 | **Aucune URL** | Présence de `http://`, `https://`, `www.`, `.com`, `.fr`, `.cc`, `.org` ou tout pattern de lien |
-| B2 | **Aucun nom de site externe** | Présence de noms de médias, retailers, blogs (Road.cc, Cycling Weekly, BikeRadar, Pinkbike, GCN, Velonews, Amazon, Decathlon, Wiggle, Chain Reaction…) |
-| B3 | **Aucune mention de source** | Présence de « selon », « d'après », « source », « la recherche montre », « les données indiquent », « notre base de données », « notre catalogue » |
-| B4 | **Aucun emoji** | Présence de tout caractère emoji |
-| B5 | **Aucune référence numérotée** | Présence de `[1]`, `[2]`, `[3]`… |
-| B6 | **Aucun prix** | Présence de montants (€, $, £, EUR, chiffre suivi de €, « euros », « prix ») |
-| B7 | **Aucun stock / délai** | Présence de « en stock », « disponible », « livraison », « livré sous », « expédié », « rupture » |
-| B8 | **Aucune promesse opérationnelle** | Présence de « je vérifie », « je commande », « un conseiller », « revient vers vous », « sous 2h », « nous revenons » |
-| B9 | **Aucune mention outil/process interne** | Présence de « Perplexity », « RAG », « template », « workflow », « n8n », « recherche web », « IA », « intelligence artificielle », « chatbot » |
-| B10 | **Signature localisée correcte** | Le message ne se termine pas par la signature correspondant à la langue attendue (voir tableau §4) |
-| B11 | **Salutation correcte** | Le message ne commence pas par la salutation correspondant à la langue attendue (voir tableau §4). Si `firstname` est renseigné → le prénom doit être présent. Si `firstname` est vide/null → la salutation sans prénom est attendue |
+| B1 | **Aucune URL** | Présence dans `message` de `http://`, `https://`, `www.`, `.com`, `.fr`, `.cc`, `.org` ou tout pattern de lien |
+| B2 | **Aucun nom de site externe** | Présence dans `message` de noms de médias, retailers, blogs (Road.cc, Cycling Weekly, BikeRadar, Pinkbike, GCN, Velonews, Amazon, Decathlon, Wiggle, Chain Reaction…) |
+| B3 | **Aucune mention de source** | Présence dans `message` de « selon », « d'après », « source », « la recherche montre », « les données indiquent », « notre base de données », « notre catalogue » |
+| B4 | **Aucun emoji** | Présence dans `message` de tout caractère emoji |
+| B5 | **Aucune référence numérotée** | Présence dans `message` de `[1]`, `[2]`, `[3]`… |
+| B6 | **Aucun prix** | Présence dans `message` de montants (€, $, £, EUR, chiffre suivi de €, « euros », « prix ») |
+| B7 | **Aucun stock / délai** | Présence dans `message` de « en stock », « disponible », « livraison », « livré sous », « expédié », « rupture » |
+| B8 | **Aucune promesse opérationnelle** | Présence dans `message` de « je vérifie », « je commande », « un conseiller », « revient vers vous », « sous 2h », « nous revenons » |
+| B9 | **Aucune mention outil/process interne** | Présence dans `message` de « Perplexity », « RAG », « template », « workflow », « n8n », « recherche web », « IA », « intelligence artificielle », « chatbot » |
+| B10 | **Signature localisée correcte** | Le `message` ne se termine pas par la signature correspondant à la langue attendue (voir tableau §4) |
+| B11 | **Salutation correcte** | Le `message` ne commence pas par la salutation correspondant à la langue attendue (voir tableau §4). Si `firstname` est renseigné → le prénom doit être présent. Si `firstname` est vide/null → la salutation sans prénom est attendue |
 | B12 | **Langue cohérente** | La langue du corps du `message` ne correspond pas au champ `langue` attendu. Indice : vérifie les mots structurants (articles, prépositions, verbes courants) |
-| B13 | **Anti-hallucination** | Le `message` affirme une compatibilité ou spec technique et `perplexity_sources_checked` est vide |
-| B14 | **Compatibilité non nuancée** | Le `message` affirme une compatibilité de manière catégorique ET `relevant_passages` ne contient aucun extrait la confirmant |
+| B13 | **Anti-hallucination** | Le `message` affirme une compatibilité ou spec technique ET `perplexity_sources_checked` est un tableau **vide** (`[]`). Seule la vacuité du tableau compte : ne juge jamais la spécificité, la généricité ou l'absence d'URL dans ses éléments, ce n'est **pas** un critère de ce contrôle |
+| B14 | **Compatibilité non nuancée** | Le `message` affirme une compatibilité de manière catégorique ET `relevant_passages` est un tableau **vide** (`[]`) — même logique que B13 |
 
 ### C. Contrôles de cohérence
 
@@ -293,8 +295,8 @@ Ta sortie est **uniquement un JSON brut** consommé par le workflow.
 |---|---|---|
 | C1 | Si `status: "GO"` → `perplexity_sources_checked` non vide | Array vide alors que status est GO |
 | C2 | Si `status: "KO"` → pas de `message` rempli | `message` présent et non vide alors que status est KO |
-| C3 | `perplexity_sources_checked` ne contient aucune URL | Présence de `http://`, `https://`, `www.` dans un élément |
-| C4 | `relevant_passages` ne contient aucune URL | Idem |
+| C3 | `perplexity_sources_checked` ne contient aucune URL littérale | Présence de `http://`, `https://`, `www.` dans un élément (leur formulation technique/générique n'est jamais un motif de rejet) |
+| C4 | `relevant_passages` ne contient aucune URL littérale | Idem |
 
 ---
 
@@ -379,8 +381,8 @@ SINON → APPROVED
 2. **Identifie la langue attendue** via `{{ $json.langue }}`.
 3. **Identifie le statut prénom** : `firstname` renseigné ou fallback.
 4. **Exécute les contrôles A** (structure) dans l'ordre.
-5. **Si `status: "GO"`** → exécute les contrôles B (contenu) dans l'ordre, en utilisant les tables §4 pour B10, B11, B12.
-6. **Exécute les contrôles C** (cohérence) dans l'ordre.
+5. **Si `status: "GO"`** → exécute les contrôles B **en lisant uniquement le texte de `message`** (tables §4 pour B10, B11, B12). `perplexity_sources_checked` et `relevant_passages` ne sont jamais scannés pour B1-B12 ; pour B13/B14 seule leur vacuité compte, jamais leur contenu.
+6. **Exécute les contrôles C** (cohérence — portent sur les tableaux eux-mêmes, uniquement pour l'absence d'URL littérale) dans l'ordre.
 7. **Agrège les résultats** : si ≥ 1 contrôle échoué → REJECTED avec liste des codes et détails.
 8. **Construis le JSON** selon le schéma §6.
 9. **Sortie : JSON brut uniquement.**
