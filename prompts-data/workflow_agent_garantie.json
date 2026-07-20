@@ -7,48 +7,12 @@
         "path": "agent-garantie",
         "options": {}
       },
-      "id": "b1a2c3d4-1111-4222-8333-944455556666",
+      "id": "e38e9ddb-e871-41c3-852e-325da1efd116",
       "name": "Ticket Garantie entrant",
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2.1,
-      "position": [32, -128],
+      "position": [-256, -16],
       "webhookId": "f2b3c4d5-2222-4333-9444-055566667777"
-    },
-    {
-      "parameters": {
-        "mode": "runOnceForEachItem",
-        "jsCode": "return {\n  json: {\n    case_id: $json.case_id || '',\n    contact_email: $json.contact_email || '',\n    contact_firstname: $json.contact_firstname || '',\n    langue: $json.langue || 'fr',\n    dernier_message: $json.dernier_message || '',\n    motif_contact: $json.motif_contact || ''\n  }\n};"
-      },
-      "id": "c2b3d4e5-3333-4444-a555-166677778888",
-      "name": "Extraire contexte ticket",
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [272, -128]
-    },
-    {
-      "parameters": {
-        "method": "GET",
-        "url": "=https://alltricks.my.salesforce.com/services/data/v59.0/query?q={{ encodeURIComponent(\"SELECT ContentDocument.Title, ContentDocument.FileType FROM ContentDocumentLink WHERE LinkedEntityId = '\" + $json.case_id + \"'\") }}",
-        "authentication": "predefinedCredentialType",
-        "nodeCredentialType": "salesforceOAuth2Api",
-        "options": { "response": { "response": { "neverError": true } } }
-      },
-      "id": "b3c4d5e6-4444-4555-a666-277788889999",
-      "name": "SF — Query Pièces jointes",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.4,
-      "position": [512, -128]
-    },
-    {
-      "parameters": {
-        "mode": "runOnceForEachItem",
-        "jsCode": "const ticket = $('Extraire contexte ticket').item.json;\nconst records = ($json.records || []);\n\nconst pieces_jointes = records.map(r => {\n  const cd = r.ContentDocument || {};\n  return cd.FileType ? `${cd.Title || 'fichier'}.${cd.FileType}` : (cd.Title || 'fichier');\n});\n\nreturn {\n  json: {\n    ...ticket,\n    pieces_jointes,\n    pieces_jointes_count: pieces_jointes.length\n  }\n};"
-      },
-      "id": "c4d5e6f7-5555-4666-b777-388899990000",
-      "name": "Extraire pièces jointes",
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [752, -128]
     },
     {
       "parameters": {
@@ -57,11 +21,52 @@
         "nodeCredentialType": "githubApi",
         "options": {}
       },
-      "id": "d3c4e5f6-4444-4555-b666-277788889999",
+      "id": "32f72e4d-12cf-4ebf-a434-27289d4671de",
       "name": "Get Agent Prompt",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
-      "position": [272, -320]
+      "position": [64, -16],
+      "credentials": {
+        "githubApi": { "id": "5iTWtODvJWX5cdlt", "name": "GitHub account BLC" }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "return {\n  json: {\n    case_id: $('Ticket Garantie entrant').item.json.case_id || '',\n    contact_email: $('Ticket Garantie entrant').item.json.contact_email || '',\n    contact_firstname: $('Ticket Garantie entrant').item.json.contact_firstname || '',\n    langue: $('Ticket Garantie entrant').item.json.langue || 'fr',\n    dernier_message: $('Ticket Garantie entrant').item.json.dernier_message || '',\n    motif_contact: $('Ticket Garantie entrant').item.json.motif_contact || ''\n  }\n};"
+      },
+      "id": "1110b3dc-b497-4803-a19b-4b7e18e7f984",
+      "name": "Extraire contexte ticket",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [336, -16]
+    },
+    {
+      "parameters": {
+        "url": "=https://alltricks.my.salesforce.com/services/data/v59.0/query?q={{ encodeURIComponent(\"SELECT ContentDocument.Title, ContentDocument.FileType FROM ContentDocumentLink WHERE LinkedEntityId = '\" + $json.case_id + \"'\") }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "salesforceOAuth2Api",
+        "options": { "response": { "response": { "neverError": true } } }
+      },
+      "id": "16224860-efa6-4fa9-ba23-c93faf9cff86",
+      "name": "SF — Query Pièces jointes",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [576, -16],
+      "credentials": {
+        "salesforceOAuth2Api": { "id": "bK9CYRGee7aHk9a4", "name": "Salesforce account" }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const ticket = $('Extraire contexte ticket').item.json;\nconst records = ($json.records || []);\n\nconst pieces_jointes = records.map(r => {\n  const cd = r.ContentDocument || {};\n  return cd.FileType ? `${cd.Title || 'fichier'}.${cd.FileType}` : (cd.Title || 'fichier');\n});\n\nreturn {\n  json: {\n    ...ticket,\n    pieces_jointes,\n    pieces_jointes_count: pieces_jointes.length\n  }\n};"
+      },
+      "id": "6650070b-6852-4038-af54-6b5c22001ca4",
+      "name": "Extraire pièces jointes",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [816, -16]
     },
     {
       "parameters": {
@@ -72,52 +77,119 @@
           "maxIterations": 3
         }
       },
-      "id": "e4d5f6a7-5555-4666-c777-388899990000",
+      "id": "f3831b57-0f4d-4490-a076-8ae04fca0d64",
       "name": "Claude — Analyse et email",
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 2.2,
-      "position": [992, -128]
+      "position": [1024, -16]
     },
     {
-      "parameters": {
-        "model": {
-          "__rl": true,
-          "mode": "list",
-          "value": "claude-sonnet-4-5-20250929",
-          "cachedResultName": "Claude Sonnet 4.5"
-        },
-        "options": {
-          "maxTokensToSample": 2048,
-          "temperature": 0.3
-        }
-      },
-      "id": "f5e6a7b8-6666-4777-d888-499900001111",
-      "name": "Claude Sonnet",
-      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
-      "typeVersion": 1.3,
-      "position": [992, 64]
+      "parameters": { "options": {} },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [1024, 208],
+      "id": "f4f448a4-021c-4b2e-bdfb-b4319137c5a0",
+      "name": "OpenRouter Chat Model",
+      "credentials": {
+        "openRouterApi": { "id": "JTSw1NijD0tyRB1b", "name": "MailBot - Openrouter" }
+      }
     },
     {
       "parameters": {
         "mode": "runOnceForEachItem",
-        "jsCode": "const raw = ($json.output || '').trim();\nlet result = {\n  out_of_scope: false,\n  needs_human: true,\n  categorie_produit: 'indetermine',\n  nom_produit_detecte: null,\n  elements_fournis: [],\n  elements_manquants: [],\n  template_complete: false,\n  motif_contact: 'GAR-Modalité-condition de garantie',\n  email_subject: '',\n  email_body: '',\n  language: 'fr'\n};\n\ntry {\n  const match = raw.match(/\\{[\\s\\S]*\\}/);\n  if (match) {\n    const parsed = JSON.parse(match[0]);\n    result = {\n      out_of_scope: parsed.out_of_scope || false,\n      needs_human: parsed.out_of_scope ? true : (parsed.needs_human || false),\n      categorie_produit: parsed.categorie_produit || result.categorie_produit,\n      nom_produit_detecte: parsed.nom_produit_detecte || null,\n      elements_fournis: parsed.elements_fournis || [],\n      elements_manquants: parsed.elements_manquants || [],\n      template_complete: parsed.template_complete || false,\n      motif_contact: parsed.motif_contact || result.motif_contact,\n      email_subject: parsed.email_subject || '',\n      email_body: parsed.email_body || '',\n      language: parsed.language || 'fr'\n    };\n  }\n} catch(e) {\n  console.error('Parsing JSON échoué:', e.message);\n}\n\n// Filet de sécurité : si le modèle a oublié de résoudre le placeholder, on le fait ici\nif (result.email_body.includes('[NOM_PRODUIT]')) {\n  if (result.nom_produit_detecte) {\n    result.email_body = result.email_body.split('[NOM_PRODUIT]').join(result.nom_produit_detecte);\n  } else {\n    result.email_body = result.email_body.split(' [NOM_PRODUIT]').join('').split('[NOM_PRODUIT]').join('');\n  }\n}\n\nconst pj = $('Extraire pièces jointes').item.json;\n\nreturn {\n  json: {\n    ...result,\n    contact_email: pj.contact_email,\n    case_id: pj.case_id,\n    pieces_jointes_count: pj.pieces_jointes_count || 0\n  }\n};"
+        "jsCode": "const raw = ($json.output || '').trim();\nlet result = {\n  out_of_scope: false,\n  needs_human: true,\n  categorie_produit: 'indetermine',\n  nom_produit_detecte: null,\n  elements_fournis: [],\n  elements_manquants: [],\n  template_complete: false,\n  motif_contact: 'GAR-Modalité-condition de garantie',\n  email_subject: '',\n  email_body: '',\n  language: 'fr'\n};\n\nfunction extraireObjetJSON(text) {\n  const debut = text.indexOf('{');\n  if (debut === -1) return null;\n  let profondeur = 0;\n  let dansChaine = false;\n  let echappement = false;\n  for (let i = debut; i < text.length; i++) {\n    const c = text[i];\n    if (echappement) { echappement = false; continue; }\n    if (c === '\\\\') { echappement = true; continue; }\n    if (c === '\"') { dansChaine = !dansChaine; continue; }\n    if (dansChaine) continue;\n    if (c === '{') profondeur++;\n    else if (c === '}') {\n      profondeur--;\n      if (profondeur === 0) return text.slice(debut, i + 1);\n    }\n  }\n  return null;\n}\n\ntry {\n  const jsonStr = extraireObjetJSON(raw);\n  if (jsonStr) {\n    const parsed = JSON.parse(jsonStr);\n    result = {\n      out_of_scope: parsed.out_of_scope || false,\n      needs_human: parsed.out_of_scope ? true : (parsed.needs_human || false),\n      categorie_produit: parsed.categorie_produit || result.categorie_produit,\n      nom_produit_detecte: parsed.nom_produit_detecte || null,\n      elements_fournis: parsed.elements_fournis || [],\n      elements_manquants: parsed.elements_manquants || [],\n      template_complete: parsed.template_complete || false,\n      motif_contact: parsed.motif_contact || result.motif_contact,\n      email_subject: parsed.email_subject || '',\n      email_body: parsed.email_body || '',\n      language: parsed.language || 'fr'\n    };\n  } else {\n    console.error('Aucun objet JSON balancé trouvé dans la sortie du modèle');\n  }\n} catch(e) {\n  console.error('Parsing JSON échoué:', e.message);\n}\n\n// Filet de sécurité : si le modèle a oublié de résoudre le placeholder, on le fait ici\nif (result.email_body.includes('[NOM_PRODUIT]')) {\n  if (result.nom_produit_detecte) {\n    result.email_body = result.email_body.split('[NOM_PRODUIT]').join(result.nom_produit_detecte);\n  } else {\n    result.email_body = result.email_body.split(' [NOM_PRODUIT]').join('').split('[NOM_PRODUIT]').join('');\n  }\n}\n\nconst pj = $('Extraire pièces jointes').item.json;\n\nreturn {\n  json: {\n    ...result,\n    contact_email: pj.contact_email,\n    case_id: pj.case_id,\n    pieces_jointes_count: pj.pieces_jointes_count || 0\n  }\n};"
       },
-      "id": "a6b7c8d9-7777-4888-e999-500011112222",
+      "id": "b675243c-8803-4e67-b21c-ef41d841874c",
       "name": "Parser JSON réponse",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [1232, -128]
+      "position": [1344, -16]
     },
     {
       "parameters": {
         "mode": "runOnceForEachItem",
         "jsCode": "const item = $json;\n\nconst lignes = [\n  'Analyse Agent Garantie (IA) — dossier de nouvelle demande',\n  `Catégorie produit : ${item.categorie_produit || 'indetermine'}`,\n  `Nom produit détecté : ${item.nom_produit_detecte || 'non détecté'}`,\n  `Pièces jointes déjà sur le dossier : ${item.pieces_jointes_count ?? 0}`,\n  `Dossier complet : ${item.template_complete ? 'oui' : 'non'}`,\n  `Éléments fournis : ${(item.elements_fournis || []).join(', ') || 'aucun'}`,\n  `Éléments manquants : ${(item.elements_manquants || []).join(', ') || 'aucun'}`,\n  `Motif contact : ${item.motif_contact || ''}`,\n  `Escalade humaine : ${item.needs_human ? 'oui' : 'non'}`,\n  `Hors périmètre : ${item.out_of_scope ? 'oui' : 'non'}`\n];\n\nreturn {\n  json: {\n    ...item,\n    internal_comment: lignes.join('\\n')\n  }\n};"
       },
-      "id": "f1a2b3c4-2222-4333-e444-055566667777",
+      "id": "11f80de7-c54c-49e6-8323-d0d84def1d47",
       "name": "Construire commentaire interne",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [1472, -128]
+      "position": [1536, -16]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const item = $json;\nconst now = new Date().toISOString();\n\nreturn {\n  json: {\n    timestamp: now,\n    date: now.slice(0, 10),\n    case_id: item.case_id || '',\n    contact_email: item.contact_email || '',\n    categorie_produit: item.categorie_produit || '',\n    nom_produit_detecte: item.nom_produit_detecte || '',\n    pieces_jointes_count: item.pieces_jointes_count ?? 0,\n    elements_fournis: (item.elements_fournis || []).join(', '),\n    elements_manquants: (item.elements_manquants || []).join(', '),\n    template_complete: item.template_complete ? 'oui' : 'non',\n    needs_human: item.needs_human ? 'oui' : 'non',\n    out_of_scope: item.out_of_scope ? 'oui' : 'non',\n    motif_contact: item.motif_contact || '',\n    email_subject: item.email_subject || ''\n  }\n};"
+      },
+      "id": "c1d2e3f4-5a6b-4c7d-8e9f-0a1b2c3d4e5f",
+      "name": "Préparer log Sheet",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1776, -16]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1qLTuxrmgfDr31ciEd645x3odFYPLb-6GHIrVbDuFf8A",
+          "mode": "list",
+          "cachedResultName": "Mailbot suivi"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Garantie",
+          "mode": "list",
+          "cachedResultName": "Garantie"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "timestamp": "={{ $json.timestamp }}",
+            "date": "={{ $json.date }}",
+            "case_id": "={{ $json.case_id }}",
+            "contact_email": "={{ $json.contact_email }}",
+            "categorie_produit": "={{ $json.categorie_produit }}",
+            "nom_produit_detecte": "={{ $json.nom_produit_detecte }}",
+            "pieces_jointes_count": "={{ $json.pieces_jointes_count }}",
+            "elements_fournis": "={{ $json.elements_fournis }}",
+            "elements_manquants": "={{ $json.elements_manquants }}",
+            "template_complete": "={{ $json.template_complete }}",
+            "needs_human": "={{ $json.needs_human }}",
+            "out_of_scope": "={{ $json.out_of_scope }}",
+            "motif_contact": "={{ $json.motif_contact }}",
+            "email_subject": "={{ $json.email_subject }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            { "id": "timestamp", "displayName": "timestamp", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true },
+            { "id": "date", "displayName": "date", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true },
+            { "id": "case_id", "displayName": "case_id", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true },
+            { "id": "contact_email", "displayName": "contact_email", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true },
+            { "id": "categorie_produit", "displayName": "categorie_produit", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true },
+            { "id": "nom_produit_detecte", "displayName": "nom_produit_detecte", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true },
+            { "id": "pieces_jointes_count", "displayName": "pieces_jointes_count", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true },
+            { "id": "elements_fournis", "displayName": "elements_fournis", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true },
+            { "id": "elements_manquants", "displayName": "elements_manquants", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true },
+            { "id": "template_complete", "displayName": "template_complete", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true },
+            { "id": "needs_human", "displayName": "needs_human", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true },
+            { "id": "out_of_scope", "displayName": "out_of_scope", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true },
+            { "id": "motif_contact", "displayName": "motif_contact", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true },
+            { "id": "email_subject", "displayName": "email_subject", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "d2e3f4a5-6b7c-4d8e-9f0a-1b2c3d4e5f6a",
+      "name": "Log Garantie",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [2016, -16],
+      "credentials": {
+        "googleSheetsOAuth2Api": { "id": "cXxWYmSQqxUCnh78", "name": "Google Sheets account BLC" }
+      }
     },
     {
       "parameters": {
@@ -127,14 +199,18 @@
         "nodeCredentialType": "salesforceOAuth2Api",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({ ParentId: $json.case_id, CommentBody: $json.internal_comment, IsPublished: false }) }}",
+        "jsonBody": "={{ JSON.stringify({ ParentId: $('Construire commentaire interne').item.json.case_id, CommentBody: $('Construire commentaire interne').item.json.internal_comment, IsPublished: false }) }}",
         "options": { "response": { "response": { "neverError": true } } }
       },
-      "id": "a2b3c4d5-3333-4444-f555-166677778888",
+      "id": "427e94ca-fafe-439d-8ebb-3f880a33be24",
       "name": "SF — Commentaire interne",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
-      "position": [1712, -128]
+      "position": [2256, -16],
+      "disabled": true,
+      "credentials": {
+        "salesforceOAuth2Api": { "id": "bK9CYRGee7aHk9a4", "name": "Salesforce account" }
+      }
     },
     {
       "parameters": {
@@ -142,8 +218,8 @@
           "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict", "version": 2 },
           "conditions": [
             {
-              "id": "c-human",
-              "leftValue": "={{ $json.needs_human }}",
+              "id": "c-needs-human",
+              "leftValue": "={{ $('Parser JSON réponse').item.json.needs_human }}",
               "operator": { "type": "boolean", "operation": "true" },
               "rightValue": ""
             }
@@ -152,64 +228,53 @@
         },
         "options": {}
       },
-      "id": "b7c8d9e0-8888-4999-a000-611122223333",
-      "name": "Escalade humaine ?",
+      "id": "9a1b2c3d-4e5f-4a6b-8c7d-2e3f4a5b6c7d",
+      "name": "Réponse traitée ?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
-      "position": [1952, -128]
+      "position": [2496, -16]
+    },
+    {
+      "parameters": {
+        "method": "PATCH",
+        "url": "=https://alltricks.my.salesforce.com/services/data/v59.0/sobjects/Case/{{ $('Parser JSON réponse').item.json.case_id }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "salesforceOAuth2Api",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={ \"AI_Management_Status__c\": \"Alltricks Bot could not respond\" }",
+        "options": {}
+      },
+      "id": "dbe31c72-5944-48fc-baa6-4c7e2baf3b49",
+      "name": "AI_Management_Status ->",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [2736, -160],
+      "credentials": {
+        "salesforceOAuth2Api": { "id": "bK9CYRGee7aHk9a4", "name": "Salesforce account" }
+      }
     },
     {
       "parameters": {
         "method": "POST",
-        "url": "https://n8n.srv1094459.hstgr.cloud/webhook/wf3-send-email",
+        "url": "https://n8n.srv1094459.hstgr.cloud/webhook/mailbot-send-email",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({ case_id: $json.case_id, contact_email: $json.contact_email, sf_subject: $json.email_subject, sf_html_body: $json.email_body, situation_category: $json.categorie_produit }) }}",
-        "options": { "response": { "response": { "neverError": true } } }
-      },
-      "id": "c8d9e0f1-9999-4000-b111-722233334444",
-      "name": "Envoyer via WF3",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.4,
-      "position": [2192, 64]
-    },
-    {
-      "parameters": {
-        "method": "PATCH",
-        "url": "=https://alltricks.my.salesforce.com/services/data/v59.0/sobjects/Case/{{ $json.case_id }}",
-        "authentication": "predefinedCredentialType",
-        "nodeCredentialType": "salesforceOAuth2Api",
-        "sendBody": true,
-        "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({ AI_Management_Status__c: 'Garantie - Escalade : ' + $json.categorie_produit + ' | manquants: ' + (($json.elements_manquants || []).join(', ') || 'n/a') }) }}",
+        "jsonBody": "={{ JSON.stringify($('Parser JSON réponse').item.json) }}",
         "options": {}
       },
-      "id": "d9e0f1a2-0000-4111-c222-833344445555",
-      "name": "SF — Escalade",
+      "id": "b9959667-1844-423f-87a6-cf3a96e1a81e",
+      "name": "Send to mail workflow",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
-      "position": [2192, -256]
-    },
-    {
-      "parameters": {
-        "method": "PATCH",
-        "url": "=https://alltricks.my.salesforce.com/services/data/v59.0/sobjects/Case/{{ $json.case_id }}",
-        "authentication": "predefinedCredentialType",
-        "nodeCredentialType": "salesforceOAuth2Api",
-        "sendBody": true,
-        "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({ AI_Management_Status__c: 'Garantie - Traité : ' + $json.categorie_produit + (($json.template_complete) ? ' (dossier complet)' : ' (demande de complément)'), Nombre_de_messages_envoyes__c: 1 }) }}",
-        "options": {}
-      },
-      "id": "e0f1a2b3-1111-4222-d333-944455556666",
-      "name": "SF — Marquer traité",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.4,
-      "position": [2432, 64]
+      "position": [2736, 128]
     }
   ],
   "connections": {
     "Ticket Garantie entrant": {
+      "main": [[{ "node": "Get Agent Prompt", "type": "main", "index": 0 }]]
+    },
+    "Get Agent Prompt": {
       "main": [[{ "node": "Extraire contexte ticket", "type": "main", "index": 0 }]]
     },
     "Extraire contexte ticket": {
@@ -221,10 +286,7 @@
     "Extraire pièces jointes": {
       "main": [[{ "node": "Claude — Analyse et email", "type": "main", "index": 0 }]]
     },
-    "Get Agent Prompt": {
-      "main": [[{ "node": "Claude — Analyse et email", "type": "main", "index": 0 }]]
-    },
-    "Claude Sonnet": {
+    "OpenRouter Chat Model": {
       "ai_languageModel": [[{ "node": "Claude — Analyse et email", "type": "ai_languageModel", "index": 0 }]]
     },
     "Claude — Analyse et email": {
@@ -234,19 +296,22 @@
       "main": [[{ "node": "Construire commentaire interne", "type": "main", "index": 0 }]]
     },
     "Construire commentaire interne": {
+      "main": [[{ "node": "Préparer log Sheet", "type": "main", "index": 0 }]]
+    },
+    "Préparer log Sheet": {
+      "main": [[{ "node": "Log Garantie", "type": "main", "index": 0 }]]
+    },
+    "Log Garantie": {
       "main": [[{ "node": "SF — Commentaire interne", "type": "main", "index": 0 }]]
     },
     "SF — Commentaire interne": {
-      "main": [[{ "node": "Escalade humaine ?", "type": "main", "index": 0 }]]
+      "main": [[{ "node": "Réponse traitée ?", "type": "main", "index": 0 }]]
     },
-    "Escalade humaine ?": {
+    "Réponse traitée ?": {
       "main": [
-        [{ "node": "SF — Escalade", "type": "main", "index": 0 }],
-        [{ "node": "Envoyer via WF3", "type": "main", "index": 0 }]
+        [{ "node": "AI_Management_Status ->", "type": "main", "index": 0 }],
+        [{ "node": "Send to mail workflow", "type": "main", "index": 0 }]
       ]
-    },
-    "Envoyer via WF3": {
-      "main": [[{ "node": "SF — Marquer traité", "type": "main", "index": 0 }]]
     }
   },
   "pinData": {
@@ -262,6 +327,7 @@
     ]
   },
   "meta": {
+    "templateCredsSetupCompleted": true,
     "instanceId": "cfa4c4825e62d727c59bd7bb806b083eccbbe7b269b75605352630bfa09236d0"
   }
 }
