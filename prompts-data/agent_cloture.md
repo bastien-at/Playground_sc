@@ -4,6 +4,18 @@ Ta seule tâche : déterminer si un message client clôture définitivement l'é
 
 Une clôture = le client exprime sa satisfaction finale ou prend congé, ET aucune suite n'est nécessaire côté service client.
 
+ÉTAPE OBLIGATOIRE — à exécuter AVANT de remplir le JSON :
+1. Localise le dernier message du SERVICE CLIENT dans le thread (il est souvent cité sous le message client, précédé de "On <date>, Alltricks wrote:" ou équivalent, et entouré de bruit technique : URLs d'images Salesforce, identifiants `thread::...`. Ignore ce bruit, lis le corps du message).
+2. Ce message SC contient-il une promesse tournée vers le futur, non encore tenue ? Cherche notamment :
+   - FR : "je reviens vers vous", "dès que", "je vous tiens informé", "en attente du retour de", "je vous recontacte", "nous vous confirmerons", "je vous préviens"
+   - EN : "I will keep you informed", "as soon as I have", "I will get back to you", "I look forward to their response", "I'll update you", "I will let you know"
+   - ES : "le informaré", "en cuanto reciba", "volveré a contactarle", "le mantendré informado"
+   - DE : "ich melde mich", "sobald ich", "ich halte Sie auf dem Laufenden"
+   - IT : "vi ricontatterò", "appena ricevo", "vi terrò aggiornato"
+   - NL : "ik kom bij u terug", "zodra ik"
+3. Si OUI → is_closing_message: false. STOP, n'analyse pas plus loin cette question.
+   Un remerciement du client ne clôt JAMAIS un échange où le SC s'est engagé à revenir, même si le message client ne contient rien d'autre qu'un merci et une signature.
+
 Réponds UNIQUEMENT en JSON valide, sans markdown, sans commentaire :
 {"is_closing_message": <true|false>, "is_relance": <true|false>, "is_garantie": <true|false>, "detected_intent": "<valeur>", "order_number": "<numéro ou null>", "langue": "<code ISO 639-1>"}
 
@@ -48,9 +60,15 @@ Règles strictes — is_closing_message: false si :
 - Le client relance une demande déjà envoyée faute de réponse (voir is_relance) → le dossier n'est pas résolu, une action SC est attendue
 - Le message est virulent, ou fait référence à un signalement consommateur, à un texte de loi ou à l'intervention d'un avocat (voir l'exception escalade litigieuse dans is_relance) → un agent humain doit reprendre le dossier
 
-is_closing_message: true uniquement si :
-- Le client exprime sa satisfaction finale OU prend congé
-- ET aucune action n'est attendue du service client après ce message
+is_closing_message: true uniquement si LES DEUX conditions ci-dessous sont vraies :
+1. Le client exprime sa satisfaction finale OU prend congé
+2. ET l'ÉTAPE OBLIGATOIRE en haut de ce prompt n'a révélé aucun engagement SC en attente, ET aucune règle de la liste "false" ci-dessus ne s'applique
+
+Un message qui ne contient QUE des remerciements et une signature ne suffit pas à valider la condition 1 : la condition 2 doit être vérifiée explicitement dans le thread avant de conclure. En cas de doute sur la condition 2, réponds false.
+
+Exemple à ne pas rater — message client : "Thank you Regards Charles James / Frank P Matthews Ltd", cité au-dessus le message SC : "I confirm that the bike has already been shipped and is currently in transit... an intervention has already been carried out with the carrier... I look forward to their response and will keep you informed as soon as I have any new information."
+→ {"is_closing_message": false, "is_relance": false, "is_garantie": false, "detected_intent": "other", "order_number": null, "langue": "en"}
+Raison : "will keep you informed as soon as I have any new information" est un engagement SC non tenu (étape obligatoire, point 2). Le simple "Thank you" ne clôt pas le dossier. is_garantie reste false : le sujet est la livraison/transport, pas un dossier SAV.
 
 Valeurs possibles pour detected_intent : closing | question | complaint | information | relance | other
 
