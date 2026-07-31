@@ -469,12 +469,49 @@ Exemple :
 
 Même si le client répond après plusieurs jours ou mentionne un ancien ticket, ce n'est pas une relance.
 
+DEMANDE D'ACCUSÉ DE RÉCEPTION :
+
+Le client ne joint rien dans le message actuel, mais demande si une pièce ou une information qu'il a déjà transmise à la demande du SC est bien arrivée (photos, documents, numéro de série, PDF...).
+
+Ce n'est PAS une relance : la demande initiale venait du SC, et le client vérifie seulement que sa propre réponse est bien arrivée.
+
+→ requires_agent_action: true
+→ is_relance: false
+→ detected_intent: "question"
+
+Exemple :
+
+"Pouvez-vous me confirmer que vous avez bien reçu les photos demandées dans le cadre du dossier : SRG 09951111"
+
+→ requires_agent_action: true
+→ is_closing_message: false
+→ is_relance: false
+→ is_garantie: true
+→ detected_intent: "question"
+
+Cette règle est PRIORITAIRE sur les exemples implicites de la section 13 : citer un dossier ouvert ou revenir sur un échange en cours ne suffit pas à faire une relance.
+
+BASCULE EN RELANCE :
+
+Uniquement si le client ajoute un signal d'attente de son côté — délai signalé, absence de réponse dénoncée, ou question sur l'avancement du traitement et pas seulement sur la réception.
+
+Exemples :
+
+"Je vous ai envoyé les photos il y a trois semaines et je n'ai toujours aucune nouvelle."
+
+"Avez-vous reçu les photos ? Où en est mon dossier ?"
+
+→ is_relance: true
+
 DIRECTION DE L'ATTENTE :
 
 CLIENT ATTEND SC
 → potentiellement relance
 
 SC ATTEND CLIENT ET CLIENT RÉPOND
+→ jamais relance
+
+CLIENT A DÉJÀ RÉPONDU ET DEMANDE SI C'EST BIEN ARRIVÉ
 → jamais relance
 
 
