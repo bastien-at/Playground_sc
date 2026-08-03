@@ -38,6 +38,7 @@ Réponds UNIQUEMENT en JSON valide, sans markdown, sans commentaire :
   - Cette même précision s'applique sans qu'il y ait besoin d'excuse explicite du client sur son propre retard : le simple fait de renvoyer ou fournir une pièce jointe, un document ou une information de sa propre initiative, sans poser de question ni signaler une absence de réponse du SC, n'est jamais une relance — c'est le client qui agit, pas le SC qui est attendu. Exemple : "Ya estaba adjunto, te lo vuelvo a enviar, archivo numero de seguimiento de correos. Gracias" → is_relance: false, detected_intent: "information" (le client renvoie simplement un fichier, sans reposer de question ni signaler une attente).
   - Elle couvre aussi le cas où le client ne joint rien dans le message actuel mais demande simplement l'accusé de réception d'une pièce ou d'une information qu'il a déjà transmise à la demande du SC (photos, documents, numéro de série, PDF...). Demander "avez-vous bien reçu X ?" n'est pas relancer une demande restée sans réponse : la demande initiale venait du SC, et le client vérifie seulement que sa propre réponse est bien arrivée. → is_relance: false, detected_intent: "question". Cette règle est prioritaire sur la relance implicite par reprise du sujet : le simple fait de citer un dossier ouvert ou de revenir sur un échange en cours ne suffit pas à en faire une relance. Exemple : "Pouvez-vous me confirmer que vous avez bien reçu les photos demandées dans le cadre du dossier : SRG 09951111" → is_relance: false, is_garantie: true, detected_intent: "question".
     - Bascule en relance uniquement si le client ajoute un signal d'attente insatisfaite de son côté : délai signalé, absence de réponse dénoncée, ou question sur l'avancement du traitement plutôt que sur la seule réception. Exemples : "Je vous ai envoyé les photos il y a trois semaines et je n'ai toujours aucune nouvelle", "Avez-vous reçu les photos ? Où en est mon dossier ?" → is_relance: true.
+  - Exception — annonce d'un envoi ou d'une action réalisée par le client : si le client annonce qu'il a expédié, déposé ou renvoyé quelque chose (colis retour, produit pour expertise, document), avec ou sans numéro de suivi ou transporteur, ce n'est jamais une relance — il exécute sa propre part du processus. Cette exception tient même si le client ajoute une demande de suivi tournée vers l'avenir ("merci de me tenir informé", "le plus rapidement possible", "dans l'attente de votre retour") : une attente portant sur un événement que le client vient lui-même de déclencher n'est pas une attente insatisfaite. Elle ne bascule en relance que si le client dénonce un délai déjà écoulé depuis son envoi ou une absence de réponse. Exemple : "Je viens d'envoyer via Mondial Relay le colis n°95115566 contenant les chaussures Northwave. Merci de me tenir informé le plus rapidement possible." → is_relance: false, detected_intent: "information".
 - is_garantie : true UNIQUEMENT si le message concerne la gestion du problème de garantie/réparation entre le client, Alltricks et le fournisseur/fabricant — c'est-à-dire le traitement opérationnel d'un dossier déjà engagé (diagnostic, éligibilité/décision de prise en charge et contestation de cette décision, envoi/réception du produit pour expertise ou réparation, pièce de rechange, avancement chez le fournisseur, délai de traitement, information transmise pour faire avancer le dossier). Tout le reste est false, y compris une nouvelle demande de garantie non encore engagée (premier signalement d'une panne/casse sans dossier ouvert).
   - Exemples (true) : "Où en est ma demande de garantie ?", "Avez-vous bien reçu mon vélo pour réparation ?", "Quand vais-je recevoir la pièce de rechange ?", "Le diagnostic du fabricant a-t-il été fait ?", "Des nouvelles de mon dossier SAV ?", le client transmet une info demandée dans le cadre d'un dossier garantie en cours (photo, numéro de série, accord), le client conteste une décision d'éligibilité déjà rendue (ex : "pourquoi n'appliquez-vous pas la garantie ?").
   - Exclusions (false) : tout sujet qui ne relève pas directement de cet échange à trois (client / Alltricks / fournisseur) sur la prise en charge du problème — notamment le paiement (facturation, forfait de réparation, prix demandé, remboursement d'un devis, contestation d'un montant), le compte client, la livraison/transport, ou tout autre sujet, même si le dossier concerné est un dossier garantie.
@@ -547,6 +548,40 @@ Exemple :
 
 Même si le client répond après plusieurs jours ou mentionne un ancien ticket, ce n'est pas une relance.
 
+DEMANDE D'ACCUSÉ DE RÉCEPTION :
+
+Le client ne joint rien dans le message actuel, mais demande si une pièce ou une information qu'il a déjà transmise à la demande du SC est bien arrivée (photos, documents, numéro de série, PDF...).
+
+Ce n'est PAS une relance : la demande initiale venait du SC, et le client vérifie seulement que sa propre réponse est bien arrivée.
+
+→ requires_agent_action: true
+→ is_relance: false
+→ detected_intent: "question"
+
+Exemple :
+
+"Pouvez-vous me confirmer que vous avez bien reçu les photos demandées dans le cadre du dossier : SRG 09951111"
+
+→ requires_agent_action: true
+→ is_closing_message: false
+→ is_relance: false
+→ is_garantie: true
+→ detected_intent: "question"
+
+Cette règle est PRIORITAIRE sur les exemples implicites de la section 13 : citer un dossier ouvert ou revenir sur un échange en cours ne suffit pas à faire une relance.
+
+BASCULE EN RELANCE :
+
+Uniquement si le client ajoute un signal d'attente de son côté — délai signalé, absence de réponse dénoncée, ou question sur l'avancement du traitement et pas seulement sur la réception.
+
+Exemples :
+
+"Je vous ai envoyé les photos il y a trois semaines et je n'ai toujours aucune nouvelle."
+
+"Avez-vous reçu les photos ? Où en est mon dossier ?"
+
+→ is_relance: true
+
 DIRECTION DE L'ATTENTE :
 
 CLIENT ATTEND SC
@@ -554,6 +589,47 @@ CLIENT ATTEND SC
 
 SC ATTEND CLIENT ET CLIENT RÉPOND
 → jamais relance
+
+CLIENT A DÉJÀ RÉPONDU ET DEMANDE SI C'EST BIEN ARRIVÉ
+→ jamais relance
+
+ANNONCE D'UN ENVOI OU D'UNE ACTION RÉALISÉE PAR LE CLIENT :
+
+Le client annonce qu'il a expédié, déposé ou renvoyé quelque chose (colis retour, produit pour expertise, document, formulaire), avec ou sans numéro de suivi, transporteur ou point relais.
+
+Ce n'est JAMAIS une relance : le client exécute sa propre part du processus, il ne réclame pas une réponse restée en attente.
+
+→ requires_agent_action: true
+→ is_closing_message: false
+→ is_relance: false
+→ detected_intent: "information"
+
+Cette règle tient MÊME SI le client ajoute une demande de suivi tournée vers l'avenir :
+
+"Merci de me tenir informé."
+"Merci de me tenir informé le plus rapidement possible."
+"Pouvez-vous me confirmer la bonne réception ?"
+"Je compte sur vous pour un traitement rapide."
+"Dans l'attente de votre retour."
+
+Une demande de retour rapide sur un événement que le client vient lui-même de déclencher n'est PAS une attente insatisfaite. Ne confonds pas :
+
+ATTENTE TOURNÉE VERS L'AVENIR (nouvel événement créé par le client)
+→ is_relance: false
+
+ATTENTE TOURNÉE VERS LE PASSÉ (délai écoulé, absence de réponse dénoncée, question sur l'avancement d'une demande antérieure)
+→ is_relance: true
+
+Exemple :
+
+"Je viens d'envoyer via Mondial Relay le colis n°95115566 contenant les chaussures Northwave. Merci de me tenir informé le plus rapidement possible."
+
+→ requires_agent_action: true
+→ is_closing_message: false
+→ is_relance: false
+→ detected_intent: "information"
+
+Bascule en relance uniquement si le client dénonce un délai déjà écoulé depuis son envoi ou une absence de réponse. Exemple : "Je vous ai renvoyé le colis il y a trois semaines et je n'ai toujours aucune nouvelle." → is_relance: true
 
 
 # 16. IS_GARANTIE
