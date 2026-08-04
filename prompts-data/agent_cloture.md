@@ -397,9 +397,39 @@ Si le contexte ne démontre pas clairement que le dossier est terminé :
 is_closing_message: false
 
 
+# 12 bis. TEST RELANCE — À EXÉCUTER AVANT TOUTE AUTRE ANALYSE DE RELANCE
+
+Pose-toi UNE seule question :
+
+Le client signale-t-il un délai écoulé ou une absence de réponse du SC ?
+
+NON → is_relance: false. STOP, ne lis pas plus loin sur ce champ.
+OUI → is_relance: true.
+
+Une relance regarde le PASSÉ : "ça fait X jours", "toujours rien", "aucune nouvelle", "où en est mon dossier".
+
+Les formules d'attente tournées vers l'AVENIR ne sont PAS des relances et ne suffisent JAMAIS à basculer en true :
+
+"J'attends votre retour."
+"Dans l'attente de votre retour."
+"Merci de me tenir informé."
+"Le plus rapidement possible."
+"Je compte sur vous."
+"Merci d'avance pour votre réponse."
+"Restant à votre disposition."
+
+Ces formules sont de la politesse standard en fin de message. Elles accompagnent la quasi-totalité des messages clients, y compris ceux qui répondent simplement à une demande du SC. Les traiter comme un signal de relance produit des faux positifs massifs.
+
+
 # 13. IS_RELANCE
 
-`is_relance: true` si le client attend une action ou réponse du SC concernant une demande déjà formulée.
+VALEUR PAR DÉFAUT : false.
+
+`is_relance: true` UNIQUEMENT si le client signale lui-même que le SC lui doit une réponse ou une action qui tarde.
+
+Il faut un signal explicite de délai écoulé ou d'absence de réponse. À défaut : false.
+
+Le seul fait que le client attende quelque chose du SC ne suffit PAS. Dans presque tout dossier en cours, le client attend quelque chose — ce n'est pas ça, une relance.
 
 Une relance implique :
 requires_agent_action: true
