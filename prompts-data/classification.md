@@ -35,6 +35,7 @@ Contraintes absolues :
 - Toujours retourner les 3 clés
 - `numero_commande` = numéro extrait si présent, sinon `null`
 - `motif_contact` = valeur exacte de la liste autorisée ou exactement `NA`
+- `motif_contact` est TOUJOURS rendu en français, exactement comme dans la liste, QUELLE QUE SOIT la langue du message client
 
 ────────────────────────
 TA MISSION
@@ -139,6 +140,9 @@ Règles :
 - si plusieurs langues sont utilisées, choisis la langue dominante du texte rédigé par le client ;
 - si la langue est réellement indéterminable, utilise "fr".
 
+La langue détectée n'alimente QUE le champ `langue`.
+Elle n'influence jamais l'écriture du `motif_contact`, qui reste toujours la valeur française exacte de la liste autorisée.
+
 ────────────────────────
 MOTIFS DE CONTACT SALESFORCE AUTORISÉS
 ────────────────────────
@@ -146,6 +150,28 @@ MOTIFS DE CONTACT SALESFORCE AUTORISÉS
 Tu dois sélectionner le motif LE PLUS PERTINENT parmi cette liste.
 
 Utilise EXACTEMENT les valeurs ci-dessous, caractère par caractère.
+
+RÈGLE ABSOLUE — INDÉPENDANCE À LA LANGUE DU CLIENT :
+
+Le `motif_contact` retourné doit être EXACTEMENT l'une des valeurs françaises de cette liste, PEU IMPORTE LA LANGUE DU MESSAGE CLIENT.
+
+La langue du client n'a AUCUNE influence sur l'écriture du motif. Elle n'est reportée que dans le champ `langue`.
+
+Interdictions formelles :
+- ne traduis JAMAIS un motif (pas d'anglais, espagnol, allemand, italien, néerlandais, portugais…) ;
+- ne reformule JAMAIS un motif ;
+- ne corrige JAMAIS l'orthographe, la casse, les accents, les tirets, les espaces ou les underscores d'un motif ;
+- ne crée JAMAIS de motif inexistant ;
+- ne mélange JAMAIS deux motifs.
+
+Copie la chaîne de caractères telle quelle depuis la liste.
+
+Exemples de ce qui est INTERDIT :
+- message en anglais → "RET-Return terms" ❌ / "Return conditions" ❌ → attendu : `RET-Modalité de retour` ✅
+- message en espagnol → "TRA-Retraso entrega" ❌ → attendu : `TRA-Retard livraison` ✅
+- message en allemand → "GAR-Garantiebedingungen" ❌ → attendu : `GAR-Modalité-condition de garantie` ✅
+- message en italien → "REMB-Info rimborso" ❌ → attendu : `REMB-Info remboursement` ✅
+- message en néerlandais → "LNC-Ontbrekend product" ❌ → attendu : `LNC-Produit manquant` ✅
 
 AUT :
 - AUT-Appel coupé
@@ -1066,6 +1092,7 @@ Avant de produire le JSON, vérifie mentalement :
 13. Le numéro extrait est-il réellement un numéro de commande ?
 14. La langue correspond-elle au texte réellement écrit par le client ?
 15. `motif_contact` est-il EXACTEMENT écrit comme dans la liste autorisée ou égal à `NA` ?
+15bis. Si le message client n'est pas en français, ai-je bien laissé le motif en français, copié caractère par caractère depuis la liste, sans traduction ni reformulation ?
 16. Ma sortie contient-elle EXACTEMENT 3 clés ?
 17. Ma sortie est-elle du JSON valide sans aucun texte supplémentaire ?
 
