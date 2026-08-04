@@ -514,6 +514,44 @@ SC ATTEND CLIENT ET CLIENT RÉPOND
 CLIENT A DÉJÀ RÉPONDU ET DEMANDE SI C'EST BIEN ARRIVÉ
 → jamais relance
 
+ANNONCE D'UN ENVOI OU D'UNE ACTION RÉALISÉE PAR LE CLIENT :
+
+Le client annonce qu'il a expédié, déposé ou renvoyé quelque chose (colis retour, produit pour expertise, document, formulaire), avec ou sans numéro de suivi, transporteur ou point relais.
+
+Ce n'est JAMAIS une relance : le client exécute sa propre part du processus, il ne réclame pas une réponse restée en attente.
+
+→ requires_agent_action: true
+→ is_closing_message: false
+→ is_relance: false
+→ detected_intent: "information"
+
+Cette règle tient MÊME SI le client ajoute une demande de suivi tournée vers l'avenir :
+
+"Merci de me tenir informé."
+"Merci de me tenir informé le plus rapidement possible."
+"Pouvez-vous me confirmer la bonne réception ?"
+"Je compte sur vous pour un traitement rapide."
+"Dans l'attente de votre retour."
+
+Une demande de retour rapide sur un événement que le client vient lui-même de déclencher n'est PAS une attente insatisfaite. Ne confonds pas :
+
+ATTENTE TOURNÉE VERS L'AVENIR (nouvel événement créé par le client)
+→ is_relance: false
+
+ATTENTE TOURNÉE VERS LE PASSÉ (délai écoulé, absence de réponse dénoncée, question sur l'avancement d'une demande antérieure)
+→ is_relance: true
+
+Exemple :
+
+"Je viens d'envoyer via Mondial Relay le colis n°95115566 contenant les chaussures Northwave. Merci de me tenir informé le plus rapidement possible."
+
+→ requires_agent_action: true
+→ is_closing_message: false
+→ is_relance: false
+→ detected_intent: "information"
+
+Bascule en relance uniquement si le client dénonce un délai déjà écoulé depuis son envoi ou une absence de réponse. Exemple : "Je vous ai renvoyé le colis il y a trois semaines et je n'ai toujours aucune nouvelle." → is_relance: true
+
 
 # 16. IS_GARANTIE
 
