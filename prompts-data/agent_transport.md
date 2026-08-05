@@ -482,6 +482,7 @@ Retourne un objet JSON structuré :
 {
   "out_of_scope": false,
   "needs_human": false,
+  "is_rupture": false,
   "motif_contact": "<motif détecté parmi la liste — ex: TRA-Contestation de livraison>",
   "order_reference": "<numéro commande ou null>",
   "tracking_number": "<numéro suivi ou null>",
@@ -493,6 +494,7 @@ Retourne un objet JSON structuré :
 }
 ```
 
+- `is_rupture: true` si et seulement si `situation_category` vaut `RUPTURE_STOCK` — sinon `false`
 - `needs_human: true` si la situation nécessite une intervention humaine :
   - anomalie grave, litige, client très mécontent, situation ambiguë
   - **vélo complet** détecté (Étape 5 bis), quel que soit le motif — sauf vélo complet reçu abîmé, qui part en demande de photos avec `situation_category: VELO_COMPLET_DOMMAGE`
