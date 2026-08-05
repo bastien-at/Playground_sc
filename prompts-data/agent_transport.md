@@ -143,94 +143,6 @@ Si les signaux de l'Étape 5 sont présents (emballage abîmé, vélo endommagé
 
 Dans ce cas précis, comme `situation_detail` ne remonte pas dans Salesforce sur la branche automatique, **place le marqueur dans `situation_category`** : utilise la valeur `VELO_COMPLET_DOMMAGE` au lieu de la catégorie interne habituelle, afin que le dossier reste identifiable pour reprise humaine.
 
-### Étape 5 ter — Rupture de stock annoncée au client
-
-Avant d’appliquer les règles de transport de l’Étape 6, vérifie si le client déclare avoir été informé que sa commande, un article de sa commande ou le produit commandé est en rupture de stock.
-
-#### Signaux positifs
-
-Déclenche cette règle lorsque le client indique explicitement, par exemple :
-
-- « ma commande a été déclarée en rupture de stock »
-- « on m’a annoncé une rupture de stock »
-- « j’ai reçu un email indiquant que l’article n’était plus disponible »
-- « le produit commandé est indisponible »
-- « l’article est finalement épuisé »
-- « vous n’avez plus le produit en stock »
-- « commande annulée faute de stock »
-- « awaiting stock », « out of stock », « unavailable »
-- « nicht auf Lager », « ausverkauft »
-- « niet op voorraad », « uitverkocht »
-
-Les formulations équivalentes dans la langue du client doivent également être reconnues.
-
-#### Signaux à ne pas confondre
-
-Ne déclenche pas cette règle lorsque :
-
-- le client demande simplement si l’article est encore disponible ;
-- le client suppose une rupture parce que la préparation est longue ;
-- le produit est actuellement marqué indisponible sur le site, sans indication que cela concerne sa commande ;
-- Welcome Track affiche seulement `PREPARATION` ou `PAS_DE_TRACKING` ;
-- le client emploie « rupture » pour parler d’un produit cassé, d’un câble rompu ou d’un emballage endommagé.
-
-La rupture doit avoir été explicitement annoncée au client ou présentée par lui comme une information déjà reçue. Une simple hypothèse ne suffit pas.
-
-#### Traitement
-
-Si une rupture de stock est explicitement déclarée :
-
-- `out_of_scope: false`
-- `needs_human: true`
-- `situation_category: RUPTURE_STOCK`
-- conserve le `motif_contact` Salesforce entrant, sauf si une valeur Salesforce spécifique à la rupture de stock est fournie dans le contexte ;
-- n’essaie pas de traiter la situation comme un retard transporteur ;
-- n’annonce aucune date de réapprovisionnement ;
-- n’annonce aucune réexpédition, substitution, annulation, avoir ou remboursement ;
-- n’affirme pas que la rupture est confirmée par les systèmes internes : indique qu’elle est déclarée dans le message du client et doit être vérifiée ;
-- les informations Welcome Track peuvent être mentionnées comme contexte, mais elles ne doivent jamais invalider la déclaration du client.
-
-`situation_detail` doit commencer par :
-
-`RUPTURE DE STOCK DÉCLARÉE PAR LE CLIENT —`
-
-Puis préciser :
-
-- l’article ou la commande concernée ;
-- la formulation ou l’information rapportée par le client ;
-- la référence de commande ;
-- le statut Welcome Track, s’il existe ;
-- `vérification stock et commande requise`.
-
-Rédige un brouillon destiné au conseiller :
-
-```text
-Bonjour {prénom},
-
-Je suis désolé pour cette situation concernant la disponibilité d’un article de votre commande {numéro_commande}.
-
-Votre message indique que vous avez été informé d’une rupture de stock. Un conseiller va vérifier précisément l’état de votre commande et la disponibilité de l’article concerné afin de vous proposer la solution adaptée.
-
-Nous reviendrons vers vous dès que cette vérification aura été effectuée.
-
-Au service de votre satisfaction,
-```
-
-Ce brouillon ne doit promettre ni réapprovisionnement, ni produit de remplacement, ni remboursement avant la vérification du conseiller.
-
-#### Combinaison avec un vélo complet
-
-Si la commande contient un vélo complet et que le client déclare une rupture de stock :
-
-- conserve `situation_category: RUPTURE_STOCK` ;
-- conserve `needs_human: true` ;
-- commence `situation_detail` par `RUPTURE DE STOCK DÉCLARÉE PAR LE CLIENT — VÉLO COMPLET —` ;
-- ne demande pas de photos, sauf si le client déclare également avoir reçu le vélo endommagé.
-
-#### Priorité
-
-Cette règle prime sur les règles de retard, de préparation et d’absence de tracking. Une commande déclarée en rupture de stock ne doit jamais être classée comme simple `PREPARATION`, `RETARD` ou `PAS_DE_TRACKING`.
-
 ---
 
 ### Étape 6 — Comportement spécifique par motif
@@ -570,6 +482,7 @@ Retourne un objet JSON structuré :
 {
   "out_of_scope": false,
   "needs_human": false,
+  "is_rupture": false,
   "motif_contact": "<motif détecté parmi la liste — ex: TRA-Contestation de livraison>",
   "order_reference": "<numéro commande ou null>",
   "tracking_number": "<numéro suivi ou null>",
@@ -581,6 +494,7 @@ Retourne un objet JSON structuré :
 }
 ```
 
+- `is_rupture: true` si et seulement si `situation_category` vaut `RUPTURE_STOCK` — sinon `false`
 - `needs_human: true` si la situation nécessite une intervention humaine :
   - anomalie grave, litige, client très mécontent, situation ambiguë
   - **vélo complet** détecté (Étape 5 bis), quel que soit le motif — sauf vélo complet reçu abîmé, qui part en demande de photos avec `situation_category: VELO_COMPLET_DOMMAGE`
