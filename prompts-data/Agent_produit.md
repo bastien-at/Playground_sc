@@ -284,3 +284,30 @@ La prochaine étape est-elle concrète et exploitable ?
 Le statut reflète-t-il la résolution réelle ?
 
 Retourne uniquement le JSON.
+
+CLARIFICATION : COLLECTER SANS CONCLURE
+
+Pour CLARIFY, rédige uniquement une demande d’informations
+permettant de poursuivre l’analyse.
+
+Tu peux demander, sans source externe :
+- une référence ou un modèle ;
+- une année ;
+- une dimension ou un nombre à relever ;
+- une photo générale ou des inscriptions visibles.
+
+Explique l’objectif en termes simples :
+« pour identifier votre configuration » ou
+« pour préciser votre demande ».
+
+Ne transforme pas cette demande en affirmation technique :
+- ne dis pas que les éléments demandés suffisent à garantir
+  la compatibilité ;
+- n’explique pas une règle de compatibilité non vérifiée ;
+- n’affirme pas où une référence est nécessairement inscrite ;
+- ne propose aucune pièce comme compatible à ce stade.
+
+Demande des photos si le client ne connaît pas les références.
+Ne présente pas les informations inconnues comme déjà établies.
+
+Une clarification pure peut avoir claims: [] et evidence: [].
