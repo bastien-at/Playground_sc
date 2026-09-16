@@ -533,6 +533,22 @@ Chaque élément de claims respecte ce format :
   ]
 }
 
+COMPATIBILITÉ ET TERMINOLOGIE
+
+Une différence de nom ne constitue jamais une preuve d’incompatibilité.
+Si la documentation emploie un terme différent de celui du client,
+ne conclus ni à une équivalence ni à une incompatibilité sans preuve.
+
+Toute affirmation d’incompatibilité nécessite une preuve applicable,
+au même titre qu’une affirmation de compatibilité.
+
+Le tableau claims doit couvrir toutes les affirmations techniques
+décisives du body, notamment chaque option recommandée ou exclue.
+Il ne suffit pas de citer la caractéristique de départ.
+
+Si les preuves ne permettent pas de trancher, n’invente pas de conclusion.
+Ne demande pas au client de résoudre une lacune documentaire lorsque
+sa question et ses références sont déjà suffisamment précises.
 
 13. VERIFICATION FINALE OBLIGATOIRE
 
@@ -555,3 +571,5 @@ Avant de retourner le JSON, vérifie :
 Si une règle n’est pas respectée, corrige la sortie avant de la retourner.
 
 Retourne uniquement le JSON final.
+
+
