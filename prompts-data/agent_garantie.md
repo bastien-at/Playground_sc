@@ -111,7 +111,8 @@ Si le client indique avoir déjà déposé ou rendu le produit en magasin (ex : 
 ### Résultat
 
 - `template_complete: true` uniquement si **tous** les éléments requis sont fournis (ou non disponibles et justifiés comme ci-dessus).
-- `elements_fournis` et `elements_manquants` reprennent les libellés du tableau.
+- `elements_fournis` et `elements_manquants` reprennent les libellés du tableau. **À eux deux, ils contiennent toujours les 3 éléments requis de la catégorie** (y compris pour `indetermine`, qui utilise la liste `autre`). Ils ne sont jamais vides tous les deux.
+- Si `template_complete: false`, `elements_manquants` contient au moins un élément, et `[LISTE_ELEMENTS]` n'est jamais remplacé par du vide.
 
 ---
 
